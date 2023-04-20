@@ -7,9 +7,9 @@ export class TemplatesService {
   constructor(private readonly templatesRepository: TemplatesRepository) {}
 
   async createTemplate(request: CreateTemplateDto) {
-      const template = await this.templatesRepository.create(request);
+    const template = await this.templatesRepository.create(request);
 
-      return template;
+    return template;
   }
 
   findAll() {

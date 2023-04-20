@@ -8,7 +8,10 @@ import { InjectModel, InjectConnection } from '@nestjs/mongoose';
 export class TemplatesRepository extends AbstractRepository<Template> {
   protected readonly logger = new Logger(TemplatesRepository.name);
 
-  constructor(@InjectModel(Template.name) templateModel: Model<Template>, @InjectConnection() connection: Connection) {
+  constructor(
+    @InjectModel(Template.name) templateModel: Model<Template>,
+    @InjectConnection() connection: Connection
+  ) {
     super(templateModel, connection);
   }
 }

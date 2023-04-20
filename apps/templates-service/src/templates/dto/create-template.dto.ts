@@ -1,4 +1,9 @@
-import { IsNotEmpty, IsPhoneNumber, IsPositive, IsString } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsPhoneNumber,
+  IsPositive,
+  IsString,
+} from 'class-validator';
 
 export class CreateTemplateDto {
   @IsString()

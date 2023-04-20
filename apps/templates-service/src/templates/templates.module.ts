@@ -13,7 +13,9 @@ import { MongooseModule } from '@nestjs/mongoose';
       isGlobal: true,
     }),
     DatabaseModule,
-    MongooseModule.forFeature([{ name: Template.name, schema: TemplateSchema }]),
+    MongooseModule.forFeature([
+      { name: Template.name, schema: TemplateSchema },
+    ]),
   ],
   controllers: [TemplatesController],
   providers: [TemplatesController, TemplatesService, TemplatesRepository],

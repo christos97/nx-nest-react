@@ -1,1 +1,1 @@
-export * from './lib/web-utils';
+export { default as env } from './lib/env';
