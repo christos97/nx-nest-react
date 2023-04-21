@@ -5,9 +5,14 @@ import styled from '@emotion/styled';
 
 const StyledButton = styled(MuiButton)(styles);
 
-const Button: React.FC<UiButtonProps> = ({ text, color, type, onClick }) => {
+const Button: React.FC<UiButtonProps> = ({
+  text,
+  color,
+  type = 'button',
+  onClick,
+}) => {
   return (
-    <StyledButton type={type ?? 'button'} color={color} onClick={onClick}>
+    <StyledButton type={type} color={color} onClick={onClick}>
       {text}
     </StyledButton>
   );

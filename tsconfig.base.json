@@ -17,6 +17,10 @@
     "paths": {
       "@ntua-saas-10/api-interfaces": ["libs/api-interfaces/src/index.ts"],
       "@ntua-saas-10/database": ["libs/database/src/index.ts"],
+      "@ntua-saas-10/firebase-auth": ["libs/firebase-auth/src/index.ts"],
+      "@ntua-saas-10/web/firebase-config": [
+        "libs/web/firebase-config/src/index.ts"
+      ],
       "@ntua-saas-10/web/ui": ["libs/web/ui/src/index.ts"],
       "@ntua-saas-10/web/utils": ["libs/web/utils/src/index.ts"]
     }
