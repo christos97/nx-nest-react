@@ -12,5 +12,6 @@ type UiButtonColor =
 export interface UiButtonProps {
   text: string;
   color?: UiButtonColor;
+  type?: 'button' | 'submit' | 'reset';
   onClick?: MouseEventHandler<HTMLButtonElement>;
 }

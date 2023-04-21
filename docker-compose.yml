@@ -1,21 +1,6 @@
 version: '3.3'
 
 services:
-  templates-service:
-    ports:
-      - 4000:4000
-
-    restart: always
-    build:
-      context: .
-      dockerfile: apps/templates-service/Dockerfile
-    environment:
-      - DEV_PLATFORM=DOCKER
-      - PORT=4000
-      - MONGODB_URI=mongodb://root:example@db-templates-dev:27017/templates?authSource=admin&keepAlive=true
-    depends_on:
-      - db-templates-dev
-
   db-templates-dev:
     image: mongo
     environment:

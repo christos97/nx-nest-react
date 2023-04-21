@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@ntua-saas-10/api-interfaces": ["libs/api-interfaces/src/index.ts"],
       "@ntua-saas-10/database": ["libs/database/src/index.ts"],
       "@ntua-saas-10/web/ui": ["libs/web/ui/src/index.ts"],
       "@ntua-saas-10/web/utils": ["libs/web/utils/src/index.ts"]

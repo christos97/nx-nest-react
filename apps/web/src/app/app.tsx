@@ -3,7 +3,6 @@ import { env } from '@ntua-saas-10/web/utils';
 import { Route, Routes, Link } from 'react-router-dom';
 import './app.css';
 
-console.log(env)
 export function App() {
   return (
     <div>
@@ -30,7 +29,7 @@ export function App() {
           path="/auth"
           element={
             <div>
-              <UiButton text="UiBUtton" color="primary" />
+              <UiButton text="UiBUtton" color="primary"/>
             </div>
           }
         />
