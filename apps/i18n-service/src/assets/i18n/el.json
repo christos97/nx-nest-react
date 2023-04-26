@@ -1,0 +1,15 @@
+{
+  "common": {
+    "home": "Αρχική",
+    "login": "Σύνδεση",
+    "logout": "Αποσύνδεση"
+  },
+  "auth": {
+    "hero1": "Σύνδεση",
+    "description": "Περιγραφή auth"
+  },
+  "home": {
+    "hero1": "Αρχική",
+    "description": "Περιγραφή home"
+  }
+}

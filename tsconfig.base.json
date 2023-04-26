@@ -7,8 +7,9 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "resolveJsonModule": true,
     "importHelpers": true,
-    "target": "es2015",
+    "target": "es2017",
     "module": "esnext",
     "lib": ["es2017", "dom"],
     "skipLibCheck": true,
@@ -17,10 +18,12 @@
     "paths": {
       "@ntua-saas-10/api-interfaces": ["libs/api-interfaces/src/index.ts"],
       "@ntua-saas-10/database": ["libs/database/src/index.ts"],
+      "@ntua-saas-10/firebase-admin": ["libs/firebase-admin/src/index.ts"],
       "@ntua-saas-10/firebase-auth": ["libs/firebase-auth/src/index.ts"],
-      "@ntua-saas-10/web/firebase-config": [
-        "libs/web/firebase-config/src/index.ts"
-      ],
+      "@ntua-saas-10/i18n-stream": ["libs/i18n-stream/src/index.ts"],
+      "@ntua-saas-10/web/env": ["libs/web/env/src/index.ts"],
+      "@ntua-saas-10/web/features": ["libs/web/features/src/index.ts"],
+      "@ntua-saas-10/web/firebase": ["libs/web/firebase/src/index.ts"],
       "@ntua-saas-10/web/ui": ["libs/web/ui/src/index.ts"],
       "@ntua-saas-10/web/utils": ["libs/web/utils/src/index.ts"]
     }

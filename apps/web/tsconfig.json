@@ -4,10 +4,20 @@
     "allowJs": false,
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
     "strict": true,
     "jsxImportSource": "@emotion/react",
     "types": ["vite/client", "vitest"]
   },
+  "paths": {
+    "@/*": ["./src/app/*"],
+    "assets/*": ["./src/app/assets/*"],
+    "components/*": ["./src/app/components/*"],
+    "constants/*": ["./src/app/constants/*"],
+    "pages/*": ["./src/app/pages/*"],
+    "services/*": ["./src/app/services/*"]
+  },
+
   "files": [],
   "include": [],
   "references": [

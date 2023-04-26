@@ -1,7 +1,6 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
-import { auth } from 'firebase-admin';
-
+import { admin } from '@ntua-saas-10/firebase-admin';
 @Injectable()
 export class FirebaseAuthMiddleware implements NestMiddleware {
   async use(req: Request, res: Response, next: NextFunction) {
@@ -9,7 +8,7 @@ export class FirebaseAuthMiddleware implements NestMiddleware {
     if (authHeader && authHeader.startsWith('Bearer ')) {
       const idToken = authHeader.split(' ')[1];
       try {
-        const decodedToken = await auth().verifyIdToken(idToken);
+        const decodedToken = await admin.auth.verifyIdToken(idToken);
         req['user'] = {
           email: decodedToken.email,
           roles: decodedToken.roles || [],

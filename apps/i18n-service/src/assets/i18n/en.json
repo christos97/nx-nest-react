@@ -1,0 +1,15 @@
+{
+  "common": {
+    "home": "Home",
+    "login": "Login",
+    "logout": "Logout"
+  },
+  "auth": {
+    "hero1": "Login",
+    "description": "Description auth"
+  },
+  "home": {
+    "hero1": "Home",
+    "description": "Description home"
+  }
+}

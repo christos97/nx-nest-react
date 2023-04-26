@@ -1,1 +1,1 @@
-export * from './lib/firebase-auth.module';
+export * from './lib/firebase-auth.middleware';

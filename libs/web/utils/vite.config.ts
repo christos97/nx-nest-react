@@ -4,9 +4,13 @@ import react from '@vitejs/plugin-react-swc';
 import viteTsConfigPaths from 'vite-tsconfig-paths';
 import dts from 'vite-plugin-dts';
 import { join } from 'path';
+import { workspaceRoot as root } from '@nrwl/devkit';
+
+const LIB_NAME = 'web-utils';
+const NODE_MODULES = join(root, 'node_modules');
 
 export default defineConfig({
-  cacheDir: '../../../node_modules/.vite/web-utils',
+  cacheDir: join(NODE_MODULES, '.vite', LIB_NAME),
 
   plugins: [
     dts({
@@ -15,34 +19,17 @@ export default defineConfig({
       skipDiagnostics: true,
     }),
     react(),
-    viteTsConfigPaths({
-      root: '../../../',
-    }),
+    viteTsConfigPaths({ root }),
   ],
 
-  // Uncomment this if you are using workers.
-  // worker: {
-  //  plugins: [
-  //    viteTsConfigPaths({
-  //      root: '../../../',
-  //    }),
-  //  ],
-  // },
-
-  // Configuration for building your library.
-  // See: https://vitejs.dev/guide/build.html#library-mode
   build: {
     lib: {
-      // Could also be a dictionary or array of multiple entry points.
       entry: 'src/index.ts',
-      name: 'web-utils',
+      name: LIB_NAME,
       fileName: 'index',
-      // Change this to the formats you want to support.
-      // Don't forgot to update your package.json as well.
       formats: ['es', 'cjs'],
     },
     rollupOptions: {
-      // External packages that should not be bundled into your library.
       external: ['react', 'react-dom', 'react/jsx-runtime'],
     },
   },
@@ -50,7 +37,7 @@ export default defineConfig({
   test: {
     globals: true,
     cache: {
-      dir: '../../../node_modules/.vitest',
+      dir: join(NODE_MODULES, '.vitest'),
     },
     environment: 'jsdom',
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],

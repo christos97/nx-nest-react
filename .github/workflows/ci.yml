@@ -1,0 +1,31 @@
+name: CI workflow on PR merge
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  main:
+    name: Nx Cloud - Main Job
+    uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.11.3
+    with:
+      main-branch-name: main
+      number-of-agents: 3
+      node-version: 16.20.0
+      pnpm-version: 8.3.1
+      init-commands: |
+        npm exec nx-cloud start-ci-run --stop-agents-after="build" --agent-count=3
+      parallel-commands: |
+        npm exec nx-cloud record -- npm exec nx format:check
+      parallel-commands-on-agents: |
+        npm exec nx affected --target=lint --parallel=3
+        npm exec nx affected --target=test --parallel=3 --ci --code-coverage
+        npm exec nx affected --target=build --parallel=3
+
+  agents:
+    name: Nx Cloud - Agents
+    uses: nrwl/ci/.github/workflows/nx-cloud-agents.yml@v0.11.3
+    with:
+      number-of-agents: 3
