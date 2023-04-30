@@ -1,5 +1,8 @@
-export const colors = {
-  primary: '#8b5cf6',
-} as const;
+import { colors as MuiColors } from '@mui/material';
 
-export type Colors = typeof colors;
+const { purple } = MuiColors;
+
+export const colors = {
+  primary: purple[500],
+  secondary: purple[100],
+} as const;

@@ -8,7 +8,7 @@ import {
 import { I18nStreamService } from './i18n-stream.service';
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
 import { ApiCreatedResponse } from '@nestjs/swagger';
-import { GetI18nStreamDto } from './i18n-stream.dto';
+import { GetI18nStreamDto } from '@ntua-saas-10/api-interfaces';
 
 @Controller('i18n')
 @UsePipes(ZodValidationPipe)

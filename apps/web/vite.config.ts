@@ -5,14 +5,17 @@ import viteTsConfigPaths from 'vite-tsconfig-paths';
 import { workspaceRoot as root } from '@nrwl/devkit';
 import { join } from 'path';
 
+const APP_NAME = 'web';
+const NODE_MODULES = join(root, 'node_modules');
+
 export default defineConfig({
-  cacheDir: join(root, 'node_modules/.vite/web'),
+  cacheDir: join(NODE_MODULES, '.vite', APP_NAME),
 
   server: {
     port: 4200,
     host: 'localhost',
     fs: {
-      allow: [root, 'node_modules/.pnpm/@fontsource/**/*.woff2'],
+      allow: [NODE_MODULES, '.pnpm', '@fontsource/**/*.woff2'],
     },
   },
 

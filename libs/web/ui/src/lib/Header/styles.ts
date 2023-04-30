@@ -1,9 +1,13 @@
 export const styles = {
   appBar: {
     backgroundColor: 'white',
+    padding: '0.5rem 1rem',
+    borderRadius: '1rem',
   },
   toolbar: {
     display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'row',
     justifyContent: 'space-between',
   },
   link: {
@@ -20,5 +24,10 @@ export const styles = {
     '&span': {
       color: '#fff',
     },
+  },
+  links: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
   },
 } as const;

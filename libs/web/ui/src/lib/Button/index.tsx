@@ -1,13 +1,13 @@
 import { Button as MuiButton } from '@mui/material';
-import { UiButtonProps } from './types';
+import { type UiButtonProps } from './types';
 import { styles } from './styles';
 import styled from '@emotion/styled';
 
 const StyledButton = styled(MuiButton)(styles);
 
 const Button: React.FC<UiButtonProps> = ({
-  text,
-  color,
+  text = 'Submit',
+  color = 'primary',
   type = 'button',
   onClick,
 }) => {

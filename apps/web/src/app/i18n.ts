@@ -6,7 +6,7 @@ import {
   DEFAULT_LANGUAGE,
   SUPPORTED_LANGUAGES,
 } from './constants/i18n.constants';
-import { I18nService } from './constants/services.constants';
+import { I18nService } from '@ntua-saas-10/api-interfaces';
 
 i18n
   .use(HttpBackend)

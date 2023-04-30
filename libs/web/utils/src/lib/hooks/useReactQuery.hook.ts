@@ -1,19 +1,15 @@
 import { useQuery, type QueryKey } from '@tanstack/react-query';
-import { useAxiosInstance } from './useAxios.hook';
+import { useAxios } from './useAxios.hook';
+import { type AxiosResponse } from 'axios';
 
-interface ApiResponse<T> {
-  data: T | undefined;
-}
+type ApiResponse<T> = AxiosResponse<T>;
 
 export const useReactQuery = <T>(key: QueryKey, url: string) => {
-  const [axios] = useAxiosInstance();
-  const { isLoading, error, data } = useQuery<ApiResponse<T>, Error>(
-    key,
-    async () => {
-      const res = await axios.get<ApiResponse<T>>(url);
-      return res?.data;
-    }
-  );
+  const [axios] = useAxios();
+  const { isLoading, error, data } = useQuery<T, Error>(key, async () => {
+    const res: ApiResponse<T> = await axios.get<T>(url);
+    return res?.data as T;
+  });
 
   return { isLoading, error, data };
 };

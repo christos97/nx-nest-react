@@ -1,34 +1,44 @@
 import { useMutation } from '@tanstack/react-query';
-import { useAxiosInstance } from './useAxios.hook';
+import { useAxios } from './useAxios.hook';
+import { type AxiosResponse } from 'axios';
 
-interface ApiResponse<T> {
-  data: T | undefined;
-}
+type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
-interface FormData<T> {
-  data: T;
-}
+type ApiResponse<T> = AxiosResponse<T>;
 
-interface MutationResponse<T> {
-  // mutate<T>(url: string): UseMutateFunction<ApiResponse<T>, Error, FormData<T>, unknown>;
+interface UseReactMutation<T, K> {
+  mutate: (data: T) => void;
   isLoading: boolean;
   isError: boolean;
   error: Error | null;
   isSuccess: boolean;
-  data: ApiResponse<T> | undefined;
+  data: K | undefined;
 }
 
-export const useReactMutation = <T, K>(url: string): MutationResponse<T> => {
-  const [axios] = useAxiosInstance();
-  const { isLoading, isError, error, isSuccess, data } = useMutation<
-    ApiResponse<T>,
+/**
+ *
+ * @param url Path to the API endpoint - Concats with the base URL from axios instance
+ * @param method Default is POST
+ * @returns Mutate function, isLoading, isError, error, isSuccess, data
+ */
+export const useReactMutation = <T = unknown, K = unknown>(
+  url: string,
+  method: Exclude<HttpMethod, 'GET'> = 'POST'
+): UseReactMutation<T, K> => {
+  const [axios] = useAxios();
+  const { mutate, isLoading, isError, error, isSuccess, data } = useMutation<
+    K,
     Error,
-    FormData<K>,
+    T,
     unknown
-  >(async (formData: FormData<K>) => {
-    const res = await axios.post<ApiResponse<T>>(url, formData);
+  >(async (data: T) => {
+    const res: ApiResponse<K> = await axios.request<K>({
+      url,
+      method,
+      data: method !== 'DELETE' && data ? data : undefined,
+    });
     return res?.data;
   });
 
-  return { isLoading, isError, error, isSuccess, data };
+  return { mutate, isLoading, isError, error, isSuccess, data };
 };

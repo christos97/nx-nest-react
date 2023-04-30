@@ -2,7 +2,8 @@
   "common": {
     "home": "Home",
     "login": "Login",
-    "logout": "Logout"
+    "logout": "Logout",
+    "dashboard": "Dashboard"
   },
   "auth": {
     "hero1": "Login",

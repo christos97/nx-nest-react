@@ -7,6 +7,9 @@ import { type Storage, getStorage } from 'firebase-admin/storage';
 import { type Firestore, getFirestore } from 'firebase-admin/firestore';
 import { type Auth, getAuth } from 'firebase-admin/auth';
 
+interface FirebaseAdminConstructorConfig {
+  projectId: string;
+}
 class FirebaseAdmin {
   private static app: App;
   private static storage: Storage;
@@ -14,12 +17,12 @@ class FirebaseAdmin {
   private static auth: Auth;
   private static projectId: string;
 
-  constructor({ projectId }: { projectId: string }) {
+  constructor({ projectId }: FirebaseAdminConstructorConfig) {
     if (!FirebaseAdmin.app) {
       FirebaseAdmin.app = initializeApp({
         projectId,
-        storageBucket: `${projectId}.appspot.com`,
         credential: applicationDefault(),
+        storageBucket: `${projectId}.appspot.com`,
       });
       const app = FirebaseAdmin.app;
       FirebaseAdmin.storage = getStorage(app);

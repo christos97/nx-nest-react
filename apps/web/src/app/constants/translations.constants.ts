@@ -3,6 +3,7 @@ export const TransHolders = {
     home: 'home',
     login: 'login',
     logout: 'logout',
+    dashboard: 'dashboard',
   },
   auth: {
     hero1: 'hero1',

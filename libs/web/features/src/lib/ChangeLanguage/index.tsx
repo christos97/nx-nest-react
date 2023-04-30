@@ -3,29 +3,33 @@ import MenuItem from '@mui/material/MenuItem';
 import Select, { type SelectChangeEvent } from '@mui/material/Select';
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
-import { type Languages, LANGUAGES } from './languages';
+import { type Languages, LANGUAGES, FLAGS } from './constants';
+import LanguageIcon from '@mui/icons-material/Language';
+import { colors } from '@mui/material';
 
-const StyledSelect = styled(Select)`
-  color: white;
-  background-color: gray;
-  &:before {
-    border-bottom: 1px solid white;
-  }
-  &:after {
-    border-bottom: 1px solid white;
-  }
-  &:hover:not(.Mui-disabled):before {
-    border-bottom: 1px solid white;
-  }
-`;
+const SelectStyles  = () => ({
+  color: 'black',
+  backgroundColor: 'transparent',
+  border: 'none',
+  padding: '0',
+  '&:before': {
+    borderBottom: `1px solid ${colors.deepPurple[500]}`,
+  },
+  '&:after': {
+    borderBottom: `1px solid ${colors.deepPurple[500]}`,
+  },
+  '&:hover:not(.Mui-disabled):before': {
+    borderBottom: `1px solid transparent`,
+  },
+})
+
+const StyledSelect = styled(Select)(SelectStyles);
 
 interface ChangeLanguageProps {
   langs: Languages[];
-  className?: string;
 }
 
 const ChangeLanguage: React.FC<ChangeLanguageProps> = ({
-  className,
   langs,
 }) => {
   const { i18n } = useTranslation();
@@ -41,13 +45,14 @@ const ChangeLanguage: React.FC<ChangeLanguageProps> = ({
 
   return (
     <StyledSelect
-      className={className}
-      value={selectedLanguage}
       onChange={handleChange}
+      defaultValue={i18n.language}
+      IconComponent={LanguageIcon}
+      value={selectedLanguage}
     >
       {langs.map((key) => (
         <MenuItem key={key} value={key}>
-          {LANGUAGES[key as Languages]}
+          {`${FLAGS[key]} ${LANGUAGES[key as Languages]}`}
         </MenuItem>
       ))}
     </StyledSelect>

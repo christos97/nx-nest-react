@@ -1,7 +1,6 @@
-import { type FirebaseOptions } from 'firebase/app';
 import { z } from './_zod';
 
-const VITE_PUBLIC_FIREBASE_CONFIG: z.ZodType<FirebaseOptions> = z
+const VITE_PUBLIC_FIREBASE_CONFIG = z
   .object({
     apiKey: z.string(),
     authDomain: z.string(),
@@ -13,6 +12,7 @@ const VITE_PUBLIC_FIREBASE_CONFIG: z.ZodType<FirebaseOptions> = z
   })
   .strict();
 
+type FirebaseOptions = z.infer<typeof VITE_PUBLIC_FIREBASE_CONFIG>;
 const firebaseConfigString = import.meta.env.VITE_PUBLIC_FIREBASE_CONFIG;
 const config = JSON.parse(firebaseConfigString) as FirebaseOptions;
 const parsed = VITE_PUBLIC_FIREBASE_CONFIG.safeParse(config);

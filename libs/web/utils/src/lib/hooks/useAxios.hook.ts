@@ -1,15 +1,15 @@
 import axios from 'axios';
-import { useJwt } from './useJwt.hook';
 import { useEffect } from 'react';
-
-interface UseAxiosInstanceOptions {
-  baseUrl?: string;
-}
+import { useJwt } from './useJwt.hook';
+import { env } from '@ntua-saas-10/web/env';
 
 const axiosInstance = axios.create({ timeout: 10000 });
 
-export const useAxiosInstance = (options?: UseAxiosInstanceOptions) => {
-  axiosInstance.defaults.baseURL = options?.baseUrl;
+axiosInstance.defaults.baseURL = env.VITE_PUBLIC_API;
+axiosInstance.defaults.headers.common['Content-Type'] = 'application/json';
+axiosInstance.defaults.headers.common['Accept'] = 'application/json';
+
+export const useAxios = () => {
   const [jwtToken] = useJwt();
 
   useEffect(() => {

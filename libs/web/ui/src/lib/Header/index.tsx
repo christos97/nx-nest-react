@@ -5,6 +5,8 @@ import { styles } from './styles';
 
 const StyledAppBar = styled(AppBar)(styles.appBar);
 
+const StyledToolbar = styled(Toolbar)(styles.toolbar);
+
 const StyledLink = styled(Link)(styles.link);
 
 const StyledTypography = styled(Typography)(styles.typography);
@@ -30,26 +32,24 @@ const Header: React.FC<UiHeaderProps> = ({
 }) => {
   return (
     <StyledAppBar position="static">
-      <Toolbar>
+      <StyledToolbar>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <StyledTypography color="black" variant="h6">
-            <span>
-              <strong>{brand}</strong>
-            </span>
-            <span>
-              <img width={width} height={height} src={logoSrc} alt={logoAlt} />
-            </span>
+          <span>
+            <img width={width} height={height} src={logoSrc} alt={logoAlt} />
+          </span>
+          <StyledTypography color="black" variant="h5">
+            <span style={{ padding: '1rem', margin: '1rem' }}>{brand}</span>
           </StyledTypography>
-          <div style={{ display: 'flex', alignItems: 'end' }}>
-            {links.map((link) => (
-              <StyledLink key={link.label} to={link.path}>
-                {link.label}
-              </StyledLink>
-            ))}
-          </div>
+        </div>
+        <div style={styles.links}>
+          {links.map((link) => (
+            <StyledLink key={link.label} to={link.path}>
+              {link.label}
+            </StyledLink>
+          ))}
           {children}
         </div>
-      </Toolbar>
+      </StyledToolbar>
     </StyledAppBar>
   );
 };
