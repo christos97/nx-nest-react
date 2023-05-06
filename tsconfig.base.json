@@ -17,6 +17,7 @@
     "baseUrl": ".",
     "paths": {
       "@ntua-saas-10/api-interfaces": ["libs/api-interfaces/src/index.ts"],
+      "@ntua-saas-10/common": ["libs/common/src/index.ts"],
       "@ntua-saas-10/database": ["libs/database/src/index.ts"],
       "@ntua-saas-10/firebase-admin": ["libs/firebase-admin/src/index.ts"],
       "@ntua-saas-10/firebase-auth": ["libs/firebase-auth/src/index.ts"],
