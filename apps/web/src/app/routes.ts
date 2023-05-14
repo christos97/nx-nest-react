@@ -1,7 +1,30 @@
+import Pages from './pages';
+
 const AppRoutes = {
-  Home: '/',
-  Auth: '/auth',
-  Dashboard: '/dashboard',
+  Home: {
+    path: '/',
+    page: 'home',
+    isGuarded: false,
+    isLazy: false,
+    claims: [],
+    FcComponent: Pages.Home,
+  },
+  Auth: {
+    path: '/auth',
+    page: 'auth',
+    isGuarded: false,
+    isLazy: true,
+    claims: [],
+    FcComponent: Pages.Auth,
+  },
+  Dashboard: {
+    path: '/dashboard',
+    page: 'dashboard',
+    isGuarded: true,
+    isLazy: true,
+    claims: ['user'],
+    FcComponent: Pages.Dashboard,
+  },
 } as const;
 
 Object.freeze(AppRoutes);

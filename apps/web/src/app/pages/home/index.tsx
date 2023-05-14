@@ -1,10 +1,8 @@
 import { ApiLookup } from '@ntua-saas-10/api-interfaces';
-import {
-  HookForm,
-  HookField,
-  type HookFieldProps,
-} from '@ntua-saas-10/web/features';
-import { UiButton, UiCard } from '@ntua-saas-10/web/ui';
+import { HookField, HookFieldProps } from '@ntua-saas-10/web/features/hook-field';
+import { HookForm } from '@ntua-saas-10/web/features/hook-form';
+import { UiButton } from '@ntua-saas-10/web/ui/button';
+import { UiCard } from '@ntua-saas-10/web/ui/card';
 import { z } from 'zod';
 
 const INVALID_TITLE = 'Invalid title';
@@ -45,25 +43,23 @@ const bodyField: HookFieldProps = {
   },
 };
 
-const UpdatePostFormSchema = z.object({
-  title: z.string().min(8, INVALID_TITLE),
-  body: z.string().min(30, INVALID_BODY),
-}).strict();
+const UpdatePostFormSchema = z
+  .object({
+    title: z.string().min(5, INVALID_TITLE),
+    body: z.string().min(15, INVALID_BODY),
+  })
+  .strict();
 
 const Home: React.FC = () => {
-  const { posts } = ApiLookup.resources
+  const { path } = ApiLookup.services.upload;
   return (
     <UiCard>
-      <HookForm
-          {...posts.create}
-          schema={UpdatePostFormSchema}
-        >
-        <HookField { ...titleField } />
-        <HookField { ...bodyField } />
-        <UiButton type="submit"/>
+      <HookForm path={path} schema={UpdatePostFormSchema}>
+        <HookField {...titleField} />
+        <HookField {...bodyField} />
+        <UiButton type="submit">Submit</UiButton>
       </HookForm>
     </UiCard>
-
   );
 };
 

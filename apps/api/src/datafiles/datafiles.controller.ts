@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { Multer } from 'multer';
 import {
   Controller,
   Post,
@@ -14,12 +16,7 @@ import { DatafilesService } from './datafiles.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiConsumes } from '@nestjs/swagger';
 
-import { Multer } from 'multer';
-
-import {
-  UploadDatafileRequestDto,
-  UploadDatafileResponseDto,
-} from '@ntua-saas-10/api-interfaces';
+import { UploadDatafileRequestDto, UploadDatafileResponseDto } from '@ntua-saas-10/api-interfaces';
 import { FileTypes, MAX_FILE_SIZE_KB } from './datafiles.constants';
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
 import { FilenameService } from '@ntua-saas-10/common';
@@ -39,7 +36,7 @@ export class DatafilesController {
   constructor(
     private readonly datafilesService: DatafilesService,
     private readonly filenameService: FilenameService,
-    private readonly configService: ConfigService<EnvironmentVariables>
+    private readonly configService: ConfigService<EnvironmentVariables>,
   ) {
     this.STORAGE_BASE_URL = this.configService.getOrThrow('STORAGE_BASE_URL');
     this.FILES_DEST = this.configService.getOrThrow('FILES_DEST');
@@ -56,23 +53,15 @@ export class DatafilesController {
           new MaxFileSizeValidator({ maxSize: MAX_FILE_SIZE_KB }),
           new FileTypeValidator({ fileType: FileTypes.CSV }),
         ],
-      })
+      }),
     )
     datafile: Express.Multer.File,
-    @Body() body: UploadDatafileRequestDto
+    @Body() body: UploadDatafileRequestDto,
   ): Promise<UploadDatafileResponseDto> {
     const { chartType } = body;
 
-    const { fileId, newFilename } = this.filenameService.generateFileInfo(
-      datafile.originalname,
-      chartType
-    );
-    await this.datafilesService.uploadToStorage(
-      datafile,
-      this.FILES_DEST,
-      newFilename,
-      { chartType }
-    );
+    const { fileId, newFilename } = this.filenameService.generateFileInfo(datafile.originalname, chartType);
+    await this.datafilesService.uploadToStorage(datafile, this.FILES_DEST, newFilename, { chartType });
 
     return {
       statusCode: 200,

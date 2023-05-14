@@ -12,21 +12,17 @@ import { type SupportedLanguages } from './app/constants/i18n.constants';
 
 const queryClient = new QueryClient();
 
-const root: ReactDOM.Root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+const root: ReactDOM.Root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <StrictMode>
     <Router>
       <I18nextProvider i18n={i18n}>
-        <ThemeProvider
-          theme={localizeTheme(i18n.language as SupportedLanguages)}
-        >
+        <ThemeProvider theme={localizeTheme(i18n.language as SupportedLanguages)}>
           <QueryClientProvider client={queryClient}>
             <App />
           </QueryClientProvider>
         </ThemeProvider>
       </I18nextProvider>
     </Router>
-  </StrictMode>
+  </StrictMode>,
 );

@@ -1,4 +1,5 @@
 import { env } from '@ntua-saas-10/web/env';
+import { ServicesSchemas as services } from '@ntua-saas-10/api-interfaces';
 
 export const ServicesSchemas = {
   I18nService: {

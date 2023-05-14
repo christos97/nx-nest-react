@@ -1,6 +1,4 @@
-import { ZodSchemas } from './zod.schemas';
-
-const { resources } = ZodSchemas;
+import { ResourcesSchemas as resources } from '@ntua-saas-10/api-interfaces';
 
 export const ResourcesSchemas = {
   ...resources,

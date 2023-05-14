@@ -1,3 +1,8 @@
+/**
+ * @fileoverview i18n constants.
+ * @global apps/web/~/constants/i18n.constants.ts
+ */
+
 import { elGR, enUS } from '@mui/material/locale';
 
 export const Locales = {
@@ -12,10 +17,9 @@ type ExtraLanguages = Exclude<SupportedLanguages, DefaultLanguage>;
 
 export const EXTRA_LANGUAGES: ExtraLanguages[] = ['el'];
 
-export const SUPPORTED_LANGUAGES: SupportedLanguages[] = [
-  DEFAULT_LANGUAGE,
-  ...EXTRA_LANGUAGES,
-];
+export const SUPPORTED_LANGUAGES: SupportedLanguages[] = [DEFAULT_LANGUAGE, ...EXTRA_LANGUAGES];
+
+export const DEFAULT_NAMESPACE = 'translation';
 
 const common = 'common';
 const auth = 'auth';

@@ -1,8 +1,13 @@
-import { HttpMethods } from '../types';
+import { HttpMethod } from '../consts/HttpMethod.const';
+
+const { POST } = HttpMethod;
 
 // Public API
 export const services = {
-  [HttpMethods.POST]: ['uploader'],
+  ['upload']: {
+    method: POST,
+    path: '/datafiles/upload',
+  },
 } as const;
 
 // TODO move to services lookup

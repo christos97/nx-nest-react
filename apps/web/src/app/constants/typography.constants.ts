@@ -1,4 +1,10 @@
-import { ThemeOptions } from '@mui/material';
+/**
+ * Typography constants for the application.
+ * @fileoverview Typography constants.
+ * @global apps/web/~/constants/typography.constants.ts
+ */
+
+import type { ThemeOptions } from '@mui/material';
 
 type Typography = ThemeOptions['typography'];
 

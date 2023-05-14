@@ -1,4 +1,4 @@
-import { SignUp } from '@ntua-saas-10/web/features';
+import { SignUp } from '@ntua-saas-10/web/features/signup';
 import { auth } from '@ntua-saas-10/web/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 

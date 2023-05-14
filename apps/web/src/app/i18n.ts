@@ -2,10 +2,7 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import HttpBackend from 'i18next-http-backend';
-import {
-  DEFAULT_LANGUAGE,
-  SUPPORTED_LANGUAGES,
-} from './constants/i18n.constants';
+import { DEFAULT_LANGUAGE, DEFAULT_NAMESPACE, SUPPORTED_LANGUAGES } from './constants/i18n.constants';
 import { I18nService } from '@ntua-saas-10/api-interfaces';
 
 i18n
@@ -18,7 +15,7 @@ i18n
     },
     supportedLngs: SUPPORTED_LANGUAGES,
     fallbackLng: DEFAULT_LANGUAGE,
-    defaultNS: 'translation',
+    defaultNS: DEFAULT_NAMESPACE,
   });
 
 export default i18n;

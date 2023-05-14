@@ -1,45 +1,30 @@
-import { Route, Routes } from 'react-router-dom';
+import React, { Suspense } from 'react';
 
+// Consts
 import { SUPPORTED_LANGUAGES } from './constants/i18n.constants';
-import {
-  APP_TITLE,
-  LOGO_ALT,
-  LOGO_HEIGHT,
-  LOGO_SRC,
-  LOGO_WIDTH,
-} from './constants/app.constants';
+import { HeaderProps } from './constants/app.constants';
+
+// Hooks
 import { useHeaderlLinks } from './hooks/useHeaderlLinks.hook';
+import { useAppRoutes } from './hooks/useAppRoutes.hook';
 
-import { ChangeLanguage } from '@ntua-saas-10/web/features';
-import { UiHeader } from '@ntua-saas-10/web/ui';
+// Ui Components
+import { UiHeader } from '@ntua-saas-10/web/ui/header';
+import { UiProgressSpinner } from '@ntua-saas-10/web/ui/progress-spinner';
 
-import { AppRoutes } from './routes';
-import Auth from './pages/auth';
-import Home from './pages/home';
-import Dashboard from './pages/dashboard';
+// Features
+import { ChangeLanguage } from '@ntua-saas-10/web/features/change-language';
 
 import './assets/styles/globals.css';
 import '@fontsource/inter';
 
 export const App: React.FC = () => {
-  const HEADER_LINKS = useHeaderlLinks();
   return (
     <div>
-      <UiHeader
-        brand={APP_TITLE}
-        logoSrc={LOGO_SRC}
-        logoAlt={LOGO_ALT}
-        width={LOGO_WIDTH}
-        height={LOGO_HEIGHT}
-        links={HEADER_LINKS}
-      >
+      <UiHeader {...HeaderProps} links={useHeaderlLinks()}>
         <ChangeLanguage langs={SUPPORTED_LANGUAGES} />
       </UiHeader>
-      <Routes>
-        <Route path={AppRoutes.Home} element={<Home />} />
-        <Route path={AppRoutes.Auth} element={<Auth />} />
-        <Route path={AppRoutes.Dashboard} element={<Dashboard />} />
-      </Routes>
+      <Suspense fallback={<UiProgressSpinner />}>{useAppRoutes()}</Suspense>
     </div>
   );
 };

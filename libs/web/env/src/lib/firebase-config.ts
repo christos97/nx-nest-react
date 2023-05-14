@@ -18,10 +18,7 @@ const config = JSON.parse(firebaseConfigString) as FirebaseOptions;
 const parsed = VITE_PUBLIC_FIREBASE_CONFIG.safeParse(config);
 
 if (parsed.success === false) {
-  console.error(
-    '❌ VITE_PUBLIC_FIREBASE_CONFIG is invalid',
-    parsed.error.flatten().fieldErrors
-  );
+  console.error('❌ VITE_PUBLIC_FIREBASE_CONFIG is invalid', parsed.error.flatten().fieldErrors);
   throw new Error('VITE_PUBLIC_FIREBASE_CONFIG is invalid');
 }
 

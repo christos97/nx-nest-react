@@ -1,14 +1,16 @@
 import { z } from './_zod';
-import {
-  VITE_PUBLIC_FIREBASE_CONFIG,
-  firebaseConfig,
-  type FirebaseOptions,
-} from './firebase-config';
+import { VITE_PUBLIC_FIREBASE_CONFIG, firebaseConfig, type FirebaseOptions } from './firebase-config';
 
 const client = z.object({
   VITE_PUBLIC_FIREBASE_CONFIG,
   VITE_PUBLIC_API: z.string().optional(),
-  VITE_PUBLIC_I18N_SERVICE_URL: z.string().url().optional(),
+  VITE_PUBLIC_I18N_SERVICE_URL: z.string().url(),
+  VITE_PUBLIC_AUTH_EMULATOR_PORT: z.string(),
+  VITE_PUBLIC_FUNCTIONS_EMULATOR_PORT: z.string(),
+  VITE_PUBLIC_FIRESTORE_EMULATOR_PORT: z.string(),
+  VITE_PUBLIC_STORAGE_EMULATOR_PORT: z.string(),
+  VITE_PUBLIC_FIREBASE_AUTH_PERSISTENCE: z.string(),
+  VITE_PUBLIC_EXTENSTIONS_EMULATOR_PORT: z.string(),
 });
 
 type ProcessEnv = z.infer<typeof client>;
@@ -17,15 +19,18 @@ const processEnv: ProcessEnv = {
   VITE_PUBLIC_FIREBASE_CONFIG: firebaseConfig as FirebaseOptions,
   VITE_PUBLIC_API: import.meta.env.VITE_PUBLIC_API,
   VITE_PUBLIC_I18N_SERVICE_URL: import.meta.env.VITE_PUBLIC_I18N_SERVICE_URL,
+  VITE_PUBLIC_AUTH_EMULATOR_PORT: import.meta.env.VITE_PUBLIC_AUTH_EMULATOR_PORT,
+  VITE_PUBLIC_FUNCTIONS_EMULATOR_PORT: import.meta.env.VITE_PUBLIC_FUNCTIONS_EMULATOR_PORT,
+  VITE_PUBLIC_FIRESTORE_EMULATOR_PORT: import.meta.env.VITE_PUBLIC_FIRESTORE_EMULATOR_PORT,
+  VITE_PUBLIC_STORAGE_EMULATOR_PORT: import.meta.env.VITE_PUBLIC_STORAGE_EMULATOR_PORT,
+  VITE_PUBLIC_FIREBASE_AUTH_PERSISTENCE: import.meta.env.VITE_PUBLIC_FIREBASE_AUTH_PERSISTENCE,
+  VITE_PUBLIC_EXTENSTIONS_EMULATOR_PORT: import.meta.env.VITE_PUBLIC_EXTENSTIONS_EMULATOR_PORT,
 };
 
 const parsed = client.safeParse(processEnv);
 
 if (parsed.success === false) {
-  console.error(
-    '❌ Invalid environment variables:',
-    parsed.error.flatten().fieldErrors
-  );
+  console.error('❌ Invalid environment variables:', parsed.error.flatten().fieldErrors);
   throw new Error('Invalid environment variables');
 }
 

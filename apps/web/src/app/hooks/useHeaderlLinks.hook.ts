@@ -1,29 +1,34 @@
+/**
+ * Dont edit this file directly
+ * @fileoverview Header links hook for the app header. Uses i18n for localization.
+ * @global apps/web/~/hooks/useHeaderlLinks.hook.ts
+ */
 import { useMemo } from 'react';
-import { AppRoutes } from '../routes';
-import { TransHolders } from '../constants/translations.constants';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useTranslation } from 'react-i18next';
 import { TRANSLATE_PREFIX } from '../constants/i18n.constants';
 import { auth } from '@ntua-saas-10/web/firebase';
+import { localizeLinks } from '../utils/localizeLinks.util';
 
-const { common } = TransHolders;
+/**
+ * Header link type
+ */
+type HeaderLink = {
+  /**
+   * Label of the link
+   * @example 'Login'
+   */
+  label: string;
 
-export const useHeaderlLinks = () => {
+  /**
+   * Path of the link
+   * @example '/login'
+   */
+  path: string;
+};
+
+export const useHeaderlLinks = (): HeaderLink[] => {
   const [user] = useAuthState(auth);
   const { t } = useTranslation('translation', TRANSLATE_PREFIX.COMMON);
-
-  const links = useMemo(() => {
-    return user
-      ? [
-          { label: t(common.home), path: AppRoutes.Home },
-          { label: t(common.logout), path: AppRoutes.Home },
-          { label: t(common.dashboard), path: AppRoutes.Dashboard },
-        ]
-      : [
-          { label: t(common.home), path: AppRoutes.Home },
-          { label: t(common.login), path: AppRoutes.Auth },
-        ];
-  }, [user, t]);
-
-  return links;
+  return useMemo(() => localizeLinks(t, !!user), [t, user]);
 };

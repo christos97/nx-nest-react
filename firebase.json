@@ -7,11 +7,7 @@
         "destination": "./dist/apps/web/index.html"
       }
     ],
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ]
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
   },
   "firestore": {
     "rules": "firestore.rules",
@@ -23,13 +19,16 @@
   "emulators": {
     "singleProjectMode": true,
     "auth": {
-      "port": 9999
+      "port": 9999,
+      "enabled": true
     },
     "functions": {
-      "port": 5001
+      "port": 5001,
+      "enabled": false
     },
     "firestore": {
-      "port": 8080
+      "port": 8080,
+      "enabled": true
     },
     "storage": {
       "port": 9199,

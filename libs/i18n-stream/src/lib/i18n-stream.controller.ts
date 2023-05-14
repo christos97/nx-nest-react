@@ -1,10 +1,4 @@
-import {
-  Controller,
-  Get,
-  Param,
-  StreamableFile,
-  UsePipes,
-} from '@nestjs/common';
+import { Controller, Get, Param, StreamableFile, UsePipes } from '@nestjs/common';
 import { I18nStreamService } from './i18n-stream.service';
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
 import { ApiCreatedResponse } from '@nestjs/swagger';

@@ -1,8 +1,4 @@
-import {
-  type App,
-  initializeApp,
-  applicationDefault,
-} from 'firebase-admin/app';
+import { type App, initializeApp, applicationDefault } from 'firebase-admin/app';
 import { type Storage, getStorage } from 'firebase-admin/storage';
 import { type Firestore, getFirestore } from 'firebase-admin/firestore';
 import { type Auth, getAuth } from 'firebase-admin/auth';
@@ -54,7 +50,14 @@ class FirebaseAdmin {
 }
 
 const admin = new FirebaseAdmin({
-  projectId: process.env.GCLOUD_PROJECT,
+  projectId: process.env.GCLOUD_PROJECT || 'DEFINE_PROJECT_ID',
 });
 
+const storage = admin.storage;
+const firestore = admin.firestore;
+const auth = admin.auth;
+
 export default admin;
+export { storage, firestore, auth };
+
+export type { Storage, Firestore, Auth };
