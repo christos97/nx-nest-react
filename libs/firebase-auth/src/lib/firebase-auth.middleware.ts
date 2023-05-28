@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable, NestMiddleware } from '@nestjs/common';
+import { HttpStatus, Injectable, Logger, NestMiddleware } from '@nestjs/common';
 
 import { auth } from '@ntua-saas-10/firebase-admin';
 
@@ -16,13 +16,14 @@ export class FirebaseAuthMiddleware implements NestMiddleware {
     const idToken = jwt.split('Bearer ')[1];
     try {
       const user = await auth.verifyIdToken(idToken);
+      console.log({ user });
       const { customClaims } = await auth.getUser(user.uid);
       req['user'] = user as DecodedIdToken;
-      user.uid;
       req['claims'] = customClaims as JwtCustomClaims;
       // if (customClaims?.role !== 'admin') return res.status(403).send({ message: 'FORBIDDEN' });
       return next();
     } catch (error) {
+      Logger.error(JSON.stringify(error), FirebaseAuthMiddleware.name);
       return res.status(HttpStatus.UNAUTHORIZED).send({ message: 'UNAUTHORIZED' });
     }
   }

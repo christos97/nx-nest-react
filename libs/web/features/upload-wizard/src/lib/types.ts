@@ -1,4 +1,3 @@
-import { ContentType } from '@ntua-saas-10/api-interfaces';
 import type { ZodRawShape, z } from 'zod';
 
 export interface UploadWizardProps<T extends ZodRawShape> {
@@ -13,12 +12,19 @@ export interface UploadWizardProps<T extends ZodRawShape> {
   schema: z.ZodObject<T>;
 
   /**
-   * The `ContentType` / `mimeType` of a file to be uploaded
+   * Key-Value pairs for the FormData append method
    */
-  mimeType: ContentType;
+  formMetadata?: Record<string, unknown>;
+}
 
+/**
+ * The `FormData` of the upload multipart form
+ */
+export interface UploadWizardFormData {
   /**
-   * The `metadata` of the file to be uploaded
+   * The `FileList` of the upload multipart form
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/FileList
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/File
    */
-  metadata: Record<string, string>;
+  file: FileList;
 }

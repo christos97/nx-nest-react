@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { type ReadStream, createReadStream } from 'fs';
 import { join } from 'path';
+
 @Injectable()
 export class I18nStreamService {
   private readonly rootPath: string;

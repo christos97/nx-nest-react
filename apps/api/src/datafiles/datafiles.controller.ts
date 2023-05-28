@@ -60,8 +60,13 @@ export class DatafilesController {
   ): Promise<UploadDatafileResponseDto> {
     const { chartType } = body;
 
-    const { fileId, newFilename } = this.filenameService.generateFileInfo(datafile.originalname, chartType);
-    await this.datafilesService.uploadToStorage(datafile, this.FILES_DEST, newFilename, { chartType });
+    const { fileId, newFilename } = this.filenameService.generateFileInfo(
+      datafile.originalname,
+      chartType,
+    );
+    await this.datafilesService.uploadToStorage(datafile, this.FILES_DEST, newFilename, {
+      chartType,
+    });
 
     return {
       statusCode: 200,

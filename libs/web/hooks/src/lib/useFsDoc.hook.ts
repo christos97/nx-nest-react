@@ -7,10 +7,10 @@ import { useDocument } from 'react-firebase-hooks/firestore';
  * @example 'users/:uid'
  * @returns  [docData, loading, error]
  */
-export const useFsDoc = <T = unknown>(path: string): [T | undefined, boolean, FirestoreError | undefined] => {
+export const useFsDoc = <T = unknown>(
+  path: string,
+): [T | undefined, boolean, FirestoreError | undefined] => {
   const [data, loading, error] = useDocument(doc(firestore, path));
-
   const docData = data?.data() as T | undefined;
-
   return [docData, loading, error];
 };

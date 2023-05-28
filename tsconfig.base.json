@@ -12,36 +12,105 @@
     "importHelpers": true,
     "target": "ES2020",
     "module": "esnext",
-    "lib": ["ES2020", "dom"],
+    "lib": [
+      "ES2020",
+      "dom"
+    ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@ntua-saas-10/api-interfaces": ["libs/api-interfaces/src/index.ts"],
-      "@ntua-saas-10/common": ["libs/common/src/index.ts"],
-      "@ntua-saas-10/database": ["libs/database/src/index.ts"],
-      "@ntua-saas-10/firebase-admin": ["libs/firebase-admin/src/index.ts"],
-      "@ntua-saas-10/firebase-admin-workspace": ["libs/firebase-admin-workspace/src/index.ts"],
-      "@ntua-saas-10/firebase-auth": ["libs/firebase-auth/src/index.ts"],
-      "@ntua-saas-10/i18n-stream": ["libs/i18n-stream/src/index.ts"],
-      "@ntua-saas-10/web/data-access": ["libs/web/data-access/src/index.ts"],
-      "@ntua-saas-10/web/env": ["libs/web/env/src/index.ts"],
-      "@ntua-saas-10/web/features/change-language": ["libs/web/features/change-language/src/index.ts"],
-      "@ntua-saas-10/web/features/hook-field": ["libs/web/features/hook-field/src/index.ts"],
-      "@ntua-saas-10/web/features/hook-form": ["libs/web/features/hook-form/src/index.ts"],
-      "@ntua-saas-10/web/features/signup": ["libs/web/features/signup/src/index.ts"],
-      "@ntua-saas-10/web/features/upload-wizard": ["libs/web/features/upload-wizard/src/index.ts"],
-      "@ntua-saas-10/web/firebase": ["libs/web/firebase/src/index.ts"],
-      "@ntua-saas-10/web/hooks": ["libs/web/hooks/src/index.ts"],
-      "@ntua-saas-10/web/ui/button": ["libs/web/ui/button/src/index.ts"],
-      "@ntua-saas-10/web/ui/card": ["libs/web/ui/card/src/index.ts"],
-      "@ntua-saas-10/web/ui/header": ["libs/web/ui/header/src/index.ts"],
-      "@ntua-saas-10/web/ui/not-found": ["libs/web/ui/not-found/src/index.ts"],
-      "@ntua-saas-10/web/ui/progress-spinner": ["libs/web/ui/progress-spinner/src/index.ts"],
-      "@ntua-saas-10/web/ui/spinner-button": ["libs/web/ui/spinner-button/src/index.ts"],
-      "@ntua-saas-10/web/ui/toolbar": ["libs/web/ui/toolbar/src/index.ts"],
-      "@ntua-saas-10/web/utils": ["libs/web/utils/src/index.ts"]
+      "@ntua-saas-10/api-interfaces": [
+        "libs/api-interfaces/src/index.ts"
+      ],
+      "@ntua-saas-10/common": [
+        "libs/common/src/index.ts"
+      ],
+      "@ntua-saas-10/database": [
+        "libs/database/src/index.ts"
+      ],
+      "@ntua-saas-10/firebase-admin": [
+        "libs/firebase-admin/src/index.ts"
+      ],
+      "@ntua-saas-10/firebase-admin-workspace": [
+        "libs/firebase-admin-workspace/src/index.ts"
+      ],
+      "@ntua-saas-10/firebase-auth": [
+        "libs/firebase-auth/src/index.ts"
+      ],
+      "@ntua-saas-10/i18n-stream": [
+        "libs/i18n-stream/src/index.ts"
+      ],
+      "@ntua-saas-10/web/data-access": [
+        "libs/web/data-access/src/index.ts"
+      ],
+      "@ntua-saas-10/web/env": [
+        "libs/web/env/src/index.ts"
+      ],
+      "@ntua-saas-10/web/features/change-language": [
+        "libs/web/features/change-language/src/index.ts"
+      ],
+      "@ntua-saas-10/web/features/hook-field": [
+        "libs/web/features/hook-field/src/index.ts"
+      ],
+      "@ntua-saas-10/web/features/hook-form": [
+        "libs/web/features/hook-form/src/index.ts"
+      ],
+      "@ntua-saas-10/web/features/signup": [
+        "libs/web/features/signup/src/index.ts"
+      ],
+      "@ntua-saas-10/web/features/upload-wizard": [
+        "libs/web/features/upload-wizard/src/index.ts"
+      ],
+      "@ntua-saas-10/web/firebase": [
+        "libs/web/firebase/src/index.ts"
+      ],
+      "@ntua-saas-10/web/hooks": [
+        "libs/web/hooks/src/index.ts"
+      ],
+      "@ntua-saas-10/web/mui-hook-forms/hook-field-controller": [
+        "libs/web/mui-hook-forms/hook-field-controller/src/index.ts"
+      ],
+      "@ntua-saas-10/web/mui-hook-forms/hook-form-container": [
+        "libs/web/mui-hook-forms/hook-form-container/src/index.ts"
+      ],
+      "@ntua-saas-10/web/mui-hook-forms/hook-form-field": [
+        "libs/web/mui-hook-forms/hook-form-field/src/index.ts"
+      ],
+      "@ntua-saas-10/web/mui-hook-forms/hook-radio-button-group": [
+        "libs/web/mui-hook-forms/hook-radio-button-group/src/index.ts"
+      ],
+      "@ntua-saas-10/web/mui-hook-forms/hook-text-field": [
+        "libs/web/mui-hook-forms/hook-text-field/src/index.ts"
+      ],
+      "@ntua-saas-10/web/ui/button": [
+        "libs/web/ui/button/src/index.ts"
+      ],
+      "@ntua-saas-10/web/ui/card": [
+        "libs/web/ui/card/src/index.ts"
+      ],
+      "@ntua-saas-10/web/ui/header": [
+        "libs/web/ui/header/src/index.ts"
+      ],
+      "@ntua-saas-10/web/ui/not-found": [
+        "libs/web/ui/not-found/src/index.ts"
+      ],
+      "@ntua-saas-10/web/ui/progress-spinner": [
+        "libs/web/ui/progress-spinner/src/index.ts"
+      ],
+      "@ntua-saas-10/web/ui/spinner-button": [
+        "libs/web/ui/spinner-button/src/index.ts"
+      ],
+      "@ntua-saas-10/web/ui/toolbar": [
+        "libs/web/ui/toolbar/src/index.ts"
+      ],
+      "@ntua-saas-10/web/utils": [
+        "libs/web/utils/src/index.ts"
+      ]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }

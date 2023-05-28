@@ -17,9 +17,9 @@ const connectEmulators = () => {
   const LOCALHOST = 'localhost';
   const FIRESTORE_EMULATOR_PORT = parseInt(env.VITE_PUBLIC_FIRESTORE_EMULATOR_PORT, 10);
   const STORAGE_EMULATOR_PORT = parseInt(env.VITE_PUBLIC_STORAGE_EMULATOR_PORT, 10);
-  connectAuthEmulator(auth, `http://${LOCALHOST}:${env.VITE_PUBLIC_AUTH_EMULATOR_PORT}`);
-  connectFirestoreEmulator(firestore, LOCALHOST, FIRESTORE_EMULATOR_PORT);
-  connectStorageEmulator(storage, LOCALHOST, STORAGE_EMULATOR_PORT);
+  // connectAuthEmulator(auth, `http://${LOCALHOST}:${env.VITE_PUBLIC_AUTH_EMULATOR_PORT}`);
+  //connectFirestoreEmulator(firestore, LOCALHOST, FIRESTORE_EMULATOR_PORT);
+  // connectStorageEmulator(storage, LOCALHOST, STORAGE_EMULATOR_PORT);
 };
 
 // Connect to the Firebase Emulator if running locally - DEV ONLY

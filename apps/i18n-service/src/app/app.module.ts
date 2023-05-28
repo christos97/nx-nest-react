@@ -1,5 +1,9 @@
 import { Module } from '@nestjs/common';
-import { I18nStreamController, I18nStreamModule, I18nStreamService } from '@ntua-saas-10/i18n-stream';
+import {
+  I18nStreamController,
+  I18nStreamModule,
+  I18nStreamService,
+} from '@ntua-saas-10/i18n-stream';
 import { join } from 'path';
 
 @Module({

@@ -31,20 +31,21 @@ export const useReactMutation = <T = unknown, K = unknown>(
     url,
     method,
     baseURL: baseURL ? baseURL : BASE_URL,
-    headers: Object.keys(headers ?? {}).length > 0 ? headers : DEFAULT_HEADERS,
+    headers:
+      Object.keys(headers ?? {}).length > 0 ? { ...DEFAULT_HEADERS, ...headers } : DEFAULT_HEADERS,
   };
-  const { mutate, isLoading, isError, error, isSuccess, data } = useMutation<K, Error, T, unknown>(async (data: T) => {
-    console.log('IMHERE', { data });
-    try {
-      const res: ApiResponse<K> = await axios.request<K>({
-        ...requestConfig,
-        data: method !== 'DELETE' && data ? data : undefined,
-      });
-      console.log({ res });
-      return res?.data;
-    } catch (error) {
-      throw new Error(JSON.stringify(error));
-    }
-  });
+  const { mutate, isLoading, isError, error, isSuccess, data } = useMutation<K, Error, T, unknown>(
+    async (data: T) => {
+      try {
+        const res: ApiResponse<K> = await axios.request<K>({
+          ...requestConfig,
+          data: method !== 'DELETE' && data ? data : undefined,
+        });
+        return res?.data;
+      } catch (error) {
+        throw new Error(JSON.stringify(error));
+      }
+    },
+  );
   return { mutate, isLoading, isError, error, isSuccess, data };
 };

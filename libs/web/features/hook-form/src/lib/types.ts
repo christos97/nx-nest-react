@@ -5,8 +5,7 @@ import type { ZodRawShape, z } from 'zod';
 
 export interface HookFormProps<T extends ZodRawShape> {
   /**
-   * @example HookField
-   * @example UiButton
+   * `HookField` or `UiButton`
    */
   children?: React.ReactNode;
 

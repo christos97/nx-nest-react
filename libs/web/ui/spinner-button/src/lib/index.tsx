@@ -6,8 +6,17 @@ import type { SpinnerButtonProps } from './types';
 
 type ButtonColorState = 'primary' | 'success' | 'inherit';
 
-const getButtonState = (isLoading: boolean, isDone: boolean, isDisabled: boolean, children: React.ReactNode) => {
-  const buttonColor: ButtonColorState = isDone ? 'success' : isLoading || isDisabled ? 'inherit' : 'primary';
+const getButtonState = (
+  isLoading: boolean,
+  isDone: boolean,
+  isDisabled: boolean,
+  children: React.ReactNode,
+) => {
+  const buttonColor: ButtonColorState = isDone
+    ? 'success'
+    : isLoading || isDisabled
+    ? 'inherit'
+    : 'primary';
 
   const buttonContent: React.ReactNode = isDone ? (
     <>
@@ -24,10 +33,20 @@ const getButtonState = (isLoading: boolean, isDone: boolean, isDisabled: boolean
 };
 
 const SpinnerButton: React.FC<SpinnerButtonProps> = ({ isLoading, isDone, ...props }) => {
-  const { buttonColor, buttonContent } = getButtonState(isLoading, isDone, !!props.disabled, props.children);
+  const { buttonColor, buttonContent } = getButtonState(
+    isLoading,
+    isDone,
+    !!props.disabled,
+    props.children,
+  );
   const neutralize = isLoading || !!props.disabled;
   return (
-    <UiButton {...props} color={buttonColor} variant={neutralize ? 'text' : 'contained'} disabled={neutralize}>
+    <UiButton
+      {...props}
+      color={buttonColor}
+      variant={neutralize ? 'text' : 'contained'}
+      disabled={neutralize}
+    >
       {buttonContent}
     </UiButton>
   );

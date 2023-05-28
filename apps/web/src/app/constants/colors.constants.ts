@@ -10,5 +10,5 @@ const { purple } = MuiColors;
 
 export const colors = {
   primary: purple[500],
-  secondary: purple[100],
+  secondary: purple[200],
 } as const;

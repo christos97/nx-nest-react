@@ -1,22 +1,23 @@
 import type { TFunction } from 'i18next';
-import { TransHolders } from '../constants/translations.constants';
 import { AppRoutes } from '../routes';
+import { Consts, HeaderLink } from '@ntua-saas-10/api-interfaces';
 
 const {
   common: { home, login, logout, dashboard },
-} = TransHolders;
+} = Consts.TranslationKeys;
 const { Home, Auth, Dashboard } = AppRoutes;
 
-export const localizeLinks = (t: TFunction, isLoggedIn: boolean) => {
-  const loggedIn = (t: TFunction) => [
-    { label: t(home), path: Home.path },
-    { label: t(logout), path: Home.path },
-    { label: t(dashboard), path: Dashboard.path },
-  ];
+const createLink = (label: string, path: string) => ({ label, path });
 
+export const localizeLinks = (t: TFunction, isLoggedIn: boolean): HeaderLink[] => {
+  const loggedIn = (t: TFunction) => [
+    createLink(t(home), Home.path),
+    createLink(t(dashboard), Dashboard.path),
+    createLink(t(logout), Home.path),
+  ];
   const anonymous = (t: TFunction) => [
-    { label: t(home), path: Home.path },
-    { label: t(login), path: Auth.path },
+    createLink(t(home), Home.path),
+    createLink(t(login), Auth.path),
   ];
   return isLoggedIn ? loggedIn(t) : anonymous(t);
 };

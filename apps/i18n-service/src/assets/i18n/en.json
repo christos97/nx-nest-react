@@ -3,14 +3,30 @@
     "home": "Home",
     "login": "Login",
     "logout": "Logout",
-    "dashboard": "Dashboard"
+    "dashboard": "Dashboard",
+    "or": "or"
   },
   "auth": {
+    "or": "or",
     "hero1": "Login",
-    "description": "Description auth"
+    "description": "Auth description",
+    "email": "Email",
+    "password": "Password",
+    "passwordRepeat": "Repeat Password",
+    "signUpWithEmail": "SIGN UP WITH EMAIL",
+    "signUpWithGoogle": "Continue with Google",
+    "errors": {
+      "signUpFailed": "Sign-up failed",
+      "emailAlreadyInUse": "The email is already in use",
+      "invalidEmail": "The email is not valid",
+      "weakPassword": "The password is weak",
+      "minPasswordLength": "The password must be at least {{length}} characters",
+      "maxPasswordLength": "The password must be at most {{length}} characters",
+      "passwordsDontMatch": "Passwords don't match"
+    }
   },
   "home": {
     "hero1": "Home",
-    "description": "Description home"
+    "description": "Home description"
   }
 }

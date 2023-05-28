@@ -7,7 +7,7 @@ interface UploadFileSchemaOptions {
    */
   allowedTypes: ContentType[];
   /**
-   * The maximum size of the file in bytes.
+   * The maximum `size` of the file in bytes.
    * @example 5MB = 5 * 1024 * 1024 = 5242880
    */
   maxSize: number;
@@ -22,15 +22,13 @@ interface UploadFileSchemaOptions {
 const createUploadFileSchema = ({ allowedTypes, maxSize }: UploadFileSchemaOptions) => {
   const types = [...new Set(allowedTypes)];
   const schema = z.object({
-    file: z
-      .object({
-        name: z.string().min(1),
-        type: z.string().refine((type) => types.toString().includes(type), {
-          message: `Only ${types.toString()} files are allowed`,
-        }),
-        size: z.number().max(maxSize, { message: `File size must be less than ${maxSize / 1024 / 1024}MB` }),
-      })
-      .optional(),
+    name: z.string().min(1),
+    type: z.string().refine((type) => types.toString().includes(type), {
+      message: `Only ${types.toString().replace(',', ' | ')} files are allowed`,
+    }),
+    size: z
+      .number()
+      .max(maxSize, { message: `File size must be less than ${maxSize / 1024 / 1024}MB` }),
   });
   return schema;
 };

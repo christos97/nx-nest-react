@@ -3,11 +3,27 @@
     "home": "Αρχική",
     "login": "Σύνδεση",
     "logout": "Αποσύνδεση",
-    "dashboard": "Πίνακας Ελέγχου"
+    "dashboard": "Πίνακας Ελέγχου",
+    "or": "ή"
   },
   "auth": {
+    "or": "ή",
     "hero1": "Σύνδεση",
-    "description": "Περιγραφή auth"
+    "description": "Περιγραφή auth",
+    "email": "Email",
+    "password": "Κωδικός",
+    "passwordRepeat": "Επανάληψη Κωδικού",
+    "signUpWithEmail": "ΕΓΓΡΑΦΗ ΜΕ EMAIL",
+    "signUpWithGoogle": "ΣΥΝΔΕΣΗ ΜΕ Google",
+    "errors": {
+      "signUpFailed": "Η εγγραφή απέτυχε",
+      "emailAlreadyInUse": "Το email είναι ήδη σε χρήση",
+      "invalidEmail": "Το email δεν είναι έγκυρο",
+      "weakPassword": "Ο κωδικός είναι αδύναμος",
+      "minPasswordLength": "Ο κωδικός πρέπει να είναι τουλάχιστον {{length}} χαρακτήρες",
+      "maxPasswordLength": "Ο κωδικός πρέπει να είναι το πολύ {{length}} χαρακτήρες",
+      "passwordsDontMatch": "Οι κωδικοί δεν ταιριάζουν"
+    }
   },
   "home": {
     "hero1": "Αρχική",

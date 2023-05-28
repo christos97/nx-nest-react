@@ -10,6 +10,10 @@ export const LOGO_SRC =
 export const LOGO_ALT = 'My Charts Logo';
 export const LOGO_WIDTH = 45;
 export const LOGO_HEIGHT = 45;
+
+/**
+ * @constant `HeaderProps`
+ */
 export const HeaderProps = {
   brand: APP_TITLE,
   src: LOGO_SRC,
@@ -17,3 +21,8 @@ export const HeaderProps = {
   width: LOGO_WIDTH,
   height: LOGO_HEIGHT,
 };
+/**
+ * @constant `MAX_FILE_SIZE_MB`
+ * @example 5 * 1024 * 1024 = 5242880 bytes = 5MB
+ */
+export const MAX_FILE_SIZE = 5 * 1024 * 1024;

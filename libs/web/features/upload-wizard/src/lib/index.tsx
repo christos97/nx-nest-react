@@ -1,40 +1,38 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { useAxios } from '@ntua-saas-10/web/hooks';
-import { ContentType } from './constants';
-import { UploadWizardProps } from './types';
-import { ZodRawShape } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { UiButton } from '@ntua-saas-10/web/ui/button';
 
-type FormData = {
-  file: FileList;
-};
+import type { UploadWizardFormData, UploadWizardProps } from './types';
+import type { ZodRawShape } from 'zod';
+import { HookField } from '@ntua-saas-10/web/features/hook-field';
 
 /**
  * `UploadWizard` Web feature
  * @global `@ntua-saas-10/web/features/upload-wizard`
  */
-const UploadWizard: React.FC<UploadWizardProps<ZodRawShape>> = ({ path, schema, mimeType, metadata }) => {
-  const [axios] = useAxios({});
+const UploadWizard: React.FC<UploadWizardProps<ZodRawShape>> = ({ path, schema }) => {
+  const [axios] = useAxios({
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({
-    mode: 'onChange',
-    resolver: zodResolver(schema),
-  });
+  } = useFormContext<UploadWizardFormData>();
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: UploadWizardFormData) => {
     const formData = new FormData();
-    formData.append('file', data.file[0]);
+    formData.append('datafile', data.file[0]);
+    formData.append('chartType', 'bar');
+    const parsed = schema.safeParse(data.file[0]);
+    if (!parsed.success) {
+      const errors = parsed.error.flatten().fieldErrors;
+      throw new Error(JSON.stringify(errors));
+    }
     try {
-      const response = await axios.post(path, formData, {
-        headers: {
-          'Content-Type': ContentType.multipart_form_data,
-        },
-      });
+      const response = await axios.post(path, formData);
       console.log(response);
     } catch (error) {
       console.error(error);
@@ -43,9 +41,10 @@ const UploadWizard: React.FC<UploadWizardProps<ZodRawShape>> = ({ path, schema, 
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <input type="file" {...register('file', { required: 'Please select a file' })} />
-      {errors.file && <p className="error">{errors.file.message}</p>}
-      <UiButton type="submit">Submit</UiButton>
+      <input type="file" {...register('file', { required: 'File is required' })} />
+      {errors.file && <p className="error">{errors.file.message} HERE</p>}
+      <HookField type="radio" name="chartType" required />
+      <UiButton type="submit">Upload File</UiButton>
     </form>
   );
 };

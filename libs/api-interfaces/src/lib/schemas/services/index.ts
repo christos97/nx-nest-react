@@ -14,6 +14,17 @@ export const ServicesSchemas = {
         .object({
           hero1: z.string(),
           description: z.string(),
+          errors: z
+            .object({
+              signUpFailed: z.string(),
+              emailInUse: z.string(),
+              invalidEmail: z.string(),
+              weakPassword: z.string(),
+              minPasswordLength: z.string(),
+              maxPasswordLength: z.string(),
+              passwordsDontMatch: z.string(),
+            })
+            .strict(),
         })
         .strict(),
       home: z

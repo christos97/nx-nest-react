@@ -1,5 +1,9 @@
 import { z } from './_zod';
-import { VITE_PUBLIC_FIREBASE_CONFIG, firebaseConfig, type FirebaseOptions } from './firebase-config';
+import {
+  VITE_PUBLIC_FIREBASE_CONFIG,
+  firebaseConfig,
+  type FirebaseOptions,
+} from './firebase-config';
 
 const client = z.object({
   VITE_PUBLIC_FIREBASE_CONFIG,

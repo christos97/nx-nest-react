@@ -8,6 +8,6 @@ import { DatafilesController } from '../datafiles/datafiles.controller';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(FirebaseAuthMiddleware).forRoutes(DatafilesController);
+    //  consumer.apply(FirebaseAuthMiddleware).forRoutes(DatafilesController);
   }
 }

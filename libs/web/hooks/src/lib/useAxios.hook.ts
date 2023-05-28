@@ -3,16 +3,21 @@ import { useEffect } from 'react';
 import { useJwt } from './useJwt.hook';
 import { BASE_URL, DEFAULT_HEADERS } from './constants';
 
-export const useAxios = ({ baseURL = BASE_URL, headers = {}, timeout = 15000 }: AxiosRequestConfig) => {
+export const useAxios = ({
+  baseURL = BASE_URL,
+  headers = {},
+  timeout = 15000,
+}: AxiosRequestConfig) => {
   const [jwtToken] = useJwt();
-  const axiosInstance = axios.create({
+  const config = {
     timeout,
     baseURL,
     headers: {
       ...DEFAULT_HEADERS,
       ...headers,
     },
-  });
+  };
+  const axiosInstance = axios.create(config);
 
   useEffect(() => {
     const interceptor = axiosInstance.interceptors.request.use((config) => {

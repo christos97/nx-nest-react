@@ -9,23 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { TRANSLATE_PREFIX } from '../constants/i18n.constants';
 import { auth } from '@ntua-saas-10/web/firebase';
 import { localizeLinks } from '../utils/localizeLinks.util';
-
-/**
- * Header link type
- */
-type HeaderLink = {
-  /**
-   * Label of the link
-   * @example 'Login'
-   */
-  label: string;
-
-  /**
-   * Path of the link
-   * @example '/login'
-   */
-  path: string;
-};
+import type { HeaderLink } from '@ntua-saas-10/api-interfaces';
 
 export const useHeaderlLinks = (): HeaderLink[] => {
   const [user] = useAuthState(auth);

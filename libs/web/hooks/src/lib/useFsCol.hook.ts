@@ -7,7 +7,9 @@ import { useCollection } from 'react-firebase-hooks/firestore';
  * @example 'users'
  * @returns  [collectionData, loading, error]
  */
-export const useFsCol = <T = unknown>(path: string): [T[] | undefined, boolean, FirestoreError | undefined] => {
+export const useFsCol = <T = unknown>(
+  path: string,
+): [T[] | undefined, boolean, FirestoreError | undefined] => {
   const [data, loading, error] = useCollection(collection(firestore, path));
 
   const collectionData = data?.docs?.map((doc) => ({
