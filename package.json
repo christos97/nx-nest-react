@@ -1,6 +1,6 @@
 {
   "name": "ntua-saas-10",
-  "version": "0.0.21",
+  "version": "0.0.22",
   "dependencies": {
     "@anatine/zod-nestjs": "^1.10.0",
     "@anatine/zod-openapi": "^1.14.0",
