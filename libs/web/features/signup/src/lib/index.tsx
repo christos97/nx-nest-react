@@ -51,7 +51,7 @@ const SignUp: React.FC<SignUpProps> = ({ t }) => {
 
   const [fields, defaultValues] = useMemo(() => {
     const { fields, defaultValues } = formSpec || {};
-    console.log({ fields, defaultValues});
+    console.log({ fields, defaultValues });
     return [fields, defaultValues];
   }, [formSpec]);
 
@@ -97,12 +97,13 @@ const SignUp: React.FC<SignUpProps> = ({ t }) => {
 
   const SignUpForm = ({ fields, defaultValues }: SignUpFormSpecs) => {
     return (
-      <FormContainer
-        onSuccess={signUpWithEmail}
-        formContext={ctx}
-      >
+      <FormContainer onSuccess={signUpWithEmail} formContext={ctx}>
         <Stack spacing={3}>
-          <TextFieldElement {...fields.email} label={t(fields.email.name)} defaultValue={fields.email.defaultValue}/>
+          <TextFieldElement
+            {...fields.email}
+            label={t(fields.email.name)}
+            defaultValue={fields.email.defaultValue}
+          />
           <TextFieldElement {...fields.password} label={t(fields.password.name)} />
           <TextFieldElement {...fields.passwordRepeat} label={t(fields.passwordRepeat.name)} />
           <UiSpinnerButton

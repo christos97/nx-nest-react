@@ -4,6 +4,8 @@
 dist/
 tmp
 /out-tsc
+.swc
+.firebase
 
 # dependencies
 node_modules/
@@ -18,7 +20,7 @@ node_modules/
 *.sublime-workspace
 
 # IDE - VSCode
-.vscode/*
+.vscode
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
@@ -35,3 +37,5 @@ Thumbs.db
 
 # google service account
 libs/firebase-admin/**/*-firebase-adminsdk-*.json
+
+.env.local
