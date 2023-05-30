@@ -131,7 +131,7 @@
     "concurrently": "concurrently",
     "format": "nx format --all",
     "kill": "./killPorts.sh",
-    "nx:serve": "nx run-many --targets=serve --all",
+    "nx:serve": "nx run-many --targets=serve --all --parallel=5",
     "start": "concurrently \"pnpm nx:serve\" \"pnpm --filter=functions serve\""
   }
 }
