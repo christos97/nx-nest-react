@@ -11,34 +11,28 @@ import {
   MaxFileSizeValidator,
   FileTypeValidator,
   UsePipes,
+  Req,
 } from '@nestjs/common';
 import { DatafilesService } from './datafiles.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiConsumes } from '@nestjs/swagger';
 
-import { UploadDatafileRequestDto, UploadDatafileResponseDto } from '@ntua-saas-10/api-interfaces';
+import { AuthRequest, UploadDatafileRequestDto, UploadDatafileResponseDto } from '@ntua-saas-10/api-interfaces';
 import { FileTypes, MAX_FILE_SIZE_KB } from './datafiles.constants';
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
 import { FilenameService } from '@ntua-saas-10/common';
 import { ConfigService } from '@nestjs/config';
 
-interface EnvironmentVariables {
-  STORAGE_BASE_URL: string;
-  FILES_DEST: string;
-}
-
 @Controller('datafiles')
 export class DatafilesController {
   private readonly logger = new Logger(DatafilesController.name);
-  private readonly STORAGE_BASE_URL: string;
   private readonly FILES_DEST: string;
 
   constructor(
     private readonly datafilesService: DatafilesService,
     private readonly filenameService: FilenameService,
-    private readonly configService: ConfigService<EnvironmentVariables>,
+    private readonly configService: ConfigService,
   ) {
-    this.STORAGE_BASE_URL = this.configService.getOrThrow('STORAGE_BASE_URL');
     this.FILES_DEST = this.configService.getOrThrow('FILES_DEST');
   }
 
@@ -57,14 +51,12 @@ export class DatafilesController {
     )
     datafile: Express.Multer.File,
     @Body() body: UploadDatafileRequestDto,
+    @Req() req: AuthRequest,
   ): Promise<UploadDatafileResponseDto> {
     const { chartType } = body;
 
-    const { fileId, newFilename } = this.filenameService.generateFileInfo(
-      datafile.originalname,
-      chartType,
-    );
-    await this.datafilesService.uploadToStorage(datafile, this.FILES_DEST, newFilename, {
+    const { newFilename } = this.filenameService.generateFileInfo(datafile.originalname, chartType);
+    const uploadMetadata = await this.datafilesService.uploadToStorage(datafile, this.FILES_DEST, newFilename, {
       chartType,
     });
 
@@ -72,12 +64,13 @@ export class DatafilesController {
       statusCode: 200,
       message: 'Datafile uploaded successfully',
       file: {
-        id: fileId,
-        name: newFilename,
-        url: `${this.STORAGE_BASE_URL}/${this.FILES_DEST}/${newFilename}`,
+        id: uploadMetadata.id,
+        uid: req.user?.uid ?? '',
+        name: uploadMetadata.name,
+        url: uploadMetadata.mediaLink,
         meta: {
           chartType: chartType,
-          createdAt: new Date(),
+          createdAt: uploadMetadata.timeCreated,
         },
       },
     };

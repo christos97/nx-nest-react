@@ -2,7 +2,6 @@ import { type App, initializeApp, applicationDefault } from 'firebase-admin/app'
 import { type Storage, getStorage } from 'firebase-admin/storage';
 import { type Firestore, getFirestore } from 'firebase-admin/firestore';
 import { type Auth, getAuth } from 'firebase-admin/auth';
-
 interface FirebaseAdminConstructorConfig {
   projectId: string;
 }
@@ -24,7 +23,6 @@ class FirebaseAdmin {
       FirebaseAdmin.storage = getStorage(app);
       FirebaseAdmin.firestore = getFirestore(app);
       FirebaseAdmin.auth = getAuth(app);
-      FirebaseAdmin.projectId = projectId;
     }
   }
 

@@ -12,8 +12,4 @@ export class FilenameService {
     const newFilename = `${originalFilename}__${fileId}__${chartType}.${fileExtension}`;
     return { fileId, newFilename };
   }
-
-  generateFilenameSuffix() {
-    return `__${randomUUID()}__test`;
-  }
 }

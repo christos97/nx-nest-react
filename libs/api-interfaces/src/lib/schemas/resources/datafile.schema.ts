@@ -22,6 +22,7 @@ export const UploadDatafileResponseSchema = z.object({
   message: z.string(),
   file: z.object({
     id: z.string(),
+    uid: z.string(),
     name: z.string(),
     url: z.string().url(),
     meta: z.object({
