@@ -32,7 +32,7 @@
     },
     "functions": {
       "port": 5001,
-      "enabled": false
+      "enabled": true
     },
     "firestore": {
       "port": 8080,

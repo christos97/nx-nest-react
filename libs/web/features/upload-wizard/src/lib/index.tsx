@@ -4,7 +4,6 @@ import { UiButton } from '@ntua-saas-10/web/ui/button';
 
 import type { UploadWizardFormData, UploadWizardProps } from './types';
 import type { ZodRawShape } from 'zod';
-import { HookField } from '@ntua-saas-10/web/features/hook-field';
 
 /**
  * `UploadWizard` Web feature
@@ -43,7 +42,6 @@ const UploadWizard: React.FC<UploadWizardProps<ZodRawShape>> = ({ path, schema }
     <form onSubmit={handleSubmit(onSubmit)}>
       <input type="file" {...register('file', { required: 'File is required' })} />
       {errors.file && <p className="error">{errors.file.message} HERE</p>}
-      <HookField type="radio" name="chartType" required />
       <UiButton type="submit">Upload File</UiButton>
     </form>
   );
