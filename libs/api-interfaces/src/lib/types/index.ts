@@ -11,3 +11,4 @@ export * from './HeaderLink.type';
 export * from './HookFieldProps.type';
 export * from './I18nTranslationKeys.type';
 export * from './FieldSpec.type';
+export * from './ChartData.types';

@@ -1,8 +1,16 @@
 import { z } from 'zod';
+
 /**
  * @enum `ChartTypeSchema` ZodSchema
  */
-export const ChartTypeSchema = z.enum(['bar', 'multi-axis', 'pie']);
+export const ChartTypeSchema = z.enum([
+  'line',
+  'multiAxisLine',
+  'radar',
+  'scatter',
+  'bubble',
+  'polarArea',
+]);
 
 /**
  * @constant `UploadDatafileRequestSchema` ZodSchema
@@ -32,8 +40,17 @@ export const UploadDatafileResponseSchema = z.object({
   }),
 });
 
+/**
+ * @constant `ValidateDatafileRequest` ZodSchema
+ */
+export const ValidateDatafileRequestSchema = z.object({
+  object: z.object({ name: z.string(), metadata: z.object({ chartType: ChartTypeSchema }) }),
+  context: z.object({}),
+});
+
 export default {
   ChartTypeSchema,
   UploadDatafileRequestSchema,
   UploadDatafileResponseSchema,
+  ValidateDatafileRequestSchema,
 };

@@ -1,13 +1,9 @@
-import { Module, OnModuleInit } from '@nestjs/common';
-import { AppController } from './app.controller';
+import { Module } from '@nestjs/common';
+import { ValidationModule } from '@ntua-saas-10/nest-resources/validation';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
+  imports: [ValidationModule],
+  controllers: [],
   providers: [],
 })
-export class AppModule implements OnModuleInit {
-  onModuleInit(): any {
-    console.log('init');
-  }
-}
+export class AppModule {}

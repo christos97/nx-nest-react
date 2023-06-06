@@ -24,7 +24,7 @@ const UploadWizard: React.FC<UploadWizardProps<ZodRawShape>> = ({ path, schema }
   const onSubmit = async (data: UploadWizardFormData) => {
     const formData = new FormData();
     formData.append('datafile', data.file[0]);
-    formData.append('chartType', 'bar');
+    formData.append('chartType', 'bubble');
     const parsed = schema.safeParse(data.file[0]);
     if (!parsed.success) {
       const errors = parsed.error.flatten().fieldErrors;
