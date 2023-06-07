@@ -1,9 +1,11 @@
 import { useFormContext } from 'react-hook-form';
+
 import { useAxios } from '@ntua-saas-10/web/hooks';
+import { UiSpinnerButton } from '@ntua-saas-10/web/ui/spinner-button';
+import { ChartType } from '@ntua-saas-10/shared-consts';
 
 import type { UploadWizardFormData, UploadWizardProps } from './types';
 import type { ZodRawShape } from 'zod';
-import { UiSpinnerButton } from '@ntua-saas-10/web/ui/spinner-button';
 
 /**
  * `UploadWizard` Web feature
@@ -33,7 +35,7 @@ const UploadWizard: React.FC<UploadWizardProps<ZodRawShape>> = ({ path, schema }
     }
 
     formData.append('datafile', file);
-    formData.append('chartType', 'line');
+    formData.append('chartType', ChartType.line);
 
     const parsed = schema.safeParse(data.file[0]);
     if (!parsed.success) {

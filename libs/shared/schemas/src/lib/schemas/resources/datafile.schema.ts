@@ -1,16 +1,10 @@
 import { z } from 'zod';
+import { ChartType } from '@ntua-saas-10/shared-consts';
 
 /**
  * @enum `ChartTypeSchema` ZodSchema
  */
-export const ChartTypeSchema = z.enum([
-  'line',
-  'multiAxisLine',
-  'radar',
-  'scatter',
-  'bubble',
-  'polarArea',
-]);
+export const ChartTypeSchema = z.nativeEnum(ChartType);
 
 /**
  * @constant `UploadDatafileRequestSchema` ZodSchema

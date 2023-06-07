@@ -39,8 +39,17 @@
       "@ntua-saas-10/server-firebase-admin": [
         "libs/server/firebase-admin/src/index.ts"
       ],
+      "@ntua-saas-10/server/nest/chart-config": [
+        "libs/server/nest/chart-config/src/index.ts"
+      ],
       "@ntua-saas-10/server/nest/database": [
         "libs/server/nest/database/src/index.ts"
+      ],
+      "@ntua-saas-10/server/nest/datafiles": [
+        "libs/server/nest/datafiles/src/index.ts"
+      ],
+      "@ntua-saas-10/server/nest/filename": [
+        "libs/server/nest/filename/src/index.ts"
       ],
       "@ntua-saas-10/server/nest/firebase-auth-middleware": [
         "libs/server/nest/firebase-auth-middleware/src/index.ts"
@@ -48,20 +57,11 @@
       "@ntua-saas-10/server/nest/i18n-stream": [
         "libs/server/nest/i18n-stream/src/index.ts"
       ],
-      "@ntua-saas-10/server/nest/resources/datafiles": [
-        "libs/server/nest/resources/datafiles/src/index.ts"
-      ],
-      "@ntua-saas-10/server/nest/services/chart-config": [
-        "libs/server/nest/services/chart-config/src/index.ts"
-      ],
-      "@ntua-saas-10/server/nest/services/filename": [
-        "libs/server/nest/services/filename/src/index.ts"
-      ],
-      "@ntua-saas-10/server/nest/services/validation": [
-        "libs/server/nest/services/validation/src/index.ts"
-      ],
       "@ntua-saas-10/server/nest/utils": [
         "libs/server/nest/utils/src/index.ts"
+      ],
+      "@ntua-saas-10/server/nest/validation": [
+        "libs/server/nest/validation/src/index.ts"
       ],
       "@ntua-saas-10/shared-api-interfaces": [
         "libs/shared/api-interfaces/src/index.ts"
