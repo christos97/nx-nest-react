@@ -1,4 +1,8 @@
 {
+  "firestore": {
+    "rules": "apps/functions/firestore.rules",
+    "indexes": "apps/functions/firestore.indexes.json"
+  },
   "hosting": {
     "public": "./dist/apps/web",
     "rewrites": [
@@ -9,44 +13,31 @@
     ],
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
   },
-  "functions": [
-    {
-      "source": "functions",
-      "codebase": "default",
-      "ignore": ["node_modules", ".git", "firebase-debug.log", "firebase-debug.*.log"],
-      "predeploy": ["npm --prefix \"$RESOURCE_DIR\" run build"]
-    }
-  ],
-  "firestore": {
-    "rules": "firestore.rules",
-    "indexes": "firestore.indexes.json"
-  },
   "storage": {
-    "rules": "storage.rules"
+    "rules": "apps/functions/storage.rules"
+  },
+  "functions": {
+    "codebase": "default",
+    "predeploy": ["npx nx build functions"],
+    "runtime": "nodejs16",
+    "source": "dist/apps/functions"
   },
   "emulators": {
-    "singleProjectMode": true,
     "auth": {
-      "port": 9999,
-      "enabled": true
+      "port": 9999
     },
     "functions": {
-      "port": 5001,
-      "enabled": true
+      "port": 5001
     },
     "firestore": {
-      "port": 8080,
-      "enabled": true
+      "port": 8080
     },
     "storage": {
-      "port": 9199,
-      "enabled": true
+      "port": 9199
     },
     "ui": {
       "enabled": true
-    }
-  },
-  "extensions": {
-    "storage-resize-images": "firebase/storage-resize-images@0.1.36"
+    },
+    "singleProjectMode": true
   }
 }

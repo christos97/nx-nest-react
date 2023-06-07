@@ -1,13 +1,13 @@
-import { ApiLookup, createUploadFileSchema } from '@ntua-saas-10/api-interfaces';
 import { UploadWizard } from '@ntua-saas-10/web/features/upload-wizard';
 import { UiCard } from '@ntua-saas-10/web/ui/card';
-import { UiToolbar } from '@ntua-saas-10/web/ui/toolbar';
 import { FormProvider, useForm } from 'react-hook-form';
 import { MAX_FILE_SIZE } from '../../constants/app.constants';
+import { Utils } from '@ntua-saas-10/shared-utils';
+import { Resources } from '@ntua-saas-10/shared-api-interfaces';
 
 const UploadWizardProps = {
-  path: ApiLookup.services.upload.path,
-  schema: createUploadFileSchema({
+  path: Resources.datafiles.create.path,
+  schema: Utils.createUploadFileSchema({
     allowedTypes: ['text/csv'],
     maxSize: MAX_FILE_SIZE,
   }),
@@ -16,7 +16,7 @@ const UploadWizardProps = {
 const Dashboard: React.FC = () => {
   return (
     <div>
-      <UiToolbar>Dashboard</UiToolbar>
+      {/* <UiToolbar>Dashboard</UiToolbar> */}
       <main>
         <UiCard>
           <FormProvider {...useForm()}>

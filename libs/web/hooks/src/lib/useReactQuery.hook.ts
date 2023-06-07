@@ -11,7 +11,7 @@ type ApiResponse<T> = AxiosResponse<T>;
  * @returns isLoading, error, data
  */
 export const useReactQuery = <T>(key: QueryKey, url: string, config?: AxiosRequestConfig) => {
-  const [axios] = useAxios(config ?? {});
+  const axios = useAxios(config ?? {});
   const { isLoading, error, data } = useQuery<T, Error>(key, async () => {
     const res: ApiResponse<T> = await axios.get<T>(url);
     return res?.data as T;

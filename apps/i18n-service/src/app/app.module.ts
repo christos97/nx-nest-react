@@ -3,7 +3,7 @@ import {
   I18nStreamController,
   I18nStreamModule,
   I18nStreamService,
-} from '@ntua-saas-10/nest-resources/i18n-stream';
+} from '@ntua-saas-10/server/nest/i18n-stream';
 import { join } from 'path';
 
 @Module({

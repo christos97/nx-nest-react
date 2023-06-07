@@ -1,8 +1,9 @@
-import type { HeaderLink } from '@ntua-saas-10/api-interfaces';
-
 export interface UiHeaderProps {
   children?: React.ReactNode;
-  links: HeaderLink[];
+  links: {
+    label: string;
+    path: string;
+  }[];
   brand: string;
   src: string;
   alt: string;

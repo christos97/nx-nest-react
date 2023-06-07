@@ -1,5 +1,5 @@
-import { ResourcesSchemas as resources } from '@ntua-saas-10/api-interfaces';
+import { Schemas } from '@ntua-saas-10/shared-schemas';
 
 export const ResourcesSchemas = {
-  ...resources,
+  ...Schemas.ResourcesSchemas,
 };

@@ -1,33 +1,31 @@
 import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import type { FirebaseError } from 'firebase/app';
-import { UiButton } from '@ntua-saas-10/web/ui/button';
-import { auth } from '@ntua-saas-10/web/firebase';
-import { HookFormContainer } from '@ntua-saas-10/web/mui-hook-forms/hook-form-container';
-import { HookTextField } from '@ntua-saas-10/web/mui-hook-forms/hook-text-field';
-import { UiCard } from '@ntua-saas-10/web/ui/card';
-import { useEffect, useMemo, useRef, useState } from 'react';
-
-import { withTranslation } from 'react-i18next';
-import type { TFunction } from 'i18next';
-
-import styled from '@emotion/styled';
-import hoistStatics from 'hoist-non-react-statics';
-
-import { TRANSLATION_KEY_PREFIX } from './constants';
+import { useMemo } from 'react';
+import { FormContainer, TextFieldElement, useForm } from 'react-hook-form-mui';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Divider, Stack, colors } from '@mui/material';
+import { withTranslation } from 'react-i18next';
+import type { TFunction } from 'i18next';
+import type { FirebaseError } from 'firebase/app';
+
+import { UiCard } from '@ntua-saas-10/web/ui/card';
+import { UiButton } from '@ntua-saas-10/web/ui/button';
+import { UiProgressSpinner } from '@ntua-saas-10/web/ui/progress-spinner';
+import { UiSpinnerButton } from '@ntua-saas-10/web/ui/spinner-button';
+import { TranslationKeys } from '@ntua-saas-10/shared-consts';
+import { auth } from '@ntua-saas-10/web/firebase';
 import { useFsDoc } from '@ntua-saas-10/web/hooks';
+
+import { TRANSLATION_KEY_PREFIX } from './constants';
 import {
   type SignUpFormData,
   type SignUpFormSpecs,
   getPasswordSchema,
   getSignUpFormSchema,
 } from './schema';
-import { UiProgressSpinner } from '@ntua-saas-10/web/ui/progress-spinner';
-import { UiSpinnerButton } from '@ntua-saas-10/web/ui/spinner-button';
-import { Consts } from '@ntua-saas-10/api-interfaces';
 import { getErrorMessages } from './utils';
-import { FormContainer, TextFieldElement, useForm } from 'react-hook-form-mui';
+
+import styled from '@emotion/styled';
+import hoistStatics from 'hoist-non-react-statics';
 
 interface SignUpProps {
   t: TFunction;
@@ -79,7 +77,7 @@ const SignUp: React.FC<SignUpProps> = ({ t }) => {
   };
 
   const onError = (e: FirebaseError) => {
-    //const { errors } = Consts.TranslationKeys.auth
+    //const { errors } = TranslationKeys.auth
     const { emailAlreadyInUse } = getErrorMessages(t);
     switch (e.code) {
       case 'auth/email-already-in-use':
@@ -113,7 +111,7 @@ const SignUp: React.FC<SignUpProps> = ({ t }) => {
             type="submit"
             color="primary"
           >
-            {t(Consts.TranslationKeys.auth.signUpWithEmail)}
+            {t(TranslationKeys.auth.signUpWithEmail)}
           </UiSpinnerButton>
         </Stack>
       </FormContainer>
@@ -124,10 +122,10 @@ const SignUp: React.FC<SignUpProps> = ({ t }) => {
     <FlexContainer>
       <StyledUiCard>
         <UiButton color="error" onClick={onGoogleSignIn}>
-          {t(Consts.TranslationKeys.auth.signUpWithGoogle)}
+          {t(TranslationKeys.auth.signUpWithGoogle)}
         </UiButton>
         <Divider sx={{ color: colors.purple[200], zIndex: '100' }} flexItem>
-          <p>{t(Consts.TranslationKeys.auth.or)}</p>
+          <p>{t(TranslationKeys.auth.or)}</p>
         </Divider>
         {fields && defaultValues ? (
           <SignUpForm fields={fields} defaultValues={defaultValues} />

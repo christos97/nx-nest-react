@@ -4,7 +4,7 @@ import { getFirestore, type Firestore, connectFirestoreEmulator } from 'firebase
 
 import { env, type FirebaseOptions } from '@ntua-saas-10/web/env';
 
-const config = env.VITE_PUBLIC_FIREBASE_CONFIG as FirebaseOptions;
+const config: FirebaseOptions = env.VITE_PUBLIC_FIREBASE_CONFIG;
 
 if (!config) {
   throw new Error('VITE_PUBLIC_FIREBASE_CONFIG env var is not set');

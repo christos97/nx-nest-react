@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { useAxios } from './useAxios.hook';
 import type { AxiosResponse, AxiosRequestConfig } from 'axios';
-import type { HttpMethod } from '@ntua-saas-10/api-interfaces';
+import { HttpMethod } from '@ntua-saas-10/shared-consts';
 import { BASE_URL, DEFAULT_HEADERS } from './constants';
 
 type ApiResponse<T> = AxiosResponse<T>;
@@ -22,10 +22,10 @@ interface UseReactMutation<T, K> {
  */
 export const useReactMutation = <T = unknown, K = unknown>(
   url: string,
-  method: Exclude<HttpMethod, 'GET'> = 'POST',
+  method: Exclude<HttpMethod, 'GET'> = HttpMethod.POST,
   config?: AxiosRequestConfig,
 ): UseReactMutation<T, K> => {
-  const [axios] = useAxios(config ?? {});
+  const axios = useAxios(config ?? {});
   const { baseURL, headers } = config || {};
   const requestConfig = {
     url,
@@ -39,7 +39,7 @@ export const useReactMutation = <T = unknown, K = unknown>(
       try {
         const res: ApiResponse<K> = await axios.request<K>({
           ...requestConfig,
-          data: method !== 'DELETE' && data ? data : undefined,
+          data: method !== HttpMethod.DELETE && data ? data : undefined,
         });
         return res?.data;
       } catch (error) {

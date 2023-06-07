@@ -10,6 +10,7 @@ export const LOGO_SRC =
 export const LOGO_ALT = 'My Charts Logo';
 export const LOGO_WIDTH = 45;
 export const LOGO_HEIGHT = 45;
+export const FONT_FAMILY = 'Inter, sans-serif';
 
 /**
  * @constant `HeaderProps`

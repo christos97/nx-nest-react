@@ -24,7 +24,6 @@ export interface UploadWizardFormData {
   /**
    * The `FileList` of the upload multipart form
    * @see https://developer.mozilla.org/en-US/docs/Web/API/FileList
-   * @see https://developer.mozilla.org/en-US/docs/Web/API/File
    */
   file: FileList;
 }

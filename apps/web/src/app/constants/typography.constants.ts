@@ -5,11 +5,12 @@
  */
 
 import type { ThemeOptions } from '@mui/material';
+import { FONT_FAMILY } from './app.constants';
 
 type Typography = ThemeOptions['typography'];
 
 export const typography: Typography = {
-  fontFamily: 'Inter, sans-serif',
+  fontFamily: FONT_FAMILY,
 } as const;
 
 export default typography;

@@ -1,10 +1,16 @@
 import type { TFunction } from 'i18next';
 import { AppRoutes } from '../routes';
-import { Consts, HeaderLink } from '@ntua-saas-10/api-interfaces';
+import { TranslationKeys } from '@ntua-saas-10/shared-consts';
+
+interface HeaderLink {
+  label: string;
+  path: string;
+}
 
 const {
   common: { home, login, logout, dashboard },
-} = Consts.TranslationKeys;
+} = TranslationKeys;
+
 const { Home, Auth, Dashboard } = AppRoutes;
 
 const createLink = (label: string, path: string) => ({ label, path });

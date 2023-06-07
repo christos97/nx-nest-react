@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { getErrorMessages } from './utils';
 import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from './constants';
-import type { FieldSpec } from '@ntua-saas-10/api-interfaces';
+import type { Types } from '@ntua-saas-10/shared-types';
 import type { TFunction } from 'i18next';
 
 export const getPasswordSchema = (t: TFunction) => {
@@ -32,6 +32,6 @@ export type SignUpFormFields = keyof SignUpFormData;
 export interface SignUpFormSpecs {
   defaultValues: SignUpFormData;
   fields: {
-    [key in SignUpFormFields]: FieldSpec;
+    [key in SignUpFormFields]: Types.FieldSpec;
   };
 }

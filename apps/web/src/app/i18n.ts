@@ -13,8 +13,9 @@ import {
   DEFAULT_NAMESPACE,
   SUPPORTED_LANGUAGES,
 } from './constants/i18n.constants';
-import { I18nService } from '@ntua-saas-10/api-interfaces';
+import { Services } from '@ntua-saas-10/shared-api-interfaces';
 
+const { I18n: I18nService } = Services;
 i18n
   .use(HttpBackend)
   .use(LanguageDetector)

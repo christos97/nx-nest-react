@@ -1,0 +1,19 @@
+{
+  "name": "functions",
+  "description": "Firebase Functions for the Nx Workspace",
+  "scripts": {
+    "lint": "nx lint functions",
+    "build": "nx build functions",
+    "serve": "npm run build && firebase emulators:start --only functions --config firebase.json",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions --config firebase.json",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": " 16"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "private": true
+}

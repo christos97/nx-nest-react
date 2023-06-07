@@ -1,5 +1,5 @@
 import axios, { type AxiosRequestConfig } from 'axios';
-import { useEffect } from 'react';
+import { useMemo } from 'react';
 import { useJwt } from './useJwt.hook';
 import { BASE_URL, DEFAULT_HEADERS } from './constants';
 
@@ -9,18 +9,19 @@ export const useAxios = ({
   timeout = 15000,
 }: AxiosRequestConfig) => {
   const [jwtToken] = useJwt();
-  const config = {
-    timeout,
-    baseURL,
-    headers: {
-      ...DEFAULT_HEADERS,
-      ...headers,
-    },
-  };
-  const axiosInstance = axios.create(config);
 
-  useEffect(() => {
-    const interceptor = axiosInstance.interceptors.request.use((config) => {
+  const axiosInstance = useMemo(() => {
+    const config = {
+      timeout,
+      baseURL,
+      headers: {
+        ...DEFAULT_HEADERS,
+        ...headers,
+      },
+    };
+
+    const instance = axios.create(config);
+    instance.interceptors.request.use((config) => {
       if (jwtToken) {
         config.headers.Authorization = `Bearer ${jwtToken}`;
       } else {
@@ -29,10 +30,8 @@ export const useAxios = ({
       return config;
     });
 
-    return () => {
-      axiosInstance.interceptors.request.eject(interceptor);
-    };
-  }, [jwtToken, axiosInstance]);
+    return instance;
+  }, [jwtToken, baseURL, headers, timeout]);
 
-  return [axiosInstance];
+  return axiosInstance;
 };

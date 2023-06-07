@@ -35,7 +35,7 @@ const getButtonState = (
 const SpinnerButton: React.FC<SpinnerButtonProps> = ({ isLoading, isDone, ...props }) => {
   const { buttonColor, buttonContent } = getButtonState(
     isLoading,
-    isDone,
+    !!isDone,
     !!props.disabled,
     props.children,
   );

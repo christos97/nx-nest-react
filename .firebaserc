@@ -1,5 +1,7 @@
 {
   "projects": {
     "default": "lesi-charts"
-  }
+  },
+  "targets": {},
+  "etags": {}
 }
