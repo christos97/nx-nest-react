@@ -134,6 +134,7 @@
     "build": "nx run-many --targets=build --all --parallel=12",
     "clean": "rm -rf dist/ node_modules/ *-lock.* && pnpm install",
     "concurrently": "concurrently",
+    "download:backup": "gsutil -m cp -r gs://lesi-charts.appspot.com/.emulators.backup ./apps/functions/",
     "format": "concurrently \"nx format --all\" \"syncpack format\"",
     "kill:ports": "node -e 'setTimeout(()=>{}, 2000)' && kill-port --port 9099,5001,8080,9000,5000,8085,9199,9299,4000,4400,4500",
     "reset": "concurrently \"pnpm format\" \"pnpm kill:ports\" && pnpm clean && pnpm build && pnpm serve",

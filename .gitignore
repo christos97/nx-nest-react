@@ -45,6 +45,7 @@ libs/firebase-admin/**/*-firebase-adminsdk-*.json
 .runtimeconfig.json
 **/.emulators/*
 **/.firebase/*
+.emulators.backup/
 database-debug.log
 firebase-debug.log
 firestore-debug.log

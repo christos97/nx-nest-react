@@ -1,11 +1,7 @@
 import type { TFunction } from 'i18next';
 import { AppRoutes } from '../routes';
 import { TranslationKeys } from '@ntua-saas-10/shared-consts';
-
-interface HeaderLink {
-  label: string;
-  path: string;
-}
+import type { HeaderLink } from '../types/HeaderLink.type';
 
 const {
   common: { home, login, logout, dashboard },
