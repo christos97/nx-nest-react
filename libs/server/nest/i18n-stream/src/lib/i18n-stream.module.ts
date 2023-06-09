@@ -3,6 +3,8 @@ import { DynamicModule, Module } from '@nestjs/common';
 import { I18nStreamController } from './i18n-stream.controller';
 import { I18nStreamService } from './i18n-stream.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
+// needed because of reasons
+import '@nestjs/platform-express';
 
 interface I18nStreamModuleOptions {
   /**

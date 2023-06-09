@@ -25,6 +25,7 @@ export class ValidationController {
     const fileBuffer = await this.datafilesService.streamFromStorage(body.object.name);
     const parsedFile = this.datafilesService.parseCsv(fileBuffer);
     const validatedData = this.validationService.validateDatafile(parsedFile, chartType);
+
     return this.chartConfigService.generateChartConfig(chartType, validatedData);
   }
 }

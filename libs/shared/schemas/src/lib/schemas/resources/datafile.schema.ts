@@ -7,6 +7,18 @@ import { ChartType } from '@ntua-saas-10/shared-consts';
 export const ChartTypeSchema = z.nativeEnum(ChartType);
 
 /**
+ * @constant `DatafileMetadataSchema` ZodSchema
+ */
+export const DatafileMetadataSchema = z.object({
+  chartType: ChartTypeSchema,
+  uid: z.string(),
+  nextStep: z.enum(['NO_NEXT_STEP', 'validate']),
+  contentEncoding: z.enum(['UTF-8']),
+});
+
+// TODO: Unique declaration of `nextStep` type
+
+/**
  * @constant `UploadDatafileRequestSchema` ZodSchema
  */
 export const UploadDatafileRequestSchema = z.object({
@@ -38,7 +50,7 @@ export const UploadDatafileResponseSchema = z.object({
  * @constant `ValidateDatafileRequest` ZodSchema
  */
 export const ValidateDatafileRequestSchema = z.object({
-  object: z.object({ name: z.string(), metadata: z.object({ chartType: ChartTypeSchema }) }),
+  object: z.object({ name: z.string(), metadata: DatafileMetadataSchema }),
   context: z.object({}),
 });
 

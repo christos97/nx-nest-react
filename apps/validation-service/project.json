@@ -16,6 +16,7 @@
         "tsConfig": "apps/validation-service/tsconfig.app.json",
         "assets": ["apps/validation-service/src/assets"],
         "isolatedConfig": true,
+        "generatePackageJson": false,
         "webpackConfig": "apps/validation-service/webpack.config.js"
       },
       "configurations": {
@@ -57,6 +58,32 @@
           "ci": true,
           "codeCoverage": true
         }
+      }
+    },
+    "docker-build": {
+      "dependsOn": ["build", "^build"],
+      "inputs": ["{workspaceRoot}/dist/apps/validation-service", "{projectRoot}/Dockerfile"],
+      "command": "docker build -f apps/validation-service/Dockerfile . -t validation-service"
+    },
+    "docker-push": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["docker-build"],
+      "options": {
+        "commands": [
+          "docker tag validation-service:latest $BASE_TAG/validation-service:$SERVICE_VERSION",
+          "docker push $BASE_TAG/validation-service:$SERVICE_VERSION"
+        ],
+        "parallel": false
+      }
+    },
+    "deploy": {
+      "dependsOn": ["docker-push"],
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "gcloud run deploy validation-service --image=$BASE_TAG/validation-service:$SERVICE_VERSION --allow-unauthenticated --region $GCLOUD_REGION"
+        ],
+        "parallel": false
       }
     }
   },

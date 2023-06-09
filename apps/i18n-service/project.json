@@ -58,7 +58,34 @@
           "codeCoverage": true
         }
       }
+    },
+    "docker-build": {
+      "dependsOn": ["build", "^build"],
+      "inputs": ["{workspaceRoot}/dist/apps/i18n-service", "{projectRoot}/Dockerfile"],
+      "command": "docker build -f apps/i18n-service/Dockerfile . -t i18n-service"
+    },
+    "docker-push": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["docker-build"],
+      "options": {
+        "commands": [
+          "docker tag i18n-service:latest $BASE_TAG/i18n-service:$SERVICE_VERSION",
+          "docker push $BASE_TAG/i18n-service:$SERVICE_VERSION"
+        ],
+        "parallel": false
+      }
+    },
+    "deploy": {
+      "dependsOn": ["docker-push"],
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "gcloud run deploy i18n-service --image=$BASE_TAG/i18n-service:$SERVICE_VERSION --allow-unauthenticated --region $GCLOUD_REGION"
+        ],
+        "parallel": false
+      }
     }
   },
   "tags": []
 }
+

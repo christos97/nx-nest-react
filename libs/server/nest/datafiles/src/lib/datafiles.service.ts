@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { admin } from '@ntua-saas-10/server-firebase-admin';
 import { parse } from 'papaparse';
+import type { Types } from '@ntua-saas-10/shared-types';
 
 @Injectable()
 export class DatafilesService {
@@ -10,7 +11,7 @@ export class DatafilesService {
     file: Express.Multer.File,
     path: string,
     filename: string,
-    metadata: { [key: string]: unknown },
+    metadata: Types.DatafileMetadata,
   ) {
     const fileRef = this.storage.bucket().file(`${path}/${filename}`);
 
@@ -31,7 +32,7 @@ export class DatafilesService {
     const chunks: Uint8Array[] = [];
     return new Promise((resolve, reject) => {
       stream.on('data', (chunk) => chunks.push(chunk));
-      stream.on('error', reject);
+      stream.on('error', (error: Error) => reject(new BadRequestException(error.message)));
       stream.on('end', () => resolve(Buffer.concat(chunks)));
     });
   }

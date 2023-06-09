@@ -15,7 +15,7 @@ const { isChartData } = Utils;
 export class ValidationService {
   validateDatafile(parsedFile: ParseResult<unknown>, chartType: Types.ChartType) {
     if (chartType === 'line') return this.validateLine(parsedFile);
-    if (chartType === 'multiAxisLine') return this.validateLine(parsedFile);
+    if (chartType === 'multiAxisLine') return this.validateMultiAxisLine(parsedFile);
     if (chartType === 'radar') return this.validateRadar(parsedFile);
     if (chartType === 'scatter') return this.validateScatter(parsedFile);
     if (chartType === 'bubble') return this.validateBubble(parsedFile);
@@ -29,6 +29,16 @@ export class ValidationService {
 
     if (!isChartData<'line'>(transformedData)) {
       throw new BadRequestException(`Data don't match line chart type`);
+    }
+
+    return transformedData;
+  }
+
+  private validateMultiAxisLine(parsedFile: ParseResult<unknown>) {
+    const transformedData = transformDataToLine(parsedFile, true);
+
+    if (!isChartData<'line'>(transformedData)) {
+      throw new BadRequestException(`Data don't match multi axis line chart type`);
     }
 
     return transformedData;

@@ -64,8 +64,9 @@ export class DatafilesController {
       newFilename,
       {
         chartType,
-        userId: req.user.uid,
+        uid: req.user.uid,
         nextStep: 'validate',
+        contentEncoding: 'UTF-8',
       },
     );
 

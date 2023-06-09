@@ -59,6 +59,32 @@
           "codeCoverage": true
         }
       }
+    },
+    "docker-build": {
+      "dependsOn": ["build", "^build"],
+      "inputs": ["{workspaceRoot}/dist/apps/api", "{projectRoot}/Dockerfile"],
+      "command": "docker build -f apps/api/Dockerfile . -t api"
+    },
+    "docker-push": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["docker-build"],
+      "options": {
+        "commands": [
+          "docker tag api:latest $BASE_TAG/api:$SERVICE_VERSION",
+          "docker push $BASE_TAG/api:$SERVICE_VERSION"
+        ],
+        "parallel": false
+      }
+    },
+    "deploy": {
+      "dependsOn": ["docker-push"],
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "gcloud run deploy api --image=$BASE_TAG/api:$SERVICE_VERSION --allow-unauthenticated --region $GCLOUD_REGION --set-env-vars \"FILES_DEST=uploads\""
+        ],
+        "parallel": false
+      }
     }
   },
   "tags": []

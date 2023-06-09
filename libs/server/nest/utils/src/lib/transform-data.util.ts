@@ -4,13 +4,19 @@ import { ParseResult } from 'papaparse';
 import type { Types } from '@ntua-saas-10/shared-types';
 import { generatePalette } from './generate-palette.util';
 
-export const transformDataToLine = (parsedFile: ParseResult<any>) => {
+export const transformDataToLine = (parsedFile: ParseResult<any>, isMultiAxis: boolean = false) => {
   const transformedData: Required<Types.ChartDataType<'line'>> = {
     labels: [],
     datasets: [],
   };
 
   if (!parsedFile.data[0].labels) throw new BadRequestException('Labels column is missing');
+
+  if (isMultiAxis && Object.keys(parsedFile.data[0]).length !== 3) {
+    throw new BadRequestException(
+      'Only three columns (labels, dataset-1, dataset-2) are allowed for multi axis line chart',
+    );
+  }
 
   for (const row of parsedFile.data) {
     transformedData.labels.push(row.labels);
@@ -27,6 +33,7 @@ export const transformDataToLine = (parsedFile: ParseResult<any>) => {
           data: [],
           backgroundColor: primaryColor,
           borderColor: secondaryColor,
+          yAxisID: key,
         };
         transformedData.datasets.push(currentDataset);
       }
