@@ -7,11 +7,12 @@ import { useReactMutation } from './useReactMutation.hook';
 import { type ZodRawShape, z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { AxiosRequestConfig } from 'axios';
+import { HttpMethod } from '@ntua-saas-10/shared-consts';
 
 interface UseHookFormProps<T extends ZodRawShape, K> {
   path: string;
   schema: z.ZodObject<T>;
-  httpMethod?: 'POST' | 'PUT' | 'PATCH';
+  httpMethod?: Exclude<HttpMethod, 'PUT' | 'GET' | 'DELETE'>;
   httpConfig?: AxiosRequestConfig;
   defaultValues?: DeepPartial<T>;
   mode?: 'onSubmit' | 'onChange' | 'onBlur' | 'onTouched' | 'all';
@@ -29,7 +30,7 @@ interface UseHookFormProps<T extends ZodRawShape, K> {
 export const useHookForm = <T extends ZodRawShape, K>({
   path,
   schema,
-  httpMethod = 'POST',
+  httpMethod = HttpMethod.POST,
   httpConfig = {},
   defaultValues,
   mode = 'onSubmit',

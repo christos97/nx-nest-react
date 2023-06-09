@@ -1,0 +1,16 @@
+### CODEOWNERS file
+
+### `apps/web` @christos97
+/apps/web/ @christos97
+
+### `apps/api` @christos97 and @stefanaki
+/apps/api/ @christos97 @stefanaki
+
+### `libs/web` @christos97
+/libs/web/ @christos97
+
+### `libs/shared` @christos97
+/libs/shared/ @christos97
+
+### `libs/server` @christos97 and @stefanaki
+/libs/server/ @christos97 @stefanaki

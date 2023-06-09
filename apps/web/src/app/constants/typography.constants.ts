@@ -5,12 +5,10 @@
  */
 
 import type { ThemeOptions } from '@mui/material';
-import { FONT_FAMILY } from './app.constants';
+import { FONT_FAMILY as fontFamily } from './app.constants';
 
-type Typography = ThemeOptions['typography'];
-
-export const typography: Typography = {
-  fontFamily: FONT_FAMILY,
+export const typography: ThemeOptions['typography'] = {
+  fontFamily,
 } as const;
 
 export default typography;

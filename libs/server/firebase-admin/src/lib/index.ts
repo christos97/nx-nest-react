@@ -20,22 +20,27 @@ class FirebaseAdmin {
     this.init({ projectId });
   }
 
-  public init = ({ projectId }: FirebaseAdminConstructorConfig): void => {
+  public init = ({ projectId }: FirebaseAdminConstructorConfig = {}): void => {
     if (!projectId || projectId === DEFINE_GCLOUD_PROJECT) {
-      console.warn({ projectId: projectId ?? 'undefined' });
+      console.warn('initializeFirebaseAdmin was called without a projectId');
+      return;
     }
-    if (FirebaseAdmin.app) {
-      console.warn(
-        'FirebaseAdmin.app already initialized for: ',
-        FirebaseAdmin.projectId ?? projectId,
-      );
+
+    if (FirebaseAdmin.projectId) {
+      console.warn('FirebaseAdmin ALREADY initialized for: ', FirebaseAdmin.projectId);
     } else {
+      console.warn(
+        '\n\n---------------------------\n',
+        'FirebaseAdmin initializing for projectId: ',
+        projectId,
+        '\n---------------------------\n\n',
+      );
+      FirebaseAdmin.projectId = projectId;
       FirebaseAdmin.app = initializeApp({
         projectId,
         credential: applicationDefault(),
         storageBucket: `${projectId}.appspot.com`,
       });
-      FirebaseAdmin.projectId = projectId;
       FirebaseAdmin.storage = getStorage(FirebaseAdmin.app);
       FirebaseAdmin.firestore = getFirestore(FirebaseAdmin.app);
       FirebaseAdmin.auth = getAuth(FirebaseAdmin.app);
@@ -70,7 +75,8 @@ const admin = new FirebaseAdmin({
 const storage = admin.storage;
 const firestore = admin.firestore;
 const auth = admin.auth;
+const initializeFirebaseAdmin = admin.init;
 
 export default { admin };
-export { admin, storage, firestore, auth };
+export { admin, storage, firestore, auth, initializeFirebaseAdmin };
 export type { Storage, Firestore, Auth };

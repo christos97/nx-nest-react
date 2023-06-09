@@ -1,4 +1,4 @@
-import { HttpAction, HttpMethod } from '@ntua-saas-10/shared-consts';
+import type { HttpAction, HttpMethod } from '@ntua-saas-10/shared-consts';
 import type { ZodRawShape, ZodObject } from 'zod';
 
 export type ResourceEndpoint<T extends ZodRawShape = ZodRawShape> = {

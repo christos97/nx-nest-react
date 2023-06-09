@@ -50,7 +50,8 @@
       "library": {
         "style": "@emotion/styled",
         "linter": "eslint",
-        "unitTestRunner": "vitest"
+        "unitTestRunner": "vitest",
+        "bundler": "vite"
       }
     }
   }

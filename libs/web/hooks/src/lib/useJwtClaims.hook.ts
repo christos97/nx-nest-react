@@ -5,7 +5,7 @@ import type { ParsedToken } from 'firebase/auth';
 import type { Types } from '@ntua-saas-10/shared-types';
 
 export interface JwtCustomClaims extends ParsedToken {
-  customClaims: Types.UserCustomClaims;
+  customClaims?: Partial<Types.UserCustomClaims>;
 }
 
 /**

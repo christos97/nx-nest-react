@@ -1,0 +1,41 @@
+{
+  "name": "server-firebase-functions-triggers",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/server/firebase-functions-triggers/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/server/firebase-functions-triggers",
+        "tsConfig": "libs/server/firebase-functions-triggers/tsconfig.lib.json",
+        "packageJson": "libs/server/firebase-functions-triggers/package.json",
+        "main": "libs/server/firebase-functions-triggers/src/index.ts",
+        "assets": ["libs/server/firebase-functions-triggers/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/server/firebase-functions-triggers/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/server/firebase-functions-triggers/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    }
+  },
+  "tags": []
+}

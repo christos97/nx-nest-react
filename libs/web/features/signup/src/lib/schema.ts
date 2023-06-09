@@ -4,7 +4,7 @@ import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from './constants';
 import type { Types } from '@ntua-saas-10/shared-types';
 import type { TFunction } from 'i18next';
 
-export const getPasswordSchema = (t: TFunction) => {
+export const getPasswordSchema = (t: TFunction): z.ZodString => {
   const errMsg = getErrorMessages(t);
   return z
     .string()

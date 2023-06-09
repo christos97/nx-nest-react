@@ -3,12 +3,13 @@ import { UiCard } from '@ntua-saas-10/web/ui/card';
 import { FormProvider, useForm } from 'react-hook-form';
 import { MAX_FILE_SIZE } from '../../constants/app.constants';
 import { Utils } from '@ntua-saas-10/shared-utils';
+import { ContentType } from '@ntua-saas-10/shared-consts';
 import { Resources } from '@ntua-saas-10/shared-api-interfaces';
 
 const UploadWizardProps = {
   path: Resources.datafiles.create.path,
   schema: Utils.createUploadFileSchema({
-    allowedTypes: ['text/csv'],
+    allowedTypes: [ContentType.text_csv],
     maxSize: MAX_FILE_SIZE,
   }),
 };

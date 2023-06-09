@@ -1,1 +1,15 @@
 node_modules
+dist
+tmp
+tools
+.husky
+.firebase
+.env
+.env.*
+.gitignore
+*.yml
+*.yaml
+*.md
+*.json
+*.log
+*.lock

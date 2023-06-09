@@ -6,4 +6,6 @@ export const BASE_URL = env.VITE_PUBLIC_API || 'VITE_PUBLIC_API_UNDEFINED';
 export const DEFAULT_HEADERS = {
   'Content-Type': application_json,
   Accept: application_json,
+  'x-project-id':
+    env.VITE_PUBLIC_FIREBASE_CONFIG.projectId || 'VITE_PUBLIC_FIREBASE_CONFIG.projectId_UNDEFINED',
 };

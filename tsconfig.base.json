@@ -11,33 +11,21 @@
     "noUncheckedIndexedAccess": true,
     "resolveJsonModule": true,
     "importHelpers": true,
-    "target": "ES2020",
+    "target": "ES2021",
     "module": "esnext",
     "lib": [
-      "ES2020",
+      "ES2021",
       "dom"
     ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@ntua-saas-10/api-interfaces": [
-        "libs/api-interfaces/src/index.ts"
-      ],
-      "@ntua-saas-10/common": [
-        "libs/common/src/index.ts"
-      ],
-      "@ntua-saas-10/database": [
-        "libs/database/src/index.ts"
-      ],
-      "@ntua-saas-10/functions-triggers": [
-        "libs/functions-triggers/src/index.ts"
-      ],
-      "@ntua-saas-10/i18n-stream": [
-        "libs/i18n-stream/src/index.ts"
-      ],
       "@ntua-saas-10/server-firebase-admin": [
         "libs/server/firebase-admin/src/index.ts"
+      ],
+      "@ntua-saas-10/server-firebase-functions-triggers": [
+        "libs/server/firebase-functions-triggers/src/index.ts"
       ],
       "@ntua-saas-10/server/nest/chart-config": [
         "libs/server/nest/chart-config/src/index.ts"
