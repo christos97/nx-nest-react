@@ -26,7 +26,7 @@ class FirebaseAdmin {
       return;
     }
 
-    if (FirebaseAdmin.projectId) {
+    if (FirebaseAdmin.app) {
       console.warn('FirebaseAdmin ALREADY initialized for: ', FirebaseAdmin.projectId);
     } else {
       console.warn(
@@ -35,12 +35,12 @@ class FirebaseAdmin {
         projectId,
         '\n---------------------------\n\n',
       );
-      FirebaseAdmin.projectId = projectId;
       FirebaseAdmin.app = initializeApp({
         projectId,
         credential: applicationDefault(),
         storageBucket: `${projectId}.appspot.com`,
       });
+      FirebaseAdmin.projectId = projectId;
       FirebaseAdmin.storage = getStorage(FirebaseAdmin.app);
       FirebaseAdmin.firestore = getFirestore(FirebaseAdmin.app);
       FirebaseAdmin.auth = getAuth(FirebaseAdmin.app);
