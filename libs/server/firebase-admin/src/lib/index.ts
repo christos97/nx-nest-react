@@ -1,6 +1,11 @@
 import { type App, initializeApp, applicationDefault } from 'firebase-admin/app';
 import { type Storage, getStorage } from 'firebase-admin/storage';
-import { type Firestore, getFirestore } from 'firebase-admin/firestore';
+import {
+  type Firestore,
+  getFirestore,
+  UpdateData,
+  DocumentReference,
+} from 'firebase-admin/firestore';
 import { type Auth, getAuth } from 'firebase-admin/auth';
 
 const DEFINE_GCLOUD_PROJECT = 'DEFINE_GCLOUD_PROJECT';
@@ -80,3 +85,4 @@ const initializeFirebaseAdmin = admin.init;
 export default { admin };
 export { admin, storage, firestore, auth, initializeFirebaseAdmin };
 export type { Storage, Firestore, Auth };
+export type { UpdateData, DocumentReference };

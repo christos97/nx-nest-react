@@ -1,12 +1,12 @@
 import { HttpsInternal, HttpsOK, auth, firestore, logger } from '../../_';
-import { UserRole } from '@ntua-saas-10/shared-consts';
+import { Quota, UserRole } from '@ntua-saas-10/shared-consts';
 import { GCLOUD_PROJECT } from '../../config';
 
 import type { CloudFunction, EventContext } from 'firebase-functions';
 import type { UserRecord, UserInfo } from 'firebase-admin/auth';
 import type { Types } from '@ntua-saas-10/shared-types';
 
-const INITIAL_QUOTA = 100;
+const INITIAL_QUOTA = Quota.initialCredits;
 
 /**
  * @description This function is triggered when a `user` is created in firebase auth.

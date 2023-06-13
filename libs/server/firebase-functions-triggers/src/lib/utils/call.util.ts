@@ -28,7 +28,7 @@ import { HttpMethod, ContentType } from '@ntua-saas-10/shared-consts';
 export const call = async <T = unknown>(
   url: string,
   data?: T,
-  method: HttpMethod = HttpMethod.GET,
+  method: HttpMethod = HttpMethod.POST,
   headers?: AxiosRequestHeaders,
 ): Promise<T> => {
   if (!isUrl(url)) {

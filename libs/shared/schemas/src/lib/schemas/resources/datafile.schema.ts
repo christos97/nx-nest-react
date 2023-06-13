@@ -10,10 +10,11 @@ export const ChartTypeSchema = z.nativeEnum(ChartType);
  * @constant `DatafileMetadataSchema` ZodSchema
  */
 export const DatafileMetadataSchema = z.object({
+  chartId: z.string(),
   chartType: ChartTypeSchema,
   uid: z.string(),
   nextStep: z.enum(['NO_NEXT_STEP', 'validate']),
-  contentEncoding: z.enum(['UTF-8']),
+  contentEncoding: z.literal('UTF-8'),
 });
 
 // TODO: Unique declaration of `nextStep` type
@@ -50,8 +51,16 @@ export const UploadDatafileResponseSchema = z.object({
  * @constant `ValidateDatafileRequest` ZodSchema
  */
 export const ValidateDatafileRequestSchema = z.object({
-  object: z.object({ name: z.string(), metadata: DatafileMetadataSchema }),
+  object: z.object({ name: z.string(), timeCreated: z.string(), metadata: DatafileMetadataSchema }),
   context: z.object({}),
+});
+
+/**
+ * @constant `ValidateDatafileResponse` ZodSchema
+ */
+export const ValidateDatafileResponseSchema = z.object({
+  statusCode: z.literal(201),
+  message: z.string(),
 });
 
 export default {
@@ -59,4 +68,5 @@ export default {
   UploadDatafileRequestSchema,
   UploadDatafileResponseSchema,
   ValidateDatafileRequestSchema,
+  ValidateDatafileResponseSchema,
 };

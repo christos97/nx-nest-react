@@ -8,3 +8,4 @@ export * from './UploadFileSchemaOptions.type';
 export * from './ResourceEndpoint.type';
 export * from './ChartData.type';
 export * from './UserCustomClaims.type';
+export * from './Chart.type';

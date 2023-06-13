@@ -57,12 +57,16 @@ export class DatafilesController {
   ): Promise<UploadDatafileResponseDto> {
     const { chartType } = body;
 
-    const { newFilename } = this.filenameService.generateFileInfo(datafile.originalname, chartType);
+    const { fileId, newFilename } = this.filenameService.generateFileInfo(
+      datafile.originalname,
+      chartType,
+    );
     const uploadMetadata = await this.datafilesService.uploadToStorage(
       datafile,
       this.FILES_DEST,
       newFilename,
       {
+        chartId: fileId,
         chartType,
         uid: req.user.uid,
         nextStep: 'validate',
