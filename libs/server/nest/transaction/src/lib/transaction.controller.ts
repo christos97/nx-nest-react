@@ -24,8 +24,7 @@ export class TransactionController {
   @UsePipes(ZodValidationPipe)
   @HttpCode(200)
   async verifyTransaction(@Body() body: TransactionRequestDto, @Req() req: Types.AuthRequest) {
-    await this.transactionService.removeCredits(req.user.uid);
-    await this.chartConfigService.claimChart(req.user.uid, body.chartId);
+    await this.transactionService.removeCreditsAndClaimChart(req.user.uid, body.chartId);
 
     return {
       statusCode: 200,

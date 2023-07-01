@@ -3,5 +3,5 @@ import 'firebase-functions';
 export {
   authUserCreatedTrigger,
   objectFinalizedTrigger,
-  documentCreatedTrigger,
+  documentUpdatedTrigger,
 } from '@ntua-saas-10/server-firebase-functions-triggers';

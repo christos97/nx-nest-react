@@ -111,18 +111,6 @@ export class ChartConfigService {
     }
   }
 
-  async claimChart(uid: string, chartId: string) {
-    try {
-      const chartRef = firestore
-        .collection(this.CHARTS_COLLECTION_PATH.replace('{uid}', uid))
-        .doc(chartId) as DocumentReference<Types.Chart>;
-
-      await chartRef.update({ claimed: true });
-    } catch {
-      throw new InternalServerErrorException('Chart could not be claimed');
-    }
-  }
-
   async generateChartsMediaLinks(uploadsMetadata: any[]) {
     const mediaLinks = [];
     const { uid, chartId } = uploadsMetadata[0].metadata;
