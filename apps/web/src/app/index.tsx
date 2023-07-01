@@ -17,14 +17,20 @@ import { ChangeLanguage } from '@ntua-saas-10/web/features/change-language';
 
 import './assets/styles/globals.css';
 import '@fontsource/inter';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useNotify } from '@ntua-saas-10/web/hooks';
 
 export const App: React.FC = () => {
+  const headerLinks = useHeaderlLinks();
+  const appRoutes = useAppRoutes();
+
   return (
     <div>
-      <UiHeader {...HeaderProps} links={useHeaderlLinks()}>
+      <UiHeader {...HeaderProps} links={headerLinks}>
         <ChangeLanguage langs={SUPPORTED_LANGUAGES} />
       </UiHeader>
-      <Suspense fallback={<UiProgressSpinner />}>{useAppRoutes()}</Suspense>
+      <Suspense fallback={<UiProgressSpinner />}>{appRoutes}</Suspense>
     </div>
   );
 };

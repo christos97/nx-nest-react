@@ -1,7 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { admin } from '@ntua-saas-10/server-firebase-admin';
 import { parse } from 'papaparse';
 import type { Types } from '@ntua-saas-10/shared-types';
+import type { ContentType } from '@ntua-saas-10/shared-consts';
 
 @Injectable()
 export class DatafilesService {
@@ -13,7 +14,7 @@ export class DatafilesService {
     filename: string,
     metadata: Types.DatafileMetadata,
   ) {
-    const fileRef = this.storage.bucket().file(`${path}/${filename}`);
+    const fileRef = this.storage.bucket().file(`${path}/${metadata.uid}/${filename}`);
 
     await fileRef.save(file.buffer, {
       metadata: { metadata },
@@ -37,6 +38,15 @@ export class DatafilesService {
     });
   }
 
+  async deleteFile(filePath: string) {
+    try {
+      const fileRef = this.storage.bucket().file(filePath);
+      await fileRef.delete({ ignoreNotFound: true });
+    } catch {
+      throw new InternalServerErrorException('File could not be deleted');
+    }
+  }
+
   parseCsv(fileBuffer: Buffer) {
     const parsedFile = parse(fileBuffer.toString(), {
       fastMode: true,
@@ -47,5 +57,26 @@ export class DatafilesService {
       throw new BadRequestException({ message: 'Invalid datafile', errors: parsedFile.errors });
 
     return parsedFile;
+  }
+
+  async uploadRender(
+    buffer: Buffer,
+    path: string,
+    fileName: string,
+    contentType: ContentType,
+    metadata: Types.RenderMetadata,
+  ) {
+    const fileRef = this.storage
+      .bucket()
+      .file(`${path}/${metadata.uid}/${metadata.chartId}/${fileName}`);
+
+    await fileRef.save(buffer, {
+      contentType,
+      public: true,
+      metadata: { metadata },
+    });
+
+    const [meta] = await fileRef.getMetadata();
+    return meta;
   }
 }

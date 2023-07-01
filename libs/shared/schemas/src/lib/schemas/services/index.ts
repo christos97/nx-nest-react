@@ -35,6 +35,12 @@ export const ServicesSchemas = {
         .strict(),
     })
     .strict(),
+  TransactionSchema: z
+    .object({
+      chartId: z.string(),
+      uploadedDatafilePath: z.string(),
+    })
+    .strict(),
 };
 
 export default ServicesSchemas;

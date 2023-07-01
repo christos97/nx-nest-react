@@ -7,6 +7,7 @@ const regionBuilder = _functions.region(GCLOUD_REGION);
 export const functions = _functions;
 export const storage = regionBuilder.storage;
 export const auth = regionBuilder.auth;
+export const firestoreFunctions = regionBuilder.firestore;
 export const logger = _functions.logger;
 
 export const HttpsError = _functions.https.HttpsError;

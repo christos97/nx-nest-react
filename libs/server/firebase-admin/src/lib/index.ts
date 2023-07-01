@@ -3,8 +3,6 @@ import { type Storage, getStorage } from 'firebase-admin/storage';
 import {
   type Firestore,
   getFirestore,
-  UpdateData,
-  DocumentReference,
 } from 'firebase-admin/firestore';
 import { type Auth, getAuth } from 'firebase-admin/auth';
 
@@ -85,4 +83,3 @@ const initializeFirebaseAdmin = admin.init;
 export default { admin };
 export { admin, storage, firestore, auth, initializeFirebaseAdmin };
 export type { Storage, Firestore, Auth };
-export type { UpdateData, DocumentReference };

@@ -1,25 +1,13 @@
-import { Injectable } from '@nestjs/common';
-import {
-  firestore,
-  type UpdateData,
-  type DocumentReference,
-} from '@ntua-saas-10/server-firebase-admin';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { firestore } from '@ntua-saas-10/server-firebase-admin';
 import type { Types } from '@ntua-saas-10/shared-types';
-import type { ChartConfiguration } from 'chart.js';
-import type { ChartType } from '@ntua-saas-10/shared-consts';
 import { Quota } from '@ntua-saas-10/shared-consts';
+import type { UpdateData, DocumentReference } from 'firebase-admin/firestore';
 
 @Injectable()
 export class TransactionService {
-  async removeCreditsAndSaveChartConfig(
-    uid: string,
-    chartId: string,
-    chartType: ChartType,
-    createdAt: Date,
-    chartConfig: ChartConfiguration,
-  ) {
+  async removeCredits(uid: string) {
     const userRef = firestore.collection('users').doc(uid) as DocumentReference<Types.User>;
-    const chartRef = userRef.collection('charts').doc(chartId) as DocumentReference<Types.Chart>;
 
     await firestore.runTransaction(async (transaction) => {
       const userDoc = await transaction.get(userRef);
@@ -33,13 +21,8 @@ export class TransactionService {
         };
 
         transaction.update(userRef, updatedUser);
-        transaction.set(chartRef, {
-          chartType,
-          createdAt,
-          chartConfig,
-        });
       } else {
-        throw new Error('Not enough credits');
+        throw new BadRequestException('Not enough credits');
       }
     });
   }

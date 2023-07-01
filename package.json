@@ -25,6 +25,7 @@
     "@simondotm/nx-firebase": "1.0.0",
     "@tanstack/react-query": "^4.29.12",
     "axios": "1.4.0",
+    "canvas": "^2.11.2",
     "chart.js": "4.3.0",
     "class-validator": "0.14.0",
     "date-fns": "^2.30.0",

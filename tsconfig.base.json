@@ -30,6 +30,7 @@
         "libs/server/nest/firebase-auth-middleware/src/index.ts"
       ],
       "@ntua-saas-10/server/nest/i18n-stream": ["libs/server/nest/i18n-stream/src/index.ts"],
+      "@ntua-saas-10/server/nest/render": ["libs/server/nest/render/src/index.ts"],
       "@ntua-saas-10/server/nest/transaction": ["libs/server/nest/transaction/src/index.ts"],
       "@ntua-saas-10/server/nest/utils": ["libs/server/nest/utils/src/index.ts"],
       "@ntua-saas-10/server/nest/validation": ["libs/server/nest/validation/src/index.ts"],

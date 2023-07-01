@@ -7,3 +7,4 @@ export { default as ServicesSchemas } from './services';
 export * from './internal';
 
 export * from './resources/datafile.schema';
+export * from './resources/render.schema';

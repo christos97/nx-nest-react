@@ -37,9 +37,13 @@ const ContentType = {
    */
   image_png: 'image/png',
   /**
-   * Supported.
+   * `NOT` Supported.
    */
   image_jpeg: 'image/jpeg',
+  /**
+   * Supported.
+   */
+  image_svg_xml: 'image/svg+xml',
   /**
    * `NOT` Supported.
    */

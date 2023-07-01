@@ -35,7 +35,7 @@ const UploadWizard: React.FC<UploadWizardProps<ZodRawShape>> = ({ path, schema }
     }
 
     formData.append('datafile', file);
-    formData.append('chartType', ChartType.bubble);
+    formData.append('chartType', ChartType.polarArea);
 
     const parsed = schema.safeParse(data.file[0]);
     if (!parsed.success) {

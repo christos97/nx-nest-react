@@ -25,6 +25,7 @@ export class ValidationController {
     body: ValidateDatafileRequestDto,
   ): Promise<ValidateDatafileResponseDto> {
     fireAndForget(async () => {
+      const { name } = body.object;
       const { chartType, uid, chartId } = body.object.metadata;
       const createdAt = new Date(body.object.timeCreated);
 
@@ -34,22 +35,17 @@ export class ValidationController {
         const validatedData = this.validationService.validateDatafile(parsedFile, chartType);
         const chartConfig = this.chartConfigService.generateChartConfig(chartType, validatedData);
 
-        await this.transactionService.removeCreditsAndSaveChartConfig(
-          uid,
+        await this.chartConfigService.saveChartConfig(uid, {
           chartId,
           chartType,
-          createdAt,
           chartConfig,
-        );
+          createdAt,
+          uploadedDatafilePath: name,
+        });
       } catch (e) {
         const error = e as Error;
-        this.logger.error(error);
-        await firestore
-          .collection('users')
-          .doc(uid)
-          .collection('errors')
-          .doc(body.object.metadata.chartId)
-          .set({ error: error.message });
+
+        // Notification service not implemented yet...
       }
     });
 
