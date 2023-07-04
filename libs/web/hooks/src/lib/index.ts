@@ -10,3 +10,4 @@ export * from './useHookForm.hook';
 export * from './useRoutes.hook';
 export * from './useFsDoc.hook';
 export * from './useFsCol.hook';
+export * from './useNotify.hook';

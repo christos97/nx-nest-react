@@ -3,6 +3,7 @@ import { BadRequestException } from '@nestjs/common';
 import { ParseResult } from 'papaparse';
 import type { Types } from '@ntua-saas-10/shared-types';
 import { generatePalette } from './generate-palette.util';
+import { DatafileValuesRegex } from '@ntua-saas-10/shared-consts';
 
 export const transformDataToLine = (parsedFile: ParseResult<any>, isMultiAxis: boolean = false) => {
   const transformedData: Required<Types.ChartDataType<'line'>> = {
@@ -33,7 +34,7 @@ export const transformDataToLine = (parsedFile: ParseResult<any>, isMultiAxis: b
           data: [],
           backgroundColor: primaryColor,
           borderColor: secondaryColor,
-          yAxisID: key,
+          ...(isMultiAxis ? { yAxisID: key } : {}),
         };
         transformedData.datasets.push(currentDataset);
       }
@@ -77,7 +78,7 @@ export const transformDataToBubble = (parsedFile: ParseResult<any>) => {
       }
 
       const tuple = row[key];
-      const match = tuple.match(/\((\d+(\.\d+)?)\$(\d+(\.\d+)?)\$(\d+(\.\d+)?)\)/);
+      const match = tuple.match(DatafileValuesRegex.bubble);
 
       if (!match) {
         throw new BadRequestException("Datafile values don't match bubble format");
@@ -116,7 +117,7 @@ export const transformDataToScatter = (parsedFile: ParseResult<any>) => {
       }
 
       const pair = row[key];
-      const match = pair.match(/\((\d+(\.\d+)?)\$(\d+(\.\d+)?)\)/);
+      const match = pair.match(DatafileValuesRegex.scatter);
       if (!match) {
         throw new BadRequestException("Datafile values don't match scatter format");
       }
@@ -150,12 +151,12 @@ export const transformDataToPolarArea = (parsedFile: ParseResult<any>) => {
         currentDataset = {
           label: key,
           data: [],
-          backgroundColor: [],
+          // backgroundColor: [],
         };
 
         transformedData.datasets.push(currentDataset);
       }
-      if (!currentDataset.backgroundColor) currentDataset.backgroundColor = [];
+      // if (!currentDataset.backgroundColor) currentDataset.backgroundColor = [];
 
       const parsedValue = Number.parseFloat(row[key]);
       if (Number.isNaN(parsedValue)) {
@@ -165,7 +166,47 @@ export const transformDataToPolarArea = (parsedFile: ParseResult<any>) => {
       currentDataset.data.push(parsedValue);
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      currentDataset.backgroundColor.push(generatePalette().primaryColor);
+      // currentDataset.backgroundColor.push(generatePalette().primaryColor);
+    }
+  }
+
+  for (const datasetIndex in transformedData.datasets) {
+    if (transformedData?.datasets?.[datasetIndex]?.data?.length !== transformedData.labels.length) {
+      throw new BadRequestException('Some rows contain missing values');
+    }
+  }
+
+  return transformedData;
+};
+
+export const transformDataToRadar = (parsedFile: ParseResult<any>) => {
+  const transformedData: Required<Types.ChartDataType<'line'>> = {
+    labels: [],
+    datasets: [],
+  };
+
+  if (!parsedFile.data[0].labels) throw new BadRequestException('Labels column is missing');
+
+  for (const row of parsedFile.data) {
+    transformedData.labels.push(row.labels);
+
+    for (const key in row) {
+      if (key === 'labels') continue;
+
+      let currentDataset = transformedData.datasets.find((dataset) => dataset.label === key);
+      if (!currentDataset) {
+        currentDataset = {
+          label: key,
+          data: [],
+        };
+        transformedData.datasets.push(currentDataset);
+      }
+
+      const parsedValue = Number.parseFloat(row[key]);
+      if (Number.isNaN(parsedValue)) {
+        throw new BadRequestException('Datafile contains invalid values');
+      }
+      currentDataset.data.push(parsedValue);
     }
   }
 

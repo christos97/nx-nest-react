@@ -13,17 +13,21 @@ import {
   UsePipes,
   Req,
   HttpStatus,
+  Delete,
+  HttpCode,
 } from '@nestjs/common';
 import { DatafilesService } from './datafiles.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiConsumes } from '@nestjs/swagger';
-import { ContentType } from '@ntua-saas-10/shared-consts';
+import { ContentType, NotificationType } from '@ntua-saas-10/shared-consts';
 import { UploadDatafileRequestDto, UploadDatafileResponseDto } from '@ntua-saas-10/shared-dtos';
 import { MAX_FILE_SIZE_KB } from './datafiles.constants';
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
 import { FilenameService } from '@ntua-saas-10/server/nest/filename';
 import { ConfigService } from '@nestjs/config';
 import type { Types } from '@ntua-saas-10/shared-types';
+import { NotificationsService } from '@ntua-saas-10/server/nest/notifications';
+import { DeleteDatafileRequestDto, DeleteDatafileResponseDto } from '@ntua-saas-10/shared-dtos';
 
 @Controller('datafiles')
 export class DatafilesController {
@@ -34,6 +38,7 @@ export class DatafilesController {
     private readonly datafilesService: DatafilesService,
     private readonly filenameService: FilenameService,
     private readonly configService: ConfigService,
+    private readonly notificationsService: NotificationsService,
   ) {
     this.FILES_DEST = this.configService.getOrThrow('FILES_DEST');
   }
@@ -75,11 +80,22 @@ export class DatafilesController {
     );
 
     this.logger.log(`Uploaded file ${uploadMetadata.name} to ${uploadMetadata.mediaLink}`);
+
+    await this.notificationsService.saveNotificationToFirestore(req.user.uid, fileId, {
+      type: NotificationType.success,
+      createdAt: new Date(),
+      delivered: false,
+      data: {
+        title: 'Datafile uploaded successfully',
+        message: 'Validation in progress...',
+      },
+    });
+
     return {
       statusCode: HttpStatus.OK,
       message: 'Datafile uploaded successfully',
       file: {
-        id: uploadMetadata.id,
+        id: fileId,
         name: uploadMetadata.name,
         url: uploadMetadata.mediaLink,
         meta: {
@@ -88,6 +104,25 @@ export class DatafilesController {
           uid: req.user.uid,
         },
       },
+    };
+  }
+
+  @Delete()
+  @HttpCode(204)
+  @UsePipes(ZodValidationPipe)
+  async deleteDatafile(
+    @Body() body: DeleteDatafileRequestDto,
+    @Req() req: Types.AuthRequest,
+  ): Promise<DeleteDatafileResponseDto> {
+    const { uploadedDatafilePath } = body;
+
+    await this.datafilesService.deleteFile(uploadedDatafilePath, req.user.uid);
+
+    this.logger.log(`Deleted file ${uploadedDatafilePath}`);
+
+    return {
+      statusCode: 204,
+      message: 'Datafile deleted successfully',
     };
   }
 }

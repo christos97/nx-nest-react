@@ -13,5 +13,9 @@ service cloud.firestore {
       allow read: if true;
       allow write: if true;
     }
+    match /users/{userId}/notifications/{document=**} {
+      allow read: if (request.auth.uid == userId) && resource != null;
+      allow write: if (request.auth.uid == userId);
+    }
   }
 }

@@ -16,7 +16,6 @@ async function bootstrap() {
     .setTitle('I18n-Service')
     .setDescription('I18n-Service description')
     .setVersion('1.0')
-    .setBasePath(globalPrefix)
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document);

@@ -30,6 +30,7 @@
         "libs/server/nest/firebase-auth-middleware/src/index.ts"
       ],
       "@ntua-saas-10/server/nest/i18n-stream": ["libs/server/nest/i18n-stream/src/index.ts"],
+      "@ntua-saas-10/server/nest/notifications": ["libs/server/nest/notifications/src/index.ts"],
       "@ntua-saas-10/server/nest/render": ["libs/server/nest/render/src/index.ts"],
       "@ntua-saas-10/server/nest/transaction": ["libs/server/nest/transaction/src/index.ts"],
       "@ntua-saas-10/server/nest/utils": ["libs/server/nest/utils/src/index.ts"],
@@ -54,6 +55,7 @@
       "@ntua-saas-10/web/ui/not-found": ["libs/web/ui/not-found/src/index.ts"],
       "@ntua-saas-10/web/ui/progress-spinner": ["libs/web/ui/progress-spinner/src/index.ts"],
       "@ntua-saas-10/web/ui/spinner-button": ["libs/web/ui/spinner-button/src/index.ts"],
+      "@ntua-saas-10/web/ui/toast": ["libs/web/ui/toast/src/index.ts"],
       "@ntua-saas-10/web/ui/toolbar": ["libs/web/ui/toolbar/src/index.ts"]
     }
   },

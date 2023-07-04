@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import type { ChartConfiguration, ChartData, ChartDataset } from 'chart.js';
 import type { Types } from '@ntua-saas-10/shared-types';
@@ -107,7 +107,7 @@ export class ChartConfigService {
 
       await chartRef.delete();
     } catch {
-      throw new InternalServerErrorException('Chart configuration could not be deleted');
+      throw new BadRequestException('Chart configuration could not be deleted');
     }
   }
 

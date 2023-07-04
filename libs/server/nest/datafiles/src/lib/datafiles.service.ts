@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { admin } from '@ntua-saas-10/server-firebase-admin';
 import { parse } from 'papaparse';
 import type { Types } from '@ntua-saas-10/shared-types';
@@ -38,12 +38,22 @@ export class DatafilesService {
     });
   }
 
-  async deleteFile(filePath: string) {
+  async deleteFile(filePath: string, uid: string) {
     try {
       const fileRef = this.storage.bucket().file(filePath);
+      const [meta] = await fileRef.getMetadata();
+
+      if (meta.metadata.uid !== uid) {
+        throw new UnauthorizedException();
+      }
+
       await fileRef.delete({ ignoreNotFound: true });
-    } catch {
-      throw new InternalServerErrorException('File could not be deleted');
+    } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        throw error;
+      }
+
+      throw new BadRequestException('File could not be deleted');
     }
   }
 

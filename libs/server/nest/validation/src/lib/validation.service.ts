@@ -6,6 +6,7 @@ import {
   transformDataToBubble,
   transformDataToScatter,
   transformDataToPolarArea,
+  transformDataToRadar,
 } from '@ntua-saas-10/server/nest/utils';
 import { Utils } from '@ntua-saas-10/shared-utils';
 
@@ -75,7 +76,7 @@ export class ValidationService {
   }
 
   private validateRadar(parsedFile: ParseResult<unknown>) {
-    const transformedData = transformDataToLine(parsedFile);
+    const transformedData = transformDataToRadar(parsedFile);
 
     if (!isChartData<'radar'>(transformedData)) {
       throw new BadRequestException(`Data don't match radar chart type`);

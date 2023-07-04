@@ -48,6 +48,21 @@ export const UploadDatafileResponseSchema = z.object({
 });
 
 /**
+ * @constant `DeleteDatafileRequestSchema` ZodSchema
+ */
+export const DeleteDatafileRequestSchema = z.object({
+  uploadedDatafilePath: z.string(),
+});
+
+/**
+ * @constant `DeleteDatafileResponseSchema` ZodSchema
+ */
+export const DeleteDatafileResponseSchema = z.object({
+  statusCode: z.number(),
+  message: z.string(),
+});
+
+/**
  * @constant `ValidateDatafileRequest` ZodSchema
  */
 export const ValidateDatafileRequestSchema = z.object({

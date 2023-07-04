@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 
 // Consts
 import { SUPPORTED_LANGUAGES } from './constants/i18n.constants';
@@ -20,10 +20,21 @@ import '@fontsource/inter';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNotify } from '@ntua-saas-10/web/hooks';
+import {ToastMessage} from "@ntua-saas-10/web/ui/toast";
 
 export const App: React.FC = () => {
   const headerLinks = useHeaderlLinks();
   const appRoutes = useAppRoutes();
+
+  const notifications = useNotify();
+
+  useEffect(() => {
+    if (notifications) {
+      for (const n of notifications) {
+        toast(ToastMessage({ title: n.data.title, message: n.data.message }), { type: n.type });
+      }
+    }
+  }, [notifications]);
 
   return (
     <div>

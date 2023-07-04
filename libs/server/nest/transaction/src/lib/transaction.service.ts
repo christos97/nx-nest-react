@@ -34,6 +34,9 @@ export class TransactionService {
         };
 
         transaction.update(userRef, updatedUser);
+
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         transaction.update(chartRef, updatedChart);
       } else {
         throw new BadRequestException('Not enough credits');

@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import App from './app';
 import i18n from './app/i18n';
 import { localizeTheme } from './app/utils/localizeTheme.util';
+import { ToastContainer } from 'react-toastify';
 import { type SupportedLanguages } from './app/constants/i18n.constants';
 
 const queryClient = new QueryClient();
@@ -19,6 +20,18 @@ root.render(
       <I18nextProvider i18n={i18n}>
         <ThemeProvider theme={localizeTheme(i18n.language as SupportedLanguages)}>
           <QueryClientProvider client={queryClient}>
+            <ToastContainer
+              position="bottom-center"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="colored"
+            />
             <App />
           </QueryClientProvider>
         </ThemeProvider>

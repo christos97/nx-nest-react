@@ -5,8 +5,8 @@ import { ChartConfigService } from '@ntua-saas-10/server/nest/chart-config';
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
 import { ValidateDatafileRequestDto, ValidateDatafileResponseDto } from '@ntua-saas-10/shared-dtos';
 import { fireAndForget } from '@ntua-saas-10/server/nest/utils';
-import { firestore } from '@ntua-saas-10/server-firebase-admin';
-import { TransactionService } from '@ntua-saas-10/server/nest/transaction';
+import { NotificationsService } from '@ntua-saas-10/server/nest/notifications';
+import { NotificationType } from '@ntua-saas-10/shared-consts';
 
 @Controller('validation')
 export class ValidationController {
@@ -15,7 +15,7 @@ export class ValidationController {
     private readonly validationService: ValidationService,
     private readonly datafilesService: DatafilesService,
     private readonly chartConfigService: ChartConfigService,
-    private readonly transactionService: TransactionService,
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   @Post('validate-csv')
@@ -42,10 +42,30 @@ export class ValidationController {
           createdAt,
           uploadedDatafilePath: name,
         });
+
+        await this.notificationsService.saveNotificationToFirestore(uid, chartId, {
+          type: NotificationType.success,
+          createdAt: new Date(),
+          data: {
+            title: 'Datafile validation successful',
+            message: 'You can preview your chart now',
+          },
+          delivered: false,
+        });
       } catch (e) {
         const error = e as Error;
 
-        // Notification service not implemented yet...
+        await this.notificationsService.saveNotificationToFirestore(uid, chartId, {
+          type: NotificationType.error,
+          createdAt: new Date(),
+          data: {
+            title: 'Datafile validation failed',
+            message: error.message,
+          },
+          delivered: false,
+        });
+
+        this.logger.error(error);
       }
     });
 
