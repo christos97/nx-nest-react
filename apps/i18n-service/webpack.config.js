@@ -14,4 +14,3 @@ module.exports = composePlugins(withNx(), (config) => {
   config.plugins.push(new GeneratePackageJsonPlugin(basePackage));
   return config;
 });
-

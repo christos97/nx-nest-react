@@ -20,7 +20,7 @@ import '@fontsource/inter';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNotify } from '@ntua-saas-10/web/hooks';
-import {ToastMessage} from "@ntua-saas-10/web/ui/toast";
+import { ToastMessage } from '@ntua-saas-10/web/ui/toast';
 
 export const App: React.FC = () => {
   const headerLinks = useHeaderlLinks();
