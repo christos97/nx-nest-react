@@ -1,15 +1,18 @@
+import { ZodValidationPipe } from '@anatine/zod-nestjs';
 import { Controller, Post, Body, Logger, UsePipes } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { RenderService } from './render.service';
-import { firestore } from '@ntua-saas-10/server-firebase-admin';
-import type { Types } from '@ntua-saas-10/shared-types';
-import { ContentType } from '@ntua-saas-10/shared-consts';
-import { fireAndForget } from '@ntua-saas-10/server/nest/utils';
-import { DatafilesService } from '@ntua-saas-10/server/nest/datafiles';
-import { ZodValidationPipe } from '@anatine/zod-nestjs';
-import { RenderChartConfigRequestDto } from '@ntua-saas-10/shared-dtos';
-import type { DocumentReference } from 'firebase-admin/firestore';
+
 import { ChartConfigService } from '@ntua-saas-10/server/nest/chart-config';
+import { DatafilesService } from '@ntua-saas-10/server/nest/datafiles';
+import { fireAndForget } from '@ntua-saas-10/server/nest/utils';
+import { firestore } from '@ntua-saas-10/server-firebase-admin';
+
+import { RenderChartConfigRequestDto } from '@ntua-saas-10/shared-dtos';
+import type { Types } from '@ntua-saas-10/shared-types';
+import type { DocumentReference } from 'firebase-admin/firestore';
+
+import { renderMapperConfig } from './render.constants';
+import { RenderService } from './render.service';
 
 @Controller('render')
 export class RenderController {
@@ -37,17 +40,12 @@ export class RenderController {
       .collection(this.CHARTS_COLLECTION_PATH.replace('{uid}', uid))
       .doc(chartId) as DocumentReference<Types.Chart>;
     const chartSnapshot = await chartRef.get();
-    const chart = chartSnapshot.data() as Types.Chart;
+    const { chartType, chartConfig } = chartSnapshot.data() as Types.Chart;
 
     fireAndForget(async () => {
-      const renderParamsArray: Types.RenderParams[] = [
-        ContentType.application_pdf,
-        ContentType.image_png,
-        ContentType.image_svg_xml,
-        ContentType.text_html,
-      ].map((contentType) => ({
+      const renderParamsArray: Types.RenderParams[] = renderMapperConfig.map(({ contentType }) => ({
         id: chartId,
-        chartConfig: chart.chartConfig,
+        chartConfig: chartConfig,
         options: {
           contentType,
           resolution: {
@@ -61,17 +59,17 @@ export class RenderController {
         renderParamsArray.map((params) => this.renderService.render(params)),
       );
       const uploadsMetadata = await Promise.all(
-        renders.map((render) =>
+        renders.map(({ buffer, type, contentType, createdAt }) =>
           this.datafilesService.uploadRender(
-            render.buffer,
+            buffer,
             this.RENDERS_PATH,
-            `${chartId}.${render.type}`,
-            render.contentType,
+            `${chartId}.${type}`,
+            contentType,
             {
-              chartId,
-              chartType: chart.chartType,
               uid,
-              createdAt: render.createdAt,
+              chartId,
+              chartType,
+              createdAt,
               nextStep: 'notify',
             },
           ),

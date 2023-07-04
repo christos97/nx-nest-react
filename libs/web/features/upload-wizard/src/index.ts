@@ -1,1 +1,2 @@
-export { default as UploadWizard } from './lib';
+export * from './lib';
+export type * from './lib/types';

@@ -1,7 +1,7 @@
 {
-  "name": "web-ui-progress--spinner",
+  "name": "web-ui-progress-spinner",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/web/ui/progress--spinner/src",
+  "sourceRoot": "libs/web/ui/progress-spinner/src",
   "projectType": "library",
   "tags": [],
   "targets": {
@@ -9,7 +9,7 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/web/ui/progress--spinner/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": ["libs/web/ui/progress-spinner/**/*.{ts,tsx,js,jsx}"]
       }
     },
     "build": {
@@ -17,7 +17,7 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "outputPath": "dist/libs/web/ui/progress--spinner"
+        "outputPath": "dist/libs/web/ui/progress-spinner"
       },
       "configurations": {
         "development": {
@@ -30,10 +30,10 @@
     },
     "test": {
       "executor": "@nrwl/vite:test",
-      "outputs": ["coverage/libs/web/ui/progress--spinner"],
+      "outputs": ["coverage/libs/web/ui/progress-spinner"],
       "options": {
         "passWithNoTests": true,
-        "reportsDirectory": "../../../../coverage/libs/web/ui/progress--spinner"
+        "reportsDirectory": "../../../../coverage/libs/web/ui/progress-spinner"
       }
     }
   }

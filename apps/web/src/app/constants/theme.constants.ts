@@ -5,10 +5,13 @@
  */
 
 import type { ThemeOptions } from '@mui/material';
+
 import { palette } from './palette.constants';
 import { typography } from './typography.constants';
 
 export const theme: ThemeOptions = {
   typography,
   palette,
-};
+} as const;
+
+export default theme;

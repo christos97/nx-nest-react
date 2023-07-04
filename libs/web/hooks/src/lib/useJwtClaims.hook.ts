@@ -1,8 +1,8 @@
+import type { Types } from '@ntua-saas-10/shared-types';
 import { auth } from '@ntua-saas-10/web/firebase';
+import type { ParsedToken } from 'firebase/auth';
 import { useState, useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import type { ParsedToken } from 'firebase/auth';
-import type { Types } from '@ntua-saas-10/shared-types';
 
 export interface JwtCustomClaims extends ParsedToken {
   customClaims?: Partial<Types.UserCustomClaims>;

@@ -1,6 +1,6 @@
 /**
- * @global `@ntua-saas-10/shared-consts
- * @readonly `HttpMethod` const assertion
+ * @global `@/shared-consts/HttpMethod`
+ * @readonly
  */
 const HttpMethod = {
   /** `GET` method requests a representation of the specified resource. */

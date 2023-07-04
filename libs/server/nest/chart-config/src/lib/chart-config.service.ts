@@ -1,9 +1,21 @@
 import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import type { ChartConfiguration, ChartData, ChartDataset } from 'chart.js';
-import type { Types } from '@ntua-saas-10/shared-types';
-import type { DocumentReference } from 'firebase-admin/firestore';
 import { firestore, storage } from '@ntua-saas-10/server-firebase-admin';
+
+import type { ChartType, ContentType } from '@ntua-saas-10/shared-consts';
+import type { Chart } from '@ntua-saas-10/shared-types';
+import type { ChartConfiguration, ChartData, ChartDataset } from 'chart.js';
+import type { DocumentReference } from 'firebase-admin/firestore';
+
+type UploadChartConfig = {
+  metadata: {
+    uid: string;
+    chartId: string;
+  };
+  name: string;
+  contentType: ContentType;
+};
+type LineChartDataset = ChartDataset<(typeof ChartType)['line']>;
 
 @Injectable()
 export class ChartConfigService {
@@ -13,7 +25,7 @@ export class ChartConfigService {
     this.CHARTS_COLLECTION_PATH = this.configService.getOrThrow('CHARTS_COLLECTION_PATH');
   }
 
-  generateChartConfig(chartType: Types.ChartType, data: ChartData): ChartConfiguration {
+  generateChartConfig(chartType: ChartType, data: ChartData): ChartConfiguration {
     const chartConfig: ChartConfiguration = {
       type: 'line',
       data: data,
@@ -42,14 +54,13 @@ export class ChartConfigService {
   }
 
   private generateMultiAxisLineOptions(chartConfig: ChartConfiguration, data: ChartData) {
-    chartConfig.options = {
-      ...chartConfig.options,
-      interaction: { mode: 'index', intersect: false },
-      scales: {},
-    };
+    if (!chartConfig.options || Object.keys(chartConfig.options || {}).length === 0)
+      chartConfig.options = {};
+    chartConfig.options.interaction = { mode: 'index', intersect: false };
+    chartConfig.options.scales = {};
 
     let leftAxisExists = false;
-    for (const dataset of data.datasets as ChartDataset<'line'>[]) {
+    for (const dataset of data.datasets as LineChartDataset[]) {
       const { yAxisID = 'Untitled' } = dataset;
 
       if (chartConfig.options.scales) {
@@ -73,26 +84,21 @@ export class ChartConfigService {
     chart: {
       chartConfig: ChartConfiguration;
       chartId: string;
-      chartType: Types.ChartType;
+      chartType: ChartType;
       createdAt: Date;
       uploadedDatafilePath: string;
       claimed?: boolean;
     },
   ) {
-    const { chartConfig, chartId, chartType, createdAt, uploadedDatafilePath, claimed } = chart;
-
     try {
       const chartRef = firestore
         .collection(this.CHARTS_COLLECTION_PATH.replace('{uid}', uid))
-        .doc(chartId) as DocumentReference<Types.Chart>;
+        .doc(chart.chartId) as DocumentReference<Chart>;
 
       await chartRef.set({
-        chartId,
-        chartType,
-        createdAt,
-        chartConfig,
-        uploadedDatafilePath,
-        claimed: claimed ?? false,
+        ...chart,
+        uid,
+        claimed: !!chart.claimed,
       });
     } catch {
       throw new InternalServerErrorException('Chart configuration could not be saved');
@@ -103,7 +109,7 @@ export class ChartConfigService {
     try {
       const chartRef = firestore
         .collection(this.CHARTS_COLLECTION_PATH.replace('{uid}', uid))
-        .doc(chartId) as DocumentReference<Types.Chart>;
+        .doc(chartId) as DocumentReference<Chart>;
 
       await chartRef.delete();
     } catch {
@@ -111,20 +117,21 @@ export class ChartConfigService {
     }
   }
 
-  async generateChartsMediaLinks(uploadsMetadata: any[]) {
+  async generateChartsMediaLinks(uploadsMetadata: UploadChartConfig[] = []) {
     const mediaLinks = [];
-    const { uid, chartId } = uploadsMetadata[0].metadata;
+    const metadata = uploadsMetadata[0]?.metadata;
+    if (!metadata) throw new InternalServerErrorException('No uploads metadata');
 
-    for (const upload of uploadsMetadata) {
-      const fileRef = storage.bucket().file(upload.name);
+    const { uid, chartId } = metadata as UploadChartConfig['metadata'];
+    for (const { name, contentType } of uploadsMetadata) {
+      const fileRef = storage.bucket().file(name);
       const downloadLink = await fileRef.getSignedUrl({ action: 'read', expires: '03-09-2491' });
-
-      mediaLinks.push({ contentType: upload.contentType, link: downloadLink[0] });
+      mediaLinks.push({ contentType, link: downloadLink[0] });
     }
 
     const chartRef = firestore
       .collection(this.CHARTS_COLLECTION_PATH.replace('{uid}', uid))
-      .doc(chartId) as DocumentReference<Types.Chart>;
+      .doc(chartId) as DocumentReference<Chart>;
 
     await chartRef.set({ mediaLinks }, { merge: true });
   }

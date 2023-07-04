@@ -5,6 +5,7 @@
  */
 
 import type { ThemeOptions } from '@mui/material';
+
 import { FONT_FAMILY as fontFamily } from './app.constants';
 
 export const typography: ThemeOptions['typography'] = {

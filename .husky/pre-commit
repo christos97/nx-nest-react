@@ -1,4 +1,11 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-npx nx format:check
+echo "-----------------------------------"
+echo "auto-formatting code..."
+echo "-----------------------------------"
+
+npx nx format:write
+git add .
+
+echo "\nYou can now push your code..."

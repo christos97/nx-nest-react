@@ -1,6 +1,7 @@
 import type { ObjectMetadata } from 'firebase-functions/v1/storage';
-import { VALIDATION_SERVICE_URL } from '../config';
+
 import { logger } from '../_';
+import { VALIDATION_SERVICE_URL } from '../config';
 
 export const NO_NEXT_STEP = 'NO_NEXT_STEP';
 

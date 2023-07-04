@@ -1,11 +1,22 @@
-import users from './users.resource';
-import datafiles from './datafiles.resource';
+//import { DatafilesResource } from './datafiles';
+import { UsersResource } from './users';
 
-export const Resources = {
-  users,
-  datafiles,
+/**
+ * `ApiResources` All the resources that are available in the API.
+ * @readonly
+ */
+export const ApiResources = {
+  users: {
+    ...UsersResource,
+    // 'subResource': undefined
+  } as const,
+  /* datafiles: {
+    ...DatafilesResource,
+  } as const, */
 } as const;
 
-export type Resources = typeof Resources;
+Object.freeze(ApiResources);
 
-export default Resources;
+export type ApiResources = typeof ApiResources;
+
+export { ResourcePath } from './constants';

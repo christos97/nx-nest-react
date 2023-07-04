@@ -1,6 +1,6 @@
 /**
- * @global `@ntua-saas-10/api-interfaces/~/consts/ContentType`
- * @readonly `ContentType` const assertion
+ * @global `@/shared-consts/ContentType`
+ * @readonly
  */
 const ContentType = {
   /**

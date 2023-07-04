@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import styled from '@emotion/styled';
+import LanguageIcon from '@mui/icons-material/Language';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { type SelectChangeEvent } from '@mui/material/Select';
-import styled from '@emotion/styled';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+
 import { type Languages, LANGUAGES, FLAGS } from './constants';
-import LanguageIcon from '@mui/icons-material/Language';
+
 import { styles } from './styles';
 
 const StyledSelect = styled(Select)(styles);

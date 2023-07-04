@@ -3,15 +3,23 @@
   "npmScope": "ntua-saas-10",
   "tasksRunnerOptions": {
     "default": {
-      "runner": "@nrwl/nx-cloud",
       "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e"],
-        "accessToken": "ODc3ZTFjYTctZDBiNS00NjQ4LWFiODYtODM3NzUzYzY5YjU0fHJlYWQtd3JpdGU="
+        "cacheableOperations": ["build", "lint", "test", "e2e"]
       }
     }
   },
+  "targetDependencies": {
+    "build": [
+      {
+        "target": "build",
+        "projects": "dependencies"
+      }
+    ]
+  },
   "targetDefaults": {
     "build": {
+      "executor": "@nrwl/workspace:run-commands",
+
       "dependsOn": ["^build"],
       "inputs": ["production", "^production"]
     },

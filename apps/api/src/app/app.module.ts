@@ -1,6 +1,5 @@
 import { type MiddlewareConsumer, type NestModule, Module } from '@nestjs/common';
-import { DatafilesModule } from '@ntua-saas-10/server/nest/datafiles';
-import { DatafilesController } from '@ntua-saas-10/server/nest/datafiles';
+import { DatafilesModule, DatafilesController } from '@ntua-saas-10/server/nest/datafiles';
 import { FirebaseAuthMiddleware } from '@ntua-saas-10/server/nest/firebase-auth-middleware';
 import { TransactionController, TransactionModule } from '@ntua-saas-10/server/nest/transaction';
 

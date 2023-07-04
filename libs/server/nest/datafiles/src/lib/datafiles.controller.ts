@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import type { Multer } from 'multer';
+import { ZodValidationPipe } from '@anatine/zod-nestjs';
 import {
   Controller,
   Post,
@@ -15,19 +14,28 @@ import {
   HttpStatus,
   Delete,
   HttpCode,
+  ForbiddenException,
 } from '@nestjs/common';
-import { DatafilesService } from './datafiles.service';
+import { ConfigService } from '@nestjs/config';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiConsumes } from '@nestjs/swagger';
-import { ContentType, NotificationType } from '@ntua-saas-10/shared-consts';
-import { UploadDatafileRequestDto, UploadDatafileResponseDto } from '@ntua-saas-10/shared-dtos';
-import { MAX_FILE_SIZE_KB } from './datafiles.constants';
-import { ZodValidationPipe } from '@anatine/zod-nestjs';
 import { FilenameService } from '@ntua-saas-10/server/nest/filename';
-import { ConfigService } from '@nestjs/config';
-import type { Types } from '@ntua-saas-10/shared-types';
 import { NotificationsService } from '@ntua-saas-10/server/nest/notifications';
-import { DeleteDatafileRequestDto, DeleteDatafileResponseDto } from '@ntua-saas-10/shared-dtos';
+import { ContentType, NotificationType } from '@ntua-saas-10/shared-consts';
+import {
+  UploadDatafileRequestDto,
+  UploadDatafileResponseDto,
+  DeleteDatafileRequestDto,
+  DeleteDatafileResponseDto,
+} from '@ntua-saas-10/shared-dtos';
+
+import type { Types } from '@ntua-saas-10/shared-types';
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { Multer } from 'multer';
+
+import { MAX_FILE_SIZE_KB } from './datafiles.constants';
+import { DatafilesService } from './datafiles.service';
 
 @Controller('datafiles')
 export class DatafilesController {
@@ -60,6 +68,15 @@ export class DatafilesController {
     @Body() body: UploadDatafileRequestDto,
     @Req() req: Types.AuthRequest,
   ): Promise<UploadDatafileResponseDto> {
+    const {
+      user: { uid },
+      customClaims,
+    } = req;
+    const quota = customClaims?.quota?.current || 0;
+    if (quota <= 0) {
+      throw new ForbiddenException('User quota exceeded');
+    }
+
     const { chartType } = body;
 
     const { fileId, newFilename } = this.filenameService.generateFileInfo(
@@ -71,9 +88,9 @@ export class DatafilesController {
       this.FILES_DEST,
       newFilename,
       {
-        chartId: fileId,
+        uid,
         chartType,
-        uid: req.user.uid,
+        chartId: fileId,
         nextStep: 'validate',
         contentEncoding: 'UTF-8',
       },
@@ -99,9 +116,9 @@ export class DatafilesController {
         name: uploadMetadata.name,
         url: uploadMetadata.mediaLink,
         meta: {
-          chartType: chartType,
+          uid,
+          chartType,
           createdAt: uploadMetadata.timeCreated,
-          uid: req.user.uid,
         },
       },
     };

@@ -1,5 +1,5 @@
 {
-  "name": "@ntua-saas-10/web/ui/progress--spinner",
+  "name": "@ntua-saas-10/web/ui/progress-spinner",
   "version": "0.0.1",
   "main": "./index.js",
   "types": "./index.d.ts",

@@ -5,12 +5,15 @@
  */
 
 import { type ThemeOptions } from '@mui/system';
-import { colors } from './colors.constants';
 
-const keys = Object.keys(colors) as Colors[];
-export type Colors = keyof typeof colors;
+import { colors, type AppColors } from './colors.constants';
+
+export type Color = keyof typeof colors;
+const keys = Object.keys(colors) as Color[];
 
 export const palette: ThemeOptions['palette'] = keys.reduce((acc, key) => {
-  acc[key] = { main: colors[key] };
+  acc[key] = { main: colors[key] as AppColors[Color] };
   return acc;
-}, {} as Record<Colors, { main: string }>);
+}, {} as Record<Color, { main: string }>);
+
+export default palette;

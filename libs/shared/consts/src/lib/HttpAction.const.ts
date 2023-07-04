@@ -1,5 +1,6 @@
 /**
- * @description HTTP Actions `CRUD`
+ * @global `@/shared-consts/HttpAction`
+ * @readonly
  */
 const HttpAction = {
   /** Retrieve a resource (GET) */
@@ -15,7 +16,7 @@ const HttpAction = {
   update: 'update',
 
   /** Delete a resource (DELETE) */
-  delete: 'delete',
+  remove: 'remove',
 } as const;
 
 export { HttpAction };

@@ -1,26 +1,21 @@
-import React, { Suspense, useEffect } from 'react';
-
-// Consts
-import { SUPPORTED_LANGUAGES } from './constants/i18n.constants';
-import { HeaderProps } from './constants/app.constants';
-
-// Hooks
-import { useHeaderlLinks } from './hooks/useHeaderlLinks.hook';
-import { useAppRoutes } from './hooks/useAppRoutes.hook';
-
-// Ui Components
+import { ChangeLanguage } from '@ntua-saas-10/web/features/change-language';
+import { useNotify } from '@ntua-saas-10/web/hooks';
 import { UiHeader } from '@ntua-saas-10/web/ui/header';
 import { UiProgressSpinner } from '@ntua-saas-10/web/ui/progress-spinner';
+import { ToastMessage } from '@ntua-saas-10/web/ui/toast';
+import React, { Suspense, useEffect } from 'react';
 
-// Features
-import { ChangeLanguage } from '@ntua-saas-10/web/features/change-language';
+import { toast } from 'react-toastify';
+
+import { HeaderProps } from './constants/app.constants';
+import { SUPPORTED_LANGUAGES } from './constants/i18n.constants';
+
+import { useAppRoutes } from './hooks/useAppRoutes.hook';
+import { useHeaderlLinks } from './hooks/useHeaderlLinks.hook';
 
 import './assets/styles/globals.css';
 import '@fontsource/inter';
-import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useNotify } from '@ntua-saas-10/web/hooks';
-import { ToastMessage } from '@ntua-saas-10/web/ui/toast';
 
 export const App: React.FC = () => {
   const headerLinks = useHeaderlLinks();
@@ -45,5 +40,3 @@ export const App: React.FC = () => {
     </div>
   );
 };
-
-export default App;

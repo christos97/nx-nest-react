@@ -1,6 +1,6 @@
 /**
- * @global `@ntua-saas-10/shared-consts
- * @readonly `UserRole` const assertion
+ * @global `@/shared-consts/UserRole`
+ * @readonly
  */
 const UserRole = {
   /** `admin` role has full access to all resources */
@@ -12,4 +12,4 @@ const UserRole = {
 } as const;
 
 export { UserRole };
-export type UserRole = keyof typeof UserRole;
+export type UserRole = (typeof UserRole)[keyof typeof UserRole];

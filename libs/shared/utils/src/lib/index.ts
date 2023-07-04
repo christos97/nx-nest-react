@@ -1,2 +1,2 @@
-export { default as createUploadFileSchema } from './utils/createUploadFileSchema';
-export { default as isChartData } from './utils/isChartData';
+export { default as createUploadFileSchema } from './createUploadFileSchema';
+export { default as isChartData } from './isChartData';

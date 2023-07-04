@@ -1,59 +1,50 @@
-import { Injectable, NotImplementedException } from '@nestjs/common';
-import { Chart } from 'chart.js/auto';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import { Render, RenderParams } from '@ntua-saas-10/shared-types';
 import { Canvas } from 'canvas';
-import { ContentType } from '@ntua-saas-10/shared-consts';
-import type { Types } from '@ntua-saas-10/shared-types';
+import { Chart } from 'chart.js/auto';
+
+import { ContentTypeMapper } from './render.constants';
 
 @Injectable()
 export class RenderService {
-  render(params: Types.RenderParams): Promise<Types.Render> {
-    return new Promise((resolve, reject) => {
-      const { chartConfig } = params;
-      const { contentType } = params.options;
-      const { width, height } = params.options.resolution;
+  private readonly logger!: Logger;
 
-      if (
-        contentType !== ContentType.application_pdf &&
-        contentType !== ContentType.image_svg_xml &&
-        contentType !== ContentType.image_png &&
-        contentType !== ContentType.text_html
-      ) {
-        reject(new NotImplementedException('Unsupported content type'));
-        return;
-      }
+  constructor() {
+    if (!this.logger) {
+      this.logger = new Logger(RenderService.name);
+    }
+  }
 
-      let type: 'svg' | 'pdf' | 'png' = 'svg';
+  async render({ options, chartConfig, id }: RenderParams): Promise<Render> {
+    return new Promise<Render>((resolve, reject) => {
+      const {
+        resolution: { width, height },
+        contentType,
+      } = options;
 
-      if (contentType === ContentType.application_pdf) type = 'pdf';
-      else if (contentType === ContentType.image_png) type = 'png';
-
-      // @ts-ignore
-      const canvas = new Canvas(width, height, type);
+      const { canvasType, renderType } = ContentTypeMapper[contentType];
+      const canvas = new Canvas(width, height, canvasType);
       const context = canvas.getContext('2d') as unknown as CanvasRenderingContext2D;
-      const chartRef = new Chart(context, chartConfig);
-
-      // Special case if `contentType` is `text/html`
-      if (contentType === ContentType.text_html) {
-        const svgBuffer = canvas.toBuffer();
-        const htmlBuffer = Buffer.from(`<html>${svgBuffer.toString()}</html>`);
-        resolve({
-          id: params.id,
-          buffer: htmlBuffer,
-          contentType,
-          type: 'html',
-          createdAt: new Date(),
-        });
-      } else {
-        // @ts-ignore
-        const buffer = canvas.toBuffer(contentType);
-        resolve({
-          id: params.id,
-          buffer,
-          contentType,
-          type,
-          createdAt: new Date(),
-        });
-      }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const __chart = new Chart(context, chartConfig);
+      canvas.toBuffer((err: Error | null, buffer: Buffer) => {
+        if (err) {
+          reject(err);
+        } else {
+          const render: Render = {
+            id,
+            buffer,
+            contentType,
+            type: renderType,
+            createdAt: new Date(),
+          };
+          if (contentType === 'text/html') {
+            render.buffer = Buffer.from(`<html>${buffer.toString()}</html>`);
+          }
+          this.logger.log({ render });
+          resolve(render);
+        }
+      });
     });
   }
 }

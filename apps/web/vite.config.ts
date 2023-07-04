@@ -1,9 +1,10 @@
 /// <reference types="vitest" />
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react-swc';
-import viteTsConfigPaths from 'vite-tsconfig-paths';
-import { workspaceRoot as root } from '@nrwl/devkit';
 import { join } from 'path';
+
+import { workspaceRoot as root } from '@nrwl/devkit';
+import react from '@vitejs/plugin-react-swc';
+import { defineConfig } from 'vite';
+import viteTsConfigPaths from 'vite-tsconfig-paths';
 
 const APP_NAME = 'web';
 const NODE_MODULES = join(root, 'node_modules');

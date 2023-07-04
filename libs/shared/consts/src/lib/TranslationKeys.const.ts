@@ -1,9 +1,7 @@
 /**
- * This file contains all the translations keys used in the application.
- * @fileoverview i18n constants.
- * @global apps/web/~/constants/translations.constants.ts
+ * @global `@/shared-consts/TranslationKeys`
+ * @readonly
  */
-
 const TranslationKeys = {
   common: {
     home: 'home',

@@ -1,28 +1,15 @@
 import { Logger, NotFoundException } from '@nestjs/common';
-import {
-  FilterQuery,
-  Model,
-  Types,
-  UpdateQuery,
-  SaveOptions,
-  Connection,
-  ClientSession,
-} from 'mongoose';
-import { AbstractDocument } from './abstract.schema';
+import type { FilterQuery, Model, UpdateQuery, SaveOptions } from 'mongoose';
 
-export abstract class AbstractRepository<TDocument extends AbstractDocument> {
-  protected abstract readonly logger: Logger;
+import type { AbstractDocument } from './abstract.schema';
 
-  constructor(
-    protected readonly model: Model<TDocument>,
-    private readonly connection: Connection,
-  ) {}
+export class AbstractRepository<TDocument extends AbstractDocument> {
+  protected readonly logger!: Logger;
+
+  constructor(protected readonly model: Model<TDocument>) {}
 
   async create(document: Omit<TDocument, '_id'>, options?: SaveOptions): Promise<TDocument> {
-    const createdDocument = new this.model({
-      ...document,
-      _id: new Types.ObjectId(),
-    });
+    const createdDocument = new this.model(document);
     return (await createdDocument.save(options)).toJSON() as unknown as TDocument;
   }
 
@@ -37,8 +24,13 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
     return document;
   }
 
-  async findOneAndUpdate(filterQuery: FilterQuery<TDocument>, update: UpdateQuery<TDocument>) {
+  async findOneAndUpdate(
+    filterQuery: FilterQuery<TDocument>,
+    update: UpdateQuery<Partial<TDocument>>,
+    upsert = false,
+  ) {
     const document = await this.model.findOneAndUpdate(filterQuery, update, {
+      upsert,
       lean: true,
       new: true,
     });
@@ -51,21 +43,7 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
     return document;
   }
 
-  async upsert(filterQuery: FilterQuery<TDocument>, document: Partial<TDocument>) {
-    return this.model.findOneAndUpdate(filterQuery, document, {
-      lean: true,
-      upsert: true,
-      new: true,
-    });
-  }
-
   async find(filterQuery: FilterQuery<TDocument>) {
     return this.model.find(filterQuery, {}, { lean: true });
-  }
-
-  async startTransaction(): Promise<ClientSession> {
-    const session = await this.connection.startSession();
-    session.startTransaction();
-    return session;
   }
 }

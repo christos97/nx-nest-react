@@ -9,5 +9,5 @@ export interface UploadFileSchemaOptions {
    * The maximum `size` of the file in bytes.
    * @example 5MB = 5 * 1024 * 1024 = 5242880
    */
-  maxSize: number;
+  maxFileSize: number;
 }

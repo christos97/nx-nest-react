@@ -1,11 +1,12 @@
+import { ZodValidationPipe } from '@anatine/zod-nestjs';
 import { Body, Controller, HttpCode, Post, Req, UsePipes } from '@nestjs/common';
-import type { Types } from '@ntua-saas-10/shared-types';
-import { TransactionService } from './transaction.service';
+import { ConfigService } from '@nestjs/config';
 import { ChartConfigService } from '@ntua-saas-10/server/nest/chart-config';
 import { DatafilesService } from '@ntua-saas-10/server/nest/datafiles';
-import { ConfigService } from '@nestjs/config';
-import { ZodValidationPipe } from '@anatine/zod-nestjs';
 import { TransactionRequestDto } from '@ntua-saas-10/shared-dtos';
+import type { AuthRequest } from '@ntua-saas-10/shared-types';
+
+import { TransactionService } from './transaction.service';
 
 @Controller('transaction')
 export class TransactionController {
@@ -23,7 +24,7 @@ export class TransactionController {
   @Post('verify')
   @UsePipes(ZodValidationPipe)
   @HttpCode(200)
-  async verifyTransaction(@Body() body: TransactionRequestDto, @Req() req: Types.AuthRequest) {
+  async verifyTransaction(@Body() body: TransactionRequestDto, @Req() req: AuthRequest) {
     await this.transactionService.removeCreditsAndClaimChart(req.user.uid, body.chartId);
 
     return {
@@ -35,7 +36,7 @@ export class TransactionController {
   @Post('abort')
   @UsePipes(ZodValidationPipe)
   @HttpCode(200)
-  async abortTransaction(@Req() req: Types.AuthRequest, @Body() body: TransactionRequestDto) {
+  async abortTransaction(@Req() req: AuthRequest, @Body() body: TransactionRequestDto) {
     const { uid } = req.user;
     const { chartId, uploadedDatafilePath } = body;
 

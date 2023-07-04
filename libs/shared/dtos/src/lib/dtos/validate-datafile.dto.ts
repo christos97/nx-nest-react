@@ -1,10 +1,9 @@
 import { createZodDto } from '@anatine/zod-nestjs';
-import { Schemas } from '@ntua-saas-10/shared-schemas';
+import {
+  ValidateDatafileRequestSchema,
+  ValidateDatafileResponseSchema,
+} from '@ntua-saas-10/shared-schemas';
 
-export class ValidateDatafileRequestDto extends createZodDto(
-  Schemas.ValidateDatafileRequestSchema,
-) {}
+export class ValidateDatafileRequestDto extends createZodDto(ValidateDatafileRequestSchema) {}
 
-export class ValidateDatafileResponseDto extends createZodDto(
-  Schemas.ValidateDatafileResponseSchema,
-) {}
+export class ValidateDatafileResponseDto extends createZodDto(ValidateDatafileResponseSchema) {}

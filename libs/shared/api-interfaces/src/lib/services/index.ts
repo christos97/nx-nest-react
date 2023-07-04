@@ -1,7 +1,7 @@
-import I18nService from './i18n.service';
+import { ServicePaths } from './constants';
 
 export const Services = {
-  I18n: I18nService,
+  I18n: ServicePaths.I18nService,
 } as const;
 
 export type Services = typeof Services;

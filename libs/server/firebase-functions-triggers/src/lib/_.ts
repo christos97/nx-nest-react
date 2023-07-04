@@ -1,21 +1,26 @@
-import * as _functions from 'firebase-functions';
+import { ApiSDK } from '@ntua-saas-10/shared-api-sdk';
+import { getAuth } from 'firebase-admin/auth';
 import { getFirestore } from 'firebase-admin/firestore';
+import * as functions from 'firebase-functions';
+
 import { GCLOUD_REGION } from './config';
 
-const regionBuilder = _functions.region(GCLOUD_REGION);
+const regionBuilder = functions.region(GCLOUD_REGION);
+export const authFunc = regionBuilder.auth;
+export const firestoreFunc = regionBuilder.firestore;
+export const storageFunc = regionBuilder.storage;
+export const logger = functions.logger;
 
-export const functions = _functions;
-export const storage = regionBuilder.storage;
-export const auth = regionBuilder.auth;
-export const firestoreFunctions = regionBuilder.firestore;
-export const logger = _functions.logger;
+export const FunctionError = functions.https.HttpsError;
+export const HttpsOK = new FunctionError('ok', 'ok', null);
+export const HttpsInternal = new FunctionError('internal', 'internal', null);
 
-export const HttpsError = _functions.https.HttpsError;
-export const HttpsOK = new HttpsError('ok', 'ok', null);
-export const HttpsInternal = new HttpsError('internal', 'internal', null);
-
-const firestore = getFirestore();
+export const auth = getAuth();
+export const firestore = getFirestore();
 firestore.settings({
   ignoreUndefinedProperties: true,
 });
-export { firestore };
+
+export const api = new ApiSDK({
+  apiKey: process.env['SDK_API_KEY'] || '',
+});

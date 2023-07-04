@@ -1,7 +1,7 @@
 {
   "root": true,
   "ignorePatterns": ["**/*"],
-  "plugins": ["@nrwl/nx"],
+  "plugins": ["@nrwl/nx", "import"],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
@@ -23,8 +23,38 @@
     },
     {
       "files": ["*.ts", "*.tsx"],
-      "extends": ["plugin:@nrwl/nx/typescript"],
-      "rules": {}
+      "extends": [
+        "plugin:@nrwl/nx/typescript",
+        "plugin:import/errors",
+        "plugin:import/warnings",
+        "plugin:import/typescript"
+      ],
+      "rules": {
+        "no-console": "warn",
+        "import/no-unresolved": "off",
+        "import/named": "off",
+        "import/namespace": "off",
+        "import/no-named-as-default": "warn",
+        "import/export": "warn",
+        "import/newline-after-import": ["warn", { "count": 1 }],
+        "import/no-useless-path-segments": [
+          "warn",
+          {
+            "noUselessIndex": true
+          }
+        ],
+        "import/order": [
+          "warn",
+          {
+            "groups": ["builtin", "external", "parent", "sibling", "index"],
+            "newlines-between": "always-and-inside-groups",
+            "alphabetize": {
+              "order": "asc",
+              "caseInsensitive": true
+            }
+          }
+        ]
+      }
     },
     {
       "files": ["*.js", "*.jsx"],

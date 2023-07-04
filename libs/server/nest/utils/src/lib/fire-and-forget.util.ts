@@ -1,6 +1,6 @@
 export async function fireAndForget(fn: () => void) {
   try {
-    await fn();
+    fn();
   } catch (error) {
     console.error('Fire and forget function encountered an error:', error);
   }

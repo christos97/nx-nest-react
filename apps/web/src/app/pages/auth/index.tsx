@@ -2,7 +2,7 @@ import { SignUp } from '@ntua-saas-10/web/features/signup';
 import { auth } from '@ntua-saas-10/web/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
-const Auth: React.FC = () => {
+export const Auth: React.FC = () => {
   const [user, loading, error] = useAuthState(auth);
 
   if (loading) return <div>Loading...</div>;
@@ -13,5 +13,3 @@ const Auth: React.FC = () => {
 
   return <SignUp />;
 };
-
-export default Auth;

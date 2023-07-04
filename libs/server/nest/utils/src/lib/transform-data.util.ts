@@ -5,7 +5,7 @@ import type { Types } from '@ntua-saas-10/shared-types';
 import { generatePalette } from './generate-palette.util';
 import { DatafileValuesRegex } from '@ntua-saas-10/shared-consts';
 
-export const transformDataToLine = (parsedFile: ParseResult<any>, isMultiAxis: boolean = false) => {
+export const transformDataToLine = (parsedFile: ParseResult<any>, isMultiAxis = false) => {
   const transformedData: Required<Types.ChartDataType<'line'>> = {
     labels: [],
     datasets: [],

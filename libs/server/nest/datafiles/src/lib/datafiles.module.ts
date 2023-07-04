@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
-import { DatafilesService } from './datafiles.service';
-import { DatafilesController } from './datafiles.controller';
-import { FilenameService } from '@ntua-saas-10/server/nest/filename';
+
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { FilenameService } from '@ntua-saas-10/server/nest/filename';
+
 import { NotificationsService } from '@ntua-saas-10/server/nest/notifications';
+
+import { DatafilesController } from './datafiles.controller';
+import { DatafilesService } from './datafiles.service';
 
 @Module({
   imports: [ConfigModule],

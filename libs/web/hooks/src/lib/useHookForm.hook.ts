@@ -2,12 +2,14 @@
  * @fileoverview Custom hook for react-hook-form w/ @tanstack/react-query
  */
 
-import { useForm, type DeepPartial, type ErrorOption } from 'react-hook-form';
-import { useReactMutation } from './useReactMutation.hook';
-import { type ZodRawShape, z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import type { AxiosRequestConfig } from 'axios';
 import { HttpMethod } from '@ntua-saas-10/shared-consts';
+import type { AxiosRequestConfig } from 'axios';
+import { useForm, type DeepPartial, type ErrorOption } from 'react-hook-form';
+
+import { type ZodRawShape, z } from 'zod';
+
+import { useReactMutation } from './useReactMutation.hook';
 
 interface UseHookFormProps<T extends ZodRawShape, K> {
   path: string;
@@ -42,7 +44,7 @@ export const useHookForm = <T extends ZodRawShape, K>({
     resolver: zodResolver(schema),
   });
 
-  const submitFn = async (data: T) => {
+  const submitFn = (data: T) => {
     try {
       mutate(data);
     } catch (error: unknown) {

@@ -1,4 +1,3 @@
-export * from './ChartType.type';
 export * from './User.type';
 export * from './Datafile.type';
 export * from './AuthResponse.type';

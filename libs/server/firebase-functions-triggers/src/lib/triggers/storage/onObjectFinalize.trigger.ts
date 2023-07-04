@@ -1,7 +1,9 @@
-import { HttpsOK, logger, storage } from '../../_';
-import { call } from '../../utils/call.util';
-import type { ObjectMetadata } from 'firebase-functions/v1/storage';
+import { call } from '@ntua-saas-10/shared-call';
 import type { CloudFunction, EventContext } from 'firebase-functions';
+import type { ObjectMetadata } from 'firebase-functions/v1/storage';
+
+import { HttpsOK, logger, storageFunc } from '../../_';
+
 import {
   getNextStep,
   NO_NEXT_STEP,
@@ -17,7 +19,7 @@ import {
  * - You must provide a `nextStep` in the file `metadata` for this trigger to continue
  * @example { nextStep: 'validate' }
  */
-export const objectFinalizedTrigger: CloudFunction<ObjectMetadata> = storage
+export const objectFinalizedTrigger: CloudFunction<ObjectMetadata> = storageFunc
   .object()
   .onFinalize(async (object: ObjectMetadata, context: EventContext) => {
     logger.log(context.eventType, {
@@ -27,6 +29,8 @@ export const objectFinalizedTrigger: CloudFunction<ObjectMetadata> = storage
     });
     const nextStep = getNextStep(object);
     if (nextStep === NO_NEXT_STEP) return HttpsOK;
-    const url = NEXT_STEP_STORAGE_SERVICES[nextStep];
-    return await call(url, { object, context });
+    return await call({
+      url: NEXT_STEP_STORAGE_SERVICES[nextStep],
+      data: { object, context },
+    });
   });

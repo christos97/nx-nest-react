@@ -4,36 +4,57 @@ import {
   NestMiddleware,
   UnauthorizedException,
   BadRequestException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { auth } from '@ntua-saas-10/server-firebase-admin';
+import { UserRole } from '@ntua-saas-10/shared-consts';
 
-// import { UserRole } from '@ntua-saas-10/shared-consts';
-
-import type { Types } from '@ntua-saas-10/shared-types';
+import type { AuthRequest, AuthResponse, UserCustomClaims } from '@ntua-saas-10/shared-types';
 import type { NextFunction } from 'express';
 
-const INVALID_TOKEN = 'Invalid token';
+const ERROR_MSG = {
+  INVALID_TOKEN: 'Invalid token',
+  USER_DISABLED: 'User is disabled',
+  INSUFFICIENT_PERMISSIONS: 'User Authorization failed - Insufficient permissions',
+  UNAUTHENTICATED: 'User Authentication failed',
+} as const;
 
 @Injectable()
 export class FirebaseAuthMiddleware implements NestMiddleware {
-  async use(req: Types.AuthRequest, res: Types.AuthResponse, next: NextFunction) {
+  private readonly logger = new Logger(FirebaseAuthMiddleware.name);
+
+  async use(req: AuthRequest, _: AuthResponse, next: NextFunction) {
     const jwt = req.headers.authorization;
     if (!jwt?.startsWith('Bearer ')) {
-      Logger.log('No JWT provided', FirebaseAuthMiddleware.name);
-      throw new BadRequestException(INVALID_TOKEN);
+      this.logger.error(ERROR_MSG.INVALID_TOKEN);
+      throw new BadRequestException(ERROR_MSG.INVALID_TOKEN);
     }
+
     const idToken = jwt.split('Bearer ')[1] || '';
     try {
       const user = await auth.verifyIdToken(idToken);
-      const { customClaims } = await auth.getUser(user.uid);
       req['user'] = user;
-      const claims = customClaims as Types.UserCustomClaims;
-      req['customClaims'] = claims || {};
-      // if (!claims.roles.includes(UserRole.admin)) return res.status(HttpStatus.FORBIDDEN).send({ message: 'FORBIDDEN' });
+
+      const customClaims = (await auth.getUser(user.uid)).customClaims as UserCustomClaims;
+      req['customClaims'] = Object.keys(customClaims || {}).length > 0 ? customClaims : {};
+
+      if (customClaims.disabled === true) {
+        this.logger.error(ERROR_MSG.USER_DISABLED);
+        throw new ForbiddenException(ERROR_MSG.USER_DISABLED);
+      }
+
+      if (!customClaims.roles?.includes(UserRole.user)) {
+        this.logger.error(ERROR_MSG.INSUFFICIENT_PERMISSIONS);
+        throw new ForbiddenException(ERROR_MSG.INSUFFICIENT_PERMISSIONS);
+      }
       return next();
     } catch (error) {
-      Logger.error(JSON.stringify(error), FirebaseAuthMiddleware.name);
-      throw new UnauthorizedException(error);
+      const e = error as Error;
+      this.logger.error(ERROR_MSG.UNAUTHENTICATED, JSON.stringify(e));
+      throw new UnauthorizedException(ERROR_MSG.UNAUTHENTICATED, {
+        cause: e,
+        description: e?.message || ERROR_MSG.UNAUTHENTICATED,
+      });
     }
   }
 }

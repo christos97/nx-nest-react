@@ -1,12 +1,13 @@
-import { Body, Controller, Post, UsePipes, Logger } from '@nestjs/common';
-import { ValidationService } from './validation.service';
-import { DatafilesService } from '@ntua-saas-10/server/nest/datafiles';
-import { ChartConfigService } from '@ntua-saas-10/server/nest/chart-config';
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
-import { ValidateDatafileRequestDto, ValidateDatafileResponseDto } from '@ntua-saas-10/shared-dtos';
-import { fireAndForget } from '@ntua-saas-10/server/nest/utils';
+import { Logger, Post, UsePipes, Body, Controller } from '@nestjs/common';
+import { ChartConfigService } from '@ntua-saas-10/server/nest/chart-config';
+import { DatafilesService } from '@ntua-saas-10/server/nest/datafiles';
 import { NotificationsService } from '@ntua-saas-10/server/nest/notifications';
+import { fireAndForget } from '@ntua-saas-10/server/nest/utils';
 import { NotificationType } from '@ntua-saas-10/shared-consts';
+import { ValidateDatafileRequestDto, ValidateDatafileResponseDto } from '@ntua-saas-10/shared-dtos';
+
+import { ValidationService } from './validation.service';
 
 @Controller('validation')
 export class ValidationController {
@@ -34,7 +35,7 @@ export class ValidationController {
         const parsedFile = this.datafilesService.parseCsv(fileBuffer);
         const validatedData = this.validationService.validateDatafile(parsedFile, chartType);
         const chartConfig = this.chartConfigService.generateChartConfig(chartType, validatedData);
-
+        this.logger.log(`Chart config generated for chart ${chartId} for user ${uid}`);
         await this.chartConfigService.saveChartConfig(uid, {
           chartId,
           chartType,

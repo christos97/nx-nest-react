@@ -1,10 +1,10 @@
-import { useMutation } from '@tanstack/react-query';
-import { useAxios } from './useAxios.hook';
-import type { AxiosResponse, AxiosRequestConfig } from 'axios';
 import { HttpMethod } from '@ntua-saas-10/shared-consts';
-import { BASE_URL, DEFAULT_HEADERS } from './constants';
+import { useMutation } from '@tanstack/react-query';
 
-type ApiResponse<T> = AxiosResponse<T>;
+import type { AxiosRequestConfig } from 'axios';
+
+import { BASE_URL, DEFAULT_HEADERS } from './constants';
+import { useAxios } from './useAxios.hook';
 
 interface UseReactMutation<T, K> {
   mutate: (data: T) => void;
@@ -23,21 +23,20 @@ interface UseReactMutation<T, K> {
 export const useReactMutation = <T = unknown, K = unknown>(
   url: string,
   method: Exclude<HttpMethod, 'GET'> = HttpMethod.POST,
-  config?: AxiosRequestConfig,
+  config: AxiosRequestConfig = {},
 ): UseReactMutation<T, K> => {
-  const axios = useAxios(config ?? {});
-  const { baseURL, headers } = config || {};
+  const axios = useAxios(config);
+  const { baseURL, headers = {} } = config;
   const requestConfig = {
     url,
     method,
-    baseURL: baseURL ? baseURL : BASE_URL,
-    headers:
-      Object.keys(headers ?? {}).length > 0 ? { ...DEFAULT_HEADERS, ...headers } : DEFAULT_HEADERS,
+    baseURL: baseURL || BASE_URL,
+    headers: Object.keys(headers).length > 0 ? { ...DEFAULT_HEADERS, ...headers } : DEFAULT_HEADERS,
   };
   const { mutate, isLoading, isError, error, isSuccess, data } = useMutation<K, Error, T, unknown>(
     async (data: T) => {
       try {
-        const res: ApiResponse<K> = await axios.request<K>({
+        const res = await axios.request<K>({
           ...requestConfig,
           data: method !== HttpMethod.DELETE && data ? data : undefined,
         });

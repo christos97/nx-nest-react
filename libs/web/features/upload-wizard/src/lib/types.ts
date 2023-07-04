@@ -1,20 +1,30 @@
-import type { ZodRawShape, z } from 'zod';
+import type { ContentType } from '@ntua-saas-10/shared-consts';
+import type { FormEvent } from 'react';
 
-export interface UploadWizardProps<T extends ZodRawShape> {
+export type FormMetadata = { [key: string]: string | Blob };
+
+export interface UploadWizardProps {
   /**
    * The `path` of the API endpoint repsponsible for the upload action
    */
   path: string;
 
   /**
-   * The `Zod Schema` of the upload multipart form
+   * The `Content-Type` of the upload multipart form
+   * @default 'text/plain'
    */
-  schema: z.ZodObject<T>;
+  mimeType?: ContentType;
+
+  /**
+   * The `maxFileSize` of the upload multipart form
+   * @default 5e6 (5MB)
+   */
+  maxFileSize?: number;
 
   /**
    * Key-Value pairs for the FormData append method
    */
-  formMetadata?: Record<string, unknown>;
+  formMetadata: FormMetadata;
 }
 
 /**
@@ -25,5 +35,10 @@ export interface UploadWizardFormData {
    * The `FileList` of the upload multipart form
    * @see https://developer.mozilla.org/en-US/docs/Web/API/FileList
    */
-  file: FileList;
+  files: File[];
+}
+
+export interface UploadWizardRef {
+  onSubmit: (e: FormEvent) => void;
+  files: readonly File[];
 }

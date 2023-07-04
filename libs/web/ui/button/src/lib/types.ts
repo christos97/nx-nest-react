@@ -1,6 +1,6 @@
-import { type MouseEventHandler } from 'react';
+import type { MouseEventHandler } from 'react';
 import type { ButtonProps as MuiButtonProps } from '@mui/material';
-import { UiButtonColor, UiButtonType } from './consts';
+import type { UiButtonColor, UiButtonType } from './consts';
 
 export type UiButtonType = (typeof UiButtonType)[number];
 export type UiButtonColor = (typeof UiButtonColor)[keyof typeof UiButtonColor];

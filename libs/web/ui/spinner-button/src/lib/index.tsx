@@ -1,6 +1,6 @@
-import { UiButton } from '@ntua-saas-10/web/ui/button';
-import { CircularProgress } from '@mui/material';
 import { Check } from '@mui/icons-material';
+import { CircularProgress } from '@mui/material';
+import { UiButton } from '@ntua-saas-10/web/ui/button';
 
 import type { SpinnerButtonProps } from './types';
 

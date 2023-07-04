@@ -30,6 +30,9 @@
       "@ntua-saas-10/server/nest/chart-config": [
         "libs/server/nest/chart-config/src/index.ts"
       ],
+      "@ntua-saas-10/server/nest/cluster": [
+        "libs/server/nest/cluster/src/index.ts"
+      ],
       "@ntua-saas-10/server/nest/database": [
         "libs/server/nest/database/src/index.ts"
       ],
@@ -54,6 +57,9 @@
       "@ntua-saas-10/server/nest/transaction": [
         "libs/server/nest/transaction/src/index.ts"
       ],
+      "@ntua-saas-10/server/nest/users": [
+        "libs/server/nest/users/src/index.ts"
+      ],
       "@ntua-saas-10/server/nest/utils": [
         "libs/server/nest/utils/src/index.ts"
       ],
@@ -62,6 +68,12 @@
       ],
       "@ntua-saas-10/shared-api-interfaces": [
         "libs/shared/api-interfaces/src/index.ts"
+      ],
+      "@ntua-saas-10/shared-api-sdk": [
+        "libs/shared/api-sdk/src/index.ts"
+      ],
+      "@ntua-saas-10/shared-call": [
+        "libs/shared/call/src/index.ts"
       ],
       "@ntua-saas-10/shared-consts": [
         "libs/shared/consts/src/index.ts"

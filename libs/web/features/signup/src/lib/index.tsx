@@ -1,19 +1,20 @@
-import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import { useMemo } from 'react';
-import { FormContainer, TextFieldElement, useForm } from 'react-hook-form-mui';
+import styled from '@emotion/styled';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Divider, Stack, colors } from '@mui/material';
-import { withTranslation } from 'react-i18next';
-import type { TFunction } from 'i18next';
-import type { FirebaseError } from 'firebase/app';
-
-import { UiCard } from '@ntua-saas-10/web/ui/card';
-import { UiButton } from '@ntua-saas-10/web/ui/button';
-import { UiProgressSpinner } from '@ntua-saas-10/web/ui/progress-spinner';
-import { UiSpinnerButton } from '@ntua-saas-10/web/ui/spinner-button';
 import { TranslationKeys } from '@ntua-saas-10/shared-consts';
 import { auth } from '@ntua-saas-10/web/firebase';
 import { useFsDoc } from '@ntua-saas-10/web/hooks';
+import { UiButton } from '@ntua-saas-10/web/ui/button';
+import { UiCard } from '@ntua-saas-10/web/ui/card';
+import { UiProgressSpinner } from '@ntua-saas-10/web/ui/progress-spinner';
+import { UiSpinnerButton } from '@ntua-saas-10/web/ui/spinner-button';
+import type { FirebaseError } from 'firebase/app';
+import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import hoistStatics from 'hoist-non-react-statics';
+import type { TFunction } from 'i18next';
+import { useMemo } from 'react';
+import { FormContainer, TextFieldElement, useForm } from 'react-hook-form-mui';
+import { withTranslation } from 'react-i18next';
 
 import { TRANSLATION_KEY_PREFIX } from './constants';
 import {
@@ -24,9 +25,6 @@ import {
 } from './schema';
 import { getErrorMessages } from './utils';
 
-import styled from '@emotion/styled';
-import hoistStatics from 'hoist-non-react-statics';
-
 interface SignUpProps {
   t: TFunction;
 }
@@ -35,7 +33,7 @@ const StyledUiCard = styled(UiCard)(() => ({
   maxWidth: '400px',
 }));
 
-const FlexContainer = styled('div')(() => ({
+const FlexContainer = styled.div(() => ({
   display: 'flex',
   flexDirection: 'column',
   gap: '24px',
@@ -49,7 +47,6 @@ const SignUp: React.FC<SignUpProps> = ({ t }) => {
 
   const [fields, defaultValues] = useMemo(() => {
     const { fields, defaultValues } = formSpec || {};
-    console.log({ fields, defaultValues });
     return [fields, defaultValues];
   }, [formSpec]);
 
@@ -97,11 +94,7 @@ const SignUp: React.FC<SignUpProps> = ({ t }) => {
     return (
       <FormContainer onSuccess={signUpWithEmail} formContext={ctx}>
         <Stack spacing={3}>
-          <TextFieldElement
-            {...fields.email}
-            label={t(fields.email.name)}
-            defaultValue={fields.email.defaultValue}
-          />
+          <TextFieldElement {...fields.email} label={t(fields.email.name)} />
           <TextFieldElement {...fields.password} label={t(fields.password.name)} />
           <TextFieldElement {...fields.passwordRepeat} label={t(fields.passwordRepeat.name)} />
           <UiSpinnerButton

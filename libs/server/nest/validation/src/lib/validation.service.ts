@@ -1,6 +1,4 @@
 import { BadRequestException, Injectable, NotImplementedException } from '@nestjs/common';
-import { ParseResult } from 'papaparse';
-import type { Types } from '@ntua-saas-10/shared-types';
 import {
   transformDataToLine,
   transformDataToBubble,
@@ -8,13 +6,13 @@ import {
   transformDataToPolarArea,
   transformDataToRadar,
 } from '@ntua-saas-10/server/nest/utils';
-import { Utils } from '@ntua-saas-10/shared-utils';
-
-const { isChartData } = Utils;
+import type { ChartType } from '@ntua-saas-10/shared-consts';
+import { isChartData } from '@ntua-saas-10/shared-utils';
+import { ParseResult } from 'papaparse';
 
 @Injectable()
 export class ValidationService {
-  validateDatafile(parsedFile: ParseResult<unknown>, chartType: Types.ChartType) {
+  validateDatafile(parsedFile: ParseResult<unknown>, chartType: ChartType) {
     if (chartType === 'line') return this.validateLine(parsedFile);
     if (chartType === 'multiAxisLine') return this.validateMultiAxisLine(parsedFile);
     if (chartType === 'radar') return this.validateRadar(parsedFile);

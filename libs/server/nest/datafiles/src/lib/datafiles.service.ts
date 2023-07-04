@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { admin } from '@ntua-saas-10/server-firebase-admin';
-import { parse } from 'papaparse';
-import type { Types } from '@ntua-saas-10/shared-types';
 import type { ContentType } from '@ntua-saas-10/shared-consts';
+import type { Types } from '@ntua-saas-10/shared-types';
+import { parse } from 'papaparse';
 
 @Injectable()
 export class DatafilesService {

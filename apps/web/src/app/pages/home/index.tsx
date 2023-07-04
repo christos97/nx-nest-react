@@ -1,5 +1,3 @@
-const Home: React.FC = () => {
+export const Home: React.FC = () => {
   return <>Homepage</>;
 };
-
-export default Home;

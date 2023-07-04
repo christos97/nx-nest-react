@@ -1,1 +1,2 @@
-export * as Schemas from './lib/schemas';
+export * as Schemas from './lib';
+export * from './lib';

@@ -1,3 +1,7 @@
+/**
+ * @global `@/shared-consts/ChartType`
+ * @readonly
+ */
 const ChartType = {
   line: 'line',
   multiAxisLine: 'multiAxisLine',

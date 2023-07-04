@@ -1,34 +1,54 @@
-import { initializeApp } from 'firebase/app';
-import { getAuth, type Auth, connectAuthEmulator } from 'firebase/auth';
-import { getFirestore, type Firestore, connectFirestoreEmulator } from 'firebase/firestore';
-
 import { env, type FirebaseOptions } from '@ntua-saas-10/web/env';
+import { initializeApp, type FirebaseApp } from 'firebase/app';
+import { getAuth, connectAuthEmulator, type Auth } from 'firebase/auth';
+import { getFirestore, connectFirestoreEmulator, type Firestore } from 'firebase/firestore';
 
-const config: FirebaseOptions = env.VITE_PUBLIC_FIREBASE_CONFIG || {};
+class FirebaseWeb {
+  config: FirebaseOptions;
+  app: FirebaseApp;
+  auth: Auth;
+  firestore: Firestore;
+  projectId: string;
 
-if (Object.keys(config).length === 0) {
-  throw new Error('VITE_PUBLIC_FIREBASE_CONFIG env var is not set');
+  constructor(config: FirebaseOptions) {
+    this.config = config || {};
+    if (Object.keys(this.config).length === 0) {
+      throw new Error('VITE_PUBLIC_FIREBASE_CONFIG env var is not set');
+    }
+    const location = this.config.locationId;
+    console.log({ location });
+    this.app = this.initializeFirebaseWebApp();
+    this.auth = getAuth(this.app);
+    this.firestore = getFirestore(this.app);
+    this.projectId = this.config.projectId;
+
+    const isDevMode = import.meta.env.DEV === true;
+    if (isDevMode) {
+      this.connectEmulators();
+    }
+  }
+
+  initializeFirebaseWebApp(): FirebaseApp {
+    try {
+      return initializeApp(this.config);
+    } catch (error) {
+      throw new Error('Firebase web initializeApp error - @ntua-saas-10/web/firebase');
+    }
+  }
+
+  connectEmulators(): void {
+    const LOCALHOST = 'localhost';
+    connectAuthEmulator(this.auth, `http://${LOCALHOST}:${env.VITE_PUBLIC_AUTH_EMULATOR_PORT}`);
+    connectFirestoreEmulator(
+      this.firestore,
+      LOCALHOST,
+      Number(env.VITE_PUBLIC_FIRESTORE_EMULATOR_PORT),
+    );
+  }
 }
 
-const app = initializeApp(config);
+const firebase = new FirebaseWeb(env.VITE_PUBLIC_FIREBASE_CONFIG);
 
-/** `WEB-ONLY` - Firebase `auth` module */
-export const auth: Auth = getAuth(app);
-
-/** `WEB-ONLY` - Firebase `firestore` module */
-export const firestore: Firestore = getFirestore(app);
-
-/** `WEB-ONLY` - Firebase `projectId` */
-export const projectId: string = config.projectId;
-
-const connectEmulators = () => {
-  const LOCALHOST = 'localhost';
-  connectAuthEmulator(auth, `http://${LOCALHOST}:${env.VITE_PUBLIC_AUTH_EMULATOR_PORT}`);
-  connectFirestoreEmulator(firestore, LOCALHOST, Number(env.VITE_PUBLIC_FIRESTORE_EMULATOR_PORT));
-};
-
-// Connect to Firebase Emulators in dev mode
-const isDevMode = import.meta.env.DEV === true;
-if (isDevMode) {
-  connectEmulators();
-}
+export const auth: Auth = firebase.auth;
+export const firestore: Firestore = firebase.firestore;
+export const projectId: string = firebase.projectId;

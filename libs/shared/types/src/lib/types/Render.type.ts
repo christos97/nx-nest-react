@@ -1,6 +1,5 @@
-import type { ContentType } from '@ntua-saas-10/shared-consts';
-import type { ChartConfiguration } from 'chart.js';
 import type { ChartType } from '@ntua-saas-10/shared-consts';
+import type { ChartConfiguration } from 'chart.js';
 
 /**
  * Represents the parameters required for rendering a chart.
@@ -21,7 +20,7 @@ export interface RenderParams {
     /**
      * The content type of the rendered chart.
      */
-    contentType: ContentType;
+    contentType: 'image/svg+xml' | 'image/png' | 'application/pdf' | 'text/html';
     /**
      * The resolution of the rendered chart.
      */
@@ -53,7 +52,7 @@ export interface Render {
   /**
    * The content type of the rendered chart.
    */
-  contentType: ContentType;
+  contentType: RenderParams['options']['contentType'];
   /**
    * The type of the rendered chart.
    */

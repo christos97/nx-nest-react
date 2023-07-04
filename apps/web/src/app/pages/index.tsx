@@ -1,12 +1,11 @@
-import { default as Home } from './home';
-import { default as Auth } from './auth';
-import { default as Dashboard } from './dashboard';
+import { Auth } from './auth';
+import { Dashboard } from './dashboard';
+import { Home } from './home';
 
 export const Pages = {
   Home,
   Auth,
   Dashboard,
-};
+} as const;
 
-export type Pages = typeof Pages;
-export default Pages;
+export type Pages = keyof typeof Pages;

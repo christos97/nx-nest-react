@@ -1,7 +1,12 @@
-import axios, { type AxiosRequestConfig } from 'axios';
+import axios, {
+  type InternalAxiosRequestConfig,
+  type AxiosRequestConfig,
+  type CreateAxiosDefaults,
+} from 'axios';
 import { useMemo } from 'react';
-import { useJwt } from './useJwt.hook';
+
 import { BASE_URL, DEFAULT_HEADERS } from './constants';
+import { useJwt } from './useJwt.hook';
 
 export const useAxios = ({
   baseURL = BASE_URL,
@@ -11,7 +16,7 @@ export const useAxios = ({
   const [jwtToken] = useJwt();
 
   const axiosInstance = useMemo(() => {
-    const config = {
+    const config: CreateAxiosDefaults = {
       timeout,
       baseURL,
       headers: {
@@ -21,7 +26,7 @@ export const useAxios = ({
     };
 
     const instance = axios.create(config);
-    instance.interceptors.request.use((config) => {
+    instance.interceptors.request.use((config: InternalAxiosRequestConfig) => {
       if (jwtToken) {
         config.headers.Authorization = `Bearer ${jwtToken}`;
       } else {
