@@ -10,6 +10,7 @@ export const ChartTypeSchema = z.nativeEnum(ChartType);
  * @constant `DatafileMetadataSchema` ZodSchema
  */
 export const DatafileMetadataSchema = z.object({
+  chartTitle: z.string(),
   chartId: z.string(),
   chartType: ChartTypeSchema,
   uid: z.string(),
@@ -23,6 +24,7 @@ export const DatafileMetadataSchema = z.object({
  * @constant `UploadDatafileRequestSchema` ZodSchema
  */
 export const UploadDatafileRequestSchema = z.object({
+  chartTitle: z.string().optional(),
   chartType: ChartTypeSchema,
   fileId: z.string().optional(), // remove
   filename: z.string().optional(), // remove

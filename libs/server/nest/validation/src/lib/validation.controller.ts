@@ -27,16 +27,21 @@ export class ValidationController {
   ): Promise<ValidateDatafileResponseDto> {
     fireAndForget(async () => {
       const { name } = body.object;
-      const { chartType, uid, chartId } = body.object.metadata;
+      const { chartTitle, chartType, uid, chartId } = body.object.metadata;
       const createdAt = new Date(body.object.timeCreated);
 
       try {
         const fileBuffer = await this.datafilesService.streamFromStorage(body.object.name);
         const parsedFile = this.datafilesService.parseCsv(fileBuffer);
         const validatedData = this.validationService.validateDatafile(parsedFile, chartType);
-        const chartConfig = this.chartConfigService.generateChartConfig(chartType, validatedData);
+        const chartConfig = this.chartConfigService.generateChartConfig(
+          chartTitle,
+          chartType,
+          validatedData,
+        );
         this.logger.log(`Chart config generated for chart ${chartId} for user ${uid}`);
         await this.chartConfigService.saveChartConfig(uid, {
+          chartTitle,
           chartId,
           chartType,
           chartConfig,

@@ -25,7 +25,11 @@ export class ChartConfigService {
     this.CHARTS_COLLECTION_PATH = this.configService.getOrThrow('CHARTS_COLLECTION_PATH');
   }
 
-  generateChartConfig(chartType: ChartType, data: ChartData): ChartConfiguration {
+  generateChartConfig(
+    chartTitle: string,
+    chartType: ChartType,
+    data: ChartData,
+  ): ChartConfiguration {
     const chartConfig: ChartConfiguration = {
       type: 'line',
       data: data,
@@ -34,7 +38,7 @@ export class ChartConfigService {
         plugins: {
           title: {
             display: true,
-            text: new Date().toLocaleString(),
+            text: chartTitle,
           },
           legend: {
             display: true,
@@ -82,6 +86,7 @@ export class ChartConfigService {
   async saveChartConfig(
     uid: string,
     chart: {
+      chartTitle: string;
       chartConfig: ChartConfiguration;
       chartId: string;
       chartType: ChartType;

@@ -68,16 +68,8 @@ export class DatafilesController {
     @Body() body: UploadDatafileRequestDto,
     @Req() req: Types.AuthRequest,
   ): Promise<UploadDatafileResponseDto> {
-    const {
-      user: { uid },
-      customClaims,
-    } = req;
-    const quota = customClaims?.quota?.current || 0;
-    if (quota <= 0) {
-      throw new ForbiddenException('User quota exceeded');
-    }
-
-    const { chartType } = body;
+    const { uid } = req.user;
+    const { chartType, chartTitle } = body;
 
     const { fileId, newFilename } = this.filenameService.generateFileInfo(
       datafile.originalname,
@@ -89,6 +81,7 @@ export class DatafilesController {
       newFilename,
       {
         uid,
+        chartTitle: chartTitle ?? new Date().toLocaleString(),
         chartType,
         chartId: fileId,
         nextStep: 'validate',

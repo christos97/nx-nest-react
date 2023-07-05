@@ -58,6 +58,7 @@ export class RenderController {
       const renders = await Promise.all(
         renderParamsArray.map((params) => this.renderService.render(params)),
       );
+
       const uploadsMetadata = await Promise.all(
         renders.map(({ buffer, type, contentType, createdAt }) =>
           this.datafilesService.uploadRender(
@@ -75,8 +76,6 @@ export class RenderController {
           ),
         ),
       );
-
-      this.logger.log(`Renders for chart ${chartId} uploaded successfully`, { uploadsMetadata });
 
       await this.chartConfigService.generateChartsMediaLinks(uploadsMetadata);
     });

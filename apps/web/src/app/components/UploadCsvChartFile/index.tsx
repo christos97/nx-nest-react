@@ -11,6 +11,7 @@ import { z } from 'zod';
 import { MAX_FILE_SIZE } from '../../constants/app.constants';
 
 const UploadCsvChartFormSchema = z.object({
+  chartTitle: z.string().default('default chart title'),
   chartType: z.nativeEnum(ChartType),
   files: z.array(z.instanceof(File)),
 });

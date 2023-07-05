@@ -7,6 +7,7 @@ import type { ChartConfiguration } from 'chart.js';
 export type Chart = {
   uid: string;
   chartId: string;
+  chartTitle: string;
   chartType: ChartType;
   chartConfig: ChartConfiguration;
   uploadedDatafilePath: string;

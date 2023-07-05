@@ -35,22 +35,22 @@ export class FirebaseAuthMiddleware implements NestMiddleware {
       const user = await auth.verifyIdToken(idToken);
       req['user'] = user;
 
-      const customClaims = (await auth.getUser(user.uid)).customClaims as UserCustomClaims;
-      req['customClaims'] = Object.keys(customClaims || {}).length > 0 ? customClaims : {};
-
-      if (customClaims.disabled === true) {
-        this.logger.error(ERROR_MSG.USER_DISABLED);
-        throw new ForbiddenException(ERROR_MSG.USER_DISABLED);
-      }
-
-      if (!customClaims.roles?.includes(UserRole.user)) {
-        this.logger.error(ERROR_MSG.INSUFFICIENT_PERMISSIONS);
-        throw new ForbiddenException(ERROR_MSG.INSUFFICIENT_PERMISSIONS);
-      }
+      // const customClaims = (await auth.getUser(user.uid)).customClaims as UserCustomClaims;
+      // req['customClaims'] = Object.keys(customClaims || {}).length > 0 ? customClaims : {};
+      //
+      // if (customClaims.disabled === true) {
+      //   this.logger.error(ERROR_MSG.USER_DISABLED);
+      //   throw new ForbiddenException(ERROR_MSG.USER_DISABLED);
+      // }
+      //
+      // if (!customClaims.roles?.includes(UserRole.user)) {
+      //   this.logger.error(ERROR_MSG.INSUFFICIENT_PERMISSIONS);
+      //   throw new ForbiddenException(ERROR_MSG.INSUFFICIENT_PERMISSIONS);
+      // }
       return next();
     } catch (error) {
       const e = error as Error;
-      this.logger.error(ERROR_MSG.UNAUTHENTICATED, JSON.stringify(e));
+      this.logger.error(error);
       throw new UnauthorizedException(ERROR_MSG.UNAUTHENTICATED, {
         cause: e,
         description: e?.message || ERROR_MSG.UNAUTHENTICATED,

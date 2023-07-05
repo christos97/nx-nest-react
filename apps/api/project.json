@@ -81,7 +81,7 @@
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          "gcloud run deploy api --image=$BASE_TAG/api:$SERVICE_VERSION --allow-unauthenticated --region $GCLOUD_REGION --set-env-vars \"FILES_DEST=uploads\""
+          "gcloud run deploy api --image=$BASE_TAG/api:$SERVICE_VERSION --allow-unauthenticated --region $GCLOUD_REGION --set-env-vars \"GCLOUD_PROJECT=lesi-charts,FILES_DEST=uploads,CHARTS_COLLECTION_PATH=users/{uid}/charts,NOTIFICATIONS_COLLECTION_PATH=users/{uid}/notifications\""
         ],
         "parallel": false
       }

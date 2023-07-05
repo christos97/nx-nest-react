@@ -36,6 +36,7 @@ export const UploadWizard: React.ForwardRefExoticComponent<
     }
     const formData = new FormData();
     formData.append('datafile', file);
+    formData.append('chartTitle', 'Where do my expenses go');
 
     const metadata = Object.assign({}, formMetadata);
     for (const key in metadata) {
