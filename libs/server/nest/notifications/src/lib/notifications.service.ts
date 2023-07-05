@@ -1,16 +1,13 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { firestore } from '@ntua-saas-10/server-firebase-admin';
 import { Types } from '@ntua-saas-10/shared-types';
+
+import { CollectionsPaths } from '@ntua-saas-10/shared-consts';
 
 @Injectable()
 export class NotificationsService {
   private readonly logger = new Logger(NotificationsService.name);
-  private readonly NOTIFICATIONS_COLLECTION_PATH: string;
-
-  constructor(private configService: ConfigService) {
-    this.NOTIFICATIONS_COLLECTION_PATH = configService.getOrThrow('NOTIFICATIONS_COLLECTION_PATH');
-  }
+  private readonly NOTIFICATIONS_COLLECTION_PATH = CollectionsPaths.NOTIFICATIONS_COLLECTION_PATH;
   async saveNotificationToFirestore(
     uid: string,
     docId: string,

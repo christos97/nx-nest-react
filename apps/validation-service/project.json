@@ -81,7 +81,7 @@
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          "gcloud run deploy validation-service --image=$BASE_TAG/validation-service:$SERVICE_VERSION --allow-unauthenticated --region $GCLOUD_REGION"
+          "gcloud run deploy validation-service --image=$BASE_TAG/validation-service:$SERVICE_VERSION --allow-unauthenticated --region $GCLOUD_REGION --set-env-vars \"GCLOUD_PROJECT=lesi-charts\""
         ],
         "parallel": false
       }

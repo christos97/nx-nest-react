@@ -14,9 +14,7 @@ import {
   HttpStatus,
   Delete,
   HttpCode,
-  ForbiddenException,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiConsumes } from '@nestjs/swagger';
 import { FilenameService } from '@ntua-saas-10/server/nest/filename';
@@ -29,6 +27,8 @@ import {
   DeleteDatafileResponseDto,
 } from '@ntua-saas-10/shared-dtos';
 
+import { StoragePaths } from '@ntua-saas-10/shared-consts';
+
 import type { Types } from '@ntua-saas-10/shared-types';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -40,16 +40,13 @@ import { DatafilesService } from './datafiles.service';
 @Controller('datafiles')
 export class DatafilesController {
   private readonly logger = new Logger(DatafilesController.name);
-  private readonly FILES_DEST: string;
+  private readonly FILES_DESTINATION = StoragePaths.FILES_DESTINATION;
 
   constructor(
     private readonly datafilesService: DatafilesService,
     private readonly filenameService: FilenameService,
-    private readonly configService: ConfigService,
     private readonly notificationsService: NotificationsService,
-  ) {
-    this.FILES_DEST = this.configService.getOrThrow('FILES_DEST');
-  }
+  ) {}
 
   @Post()
   @UsePipes(ZodValidationPipe)
@@ -77,7 +74,7 @@ export class DatafilesController {
     );
     const uploadMetadata = await this.datafilesService.uploadToStorage(
       datafile,
-      this.FILES_DEST,
+      this.FILES_DESTINATION,
       newFilename,
       {
         uid,

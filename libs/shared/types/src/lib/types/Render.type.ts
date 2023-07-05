@@ -86,5 +86,5 @@ export interface RenderMetadata {
   /**
    * The timestamp when the rendering was created.
    */
-  nextStep: 'notify';
+  nextStep: 'NO_NEXT_STEP';
 }

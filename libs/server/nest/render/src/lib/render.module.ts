@@ -9,8 +9,7 @@ import { RenderController } from './render.controller';
 import { RenderService } from './render.service';
 
 @Module({
-  imports: [ConfigModule],
   controllers: [RenderController],
-  providers: [RenderService, ConfigService, DatafilesService, ChartConfigService],
+  providers: [RenderService, DatafilesService, ChartConfigService],
 })
 export class RenderModule {}

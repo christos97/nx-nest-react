@@ -1,8 +1,10 @@
-export const GCLOUD_PROJECT = process.env['GCLOUD_PROJECT'] ?? 'DEFINE_GCLOUD_PROJECT';
-export const GCLOUD_REGION = 'europe-central2';
-export const VALIDATION_SERVICE_URL =
-  process.env['VALIDATION_SERVICE_URL'] ?? 'DEFINE_VALIDATION_SERVICE_URL';
-export const RENDER_SERVICE_URL = process.env['RENDER_SERVICE_URL'] ?? 'DEFINE_RENDER_SERVICE_URL';
+import { config } from 'firebase-functions';
 
-export const CHARTS_COLLECTION_PATH =
-  process.env['CHARTS_COLLECTION_PATH'] ?? 'DEFINE_CHARTS_COLLECTION_PATH';
+const { validation_service_url, render_service_url } = config().services;
+
+console.log({ validation_service_url, render_service_url });
+
+export const GCLOUD_PROJECT = 'lesi-charts';
+export const GCLOUD_REGION = 'europe-central2';
+export const VALIDATION_SERVICE_URL = validation_service_url;
+export const RENDER_SERVICE_URL = render_service_url;

@@ -1,21 +1,22 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { firestore } from '@ntua-saas-10/server-firebase-admin';
-import { Quota } from '@ntua-saas-10/shared-consts';
+import { CollectionsPaths, Quota } from '@ntua-saas-10/shared-consts';
 import type { User, Chart } from '@ntua-saas-10/shared-types';
 import type { DocumentReference } from 'firebase-admin/firestore';
 
 @Injectable()
 export class TransactionService {
-  private readonly CHARTS_COLLECTION_PATH: string;
-
-  constructor(private configService: ConfigService) {
-    this.CHARTS_COLLECTION_PATH = this.configService.getOrThrow('CHARTS_COLLECTION_PATH');
-  }
+  private readonly USERS_COLLECTION_PATH = CollectionsPaths.USERS_COLLECTION_PATH;
+  private readonly CHARTS_COLLECTION_PATH = CollectionsPaths.CHARTS_COLLECTION_PATH;
 
   async removeCreditsAndClaimChart(uid: string, chartId: string) {
-    const userRef = firestore.collection('users').doc(uid) as DocumentReference<User>;
-    const chartRef = userRef.collection('charts').doc(chartId) as DocumentReference<Chart>;
+    const userRef = firestore.doc(
+      `${this.USERS_COLLECTION_PATH}/${uid}`,
+    ) as DocumentReference<User>;
+
+    const chartRef = firestore.doc(
+      `${this.CHARTS_COLLECTION_PATH.replace('{uid}', uid)}/${chartId}`,
+    ) as DocumentReference<Chart>;
 
     await firestore.runTransaction(async (transaction) => {
       const userDoc = await transaction.get(userRef);

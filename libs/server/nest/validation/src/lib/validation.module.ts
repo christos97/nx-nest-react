@@ -14,7 +14,6 @@ import { NotificationsService } from '@ntua-saas-10/server/nest/notifications';
     DatafilesService,
     ChartConfigService,
     TransactionService,
-    ConfigService,
     NotificationsService,
   ],
 })

@@ -14,21 +14,18 @@ import type { DocumentReference } from 'firebase-admin/firestore';
 import { renderMapperConfig } from './render.constants';
 import { RenderService } from './render.service';
 
+import { CollectionsPaths } from '@ntua-saas-10/shared-consts';
+import { StoragePaths } from '@ntua-saas-10/shared-consts';
+
 @Controller('render')
 export class RenderController {
   private readonly logger: Logger;
-  private readonly CHARTS_COLLECTION_PATH: string;
-  private readonly RENDERS_PATH: string;
-
   constructor(
     private readonly renderService: RenderService,
-    private readonly configService: ConfigService,
     private readonly datafilesService: DatafilesService,
     private readonly chartConfigService: ChartConfigService,
   ) {
     this.logger = new Logger(RenderController.name);
-    this.CHARTS_COLLECTION_PATH = this.configService.getOrThrow('CHARTS_COLLECTION_PATH');
-    this.RENDERS_PATH = this.configService.getOrThrow('RENDERS_PATH');
   }
 
   @Post('render-config')
@@ -37,7 +34,7 @@ export class RenderController {
     const { uid, chartId } = body;
 
     const chartRef = firestore
-      .collection(this.CHARTS_COLLECTION_PATH.replace('{uid}', uid))
+      .collection(CollectionsPaths.CHARTS_COLLECTION_PATH.replace('{uid}', uid))
       .doc(chartId) as DocumentReference<Types.Chart>;
     const chartSnapshot = await chartRef.get();
     const { chartType, chartConfig } = chartSnapshot.data() as Types.Chart;
@@ -63,7 +60,7 @@ export class RenderController {
         renders.map(({ buffer, type, contentType, createdAt }) =>
           this.datafilesService.uploadRender(
             buffer,
-            this.RENDERS_PATH,
+            StoragePaths.RENDERS_DESTINATION,
             `${chartId}.${type}`,
             contentType,
             {
@@ -71,13 +68,13 @@ export class RenderController {
               chartId,
               chartType,
               createdAt,
-              nextStep: 'notify',
+              nextStep: 'NO_NEXT_STEP',
             },
           ),
         ),
       );
 
-      await this.chartConfigService.generateChartsMediaLinks(uploadsMetadata);
+      await this.chartConfigService.saveChartsMediaLinks(uploadsMetadata);
     });
 
     return {

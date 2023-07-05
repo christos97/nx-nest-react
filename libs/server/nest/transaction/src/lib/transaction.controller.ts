@@ -1,6 +1,5 @@
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
 import { Body, Controller, HttpCode, Post, Req, UsePipes } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { ChartConfigService } from '@ntua-saas-10/server/nest/chart-config';
 import { DatafilesService } from '@ntua-saas-10/server/nest/datafiles';
 import { TransactionRequestDto } from '@ntua-saas-10/shared-dtos';
@@ -10,16 +9,11 @@ import { TransactionService } from './transaction.service';
 
 @Controller('transaction')
 export class TransactionController {
-  private readonly FILES_DEST: string;
-
   constructor(
     private readonly transactionService: TransactionService,
     private readonly chartConfigService: ChartConfigService,
     private readonly datafilesService: DatafilesService,
-    private readonly configService: ConfigService,
-  ) {
-    this.FILES_DEST = this.configService.getOrThrow('FILES_DEST');
-  }
+  ) {}
 
   @Post('verify')
   @UsePipes(ZodValidationPipe)

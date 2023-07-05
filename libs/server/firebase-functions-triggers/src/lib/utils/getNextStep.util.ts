@@ -8,7 +8,6 @@ export const NO_NEXT_STEP = 'NO_NEXT_STEP';
 export const NEXT_STEP_STORAGE_SERVICES = {
   NO_NEXT_STEP,
   validate: VALIDATION_SERVICE_URL,
-  notify: 'http://NOT_YET_IMPLEMENTED.gr',
 } as const;
 
 export type NextStep = keyof typeof NEXT_STEP_STORAGE_SERVICES;

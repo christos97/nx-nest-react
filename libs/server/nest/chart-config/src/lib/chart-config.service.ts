@@ -1,11 +1,12 @@
 import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { firestore, storage } from '@ntua-saas-10/server-firebase-admin';
+import { firestore } from '@ntua-saas-10/server-firebase-admin';
 
 import type { ChartType, ContentType } from '@ntua-saas-10/shared-consts';
 import type { Chart } from '@ntua-saas-10/shared-types';
 import type { ChartConfiguration, ChartData, ChartDataset } from 'chart.js';
 import type { DocumentReference } from 'firebase-admin/firestore';
+
+import { CollectionsPaths } from '@ntua-saas-10/shared-consts';
 
 type UploadChartConfig = {
   metadata: {
@@ -14,16 +15,13 @@ type UploadChartConfig = {
   };
   name: string;
   contentType: ContentType;
+  mediaLink: string;
 };
 type LineChartDataset = ChartDataset<(typeof ChartType)['line']>;
 
 @Injectable()
 export class ChartConfigService {
-  private readonly CHARTS_COLLECTION_PATH: string;
-
-  constructor(private configService: ConfigService) {
-    this.CHARTS_COLLECTION_PATH = this.configService.getOrThrow('CHARTS_COLLECTION_PATH');
-  }
+  private readonly CHARTS_COLLECTION_PATH = CollectionsPaths.CHARTS_COLLECTION_PATH;
 
   generateChartConfig(
     chartTitle: string,
@@ -122,22 +120,18 @@ export class ChartConfigService {
     }
   }
 
-  async generateChartsMediaLinks(uploadsMetadata: UploadChartConfig[] = []) {
+  async saveChartsMediaLinks(uploadsMetadata: UploadChartConfig[] = []) {
     const mediaLinks = [];
     const metadata = uploadsMetadata[0]?.metadata;
     if (!metadata) throw new InternalServerErrorException('No uploads metadata');
 
     const { uid, chartId } = metadata as UploadChartConfig['metadata'];
-    for (const { name, contentType } of uploadsMetadata) {
-      const fileRef = storage.bucket().file(name);
-      const downloadLink = await fileRef.getSignedUrl({ action: 'read', expires: '03-09-2491' });
-      mediaLinks.push({ contentType, link: downloadLink[0] });
+    for (const { name, contentType, mediaLink } of uploadsMetadata) {
+      mediaLinks.push({ contentType, link: mediaLink });
     }
 
-    const chartRef = firestore
-      .collection(this.CHARTS_COLLECTION_PATH.replace('{uid}', uid))
-      .doc(chartId) as DocumentReference<Chart>;
+    const mediaLinksRef = firestore.collection(`users/${uid}/mediaLinks`).doc(chartId);
 
-    await chartRef.set({ mediaLinks }, { merge: true });
+    await mediaLinksRef.set({ ...mediaLinks }, { merge: true });
   }
 }

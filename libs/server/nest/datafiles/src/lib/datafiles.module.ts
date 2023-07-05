@@ -11,6 +11,6 @@ import { DatafilesService } from './datafiles.service';
 @Module({
   imports: [ConfigModule],
   controllers: [DatafilesController],
-  providers: [DatafilesService, FilenameService, ConfigService, NotificationsService],
+  providers: [DatafilesService, FilenameService, NotificationsService],
 })
 export class DatafilesModule {}

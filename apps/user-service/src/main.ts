@@ -24,6 +24,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
   const port = process.env.PORT || 4862;
+  app.enableCors();
   await app.listen(port);
   const logger = new Logger(process.env.SERVICE_NAME?.toLowerCase() || 'users-service');
   logger.log(`http://localhost:${port}`);
