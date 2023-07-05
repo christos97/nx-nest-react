@@ -61,8 +61,8 @@ export const UploadWizard: React.ForwardRefExoticComponent<
       setFileId(data.file.id as string);
     } catch (error) {
       setError('root', { type: 'manual', message: 'Could not upload file' });
-      console.error(error);
       setFileId(null);
+      throw new Error('Could not upload file');
     }
   };
 

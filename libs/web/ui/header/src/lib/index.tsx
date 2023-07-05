@@ -1,7 +1,8 @@
 /* eslint-disable jsx-a11y/alt-text */
 import styled from '@emotion/styled';
-import { AppBar, Toolbar, Typography } from '@mui/material';
+import { AppBar, Button, Toolbar, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
+
 import { styles } from './styles';
 import type { UiHeaderProps } from './types';
 
@@ -28,11 +29,29 @@ const Header: React.FC<UiHeaderProps> = ({ children, brand, links, ...logoProps 
           </StyledTypography>
         </div>
         <LinksContainer>
-          {links.map(({ label, path }) => (
-            <StyledLink key={label} to={path}>
-              {label}
-            </StyledLink>
-          ))}
+          {links.map(({ label, path, isButton, handler }) => {
+            if (isButton) {
+              return (
+                <Button
+                  onClick={() => {
+                    if (handler) {
+                      handler();
+                    }
+                  }}
+                  key={label}
+                  variant="contained"
+                  color="secondary"
+                >
+                  {label}
+                </Button>
+              );
+            }
+            return (
+              <StyledLink key={label} to={path}>
+                {label}
+              </StyledLink>
+            );
+          })}
           {children}
         </LinksContainer>
       </StyledToolbar>

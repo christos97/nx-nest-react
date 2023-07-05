@@ -1,6 +1,7 @@
-import type { TFunction } from 'i18next';
-import { AppRoutes } from '../routes';
 import { TranslationKeys } from '@ntua-saas-10/shared-consts';
+import type { TFunction } from 'i18next';
+
+import { AppRoutes } from '../routes';
 import type { HeaderLink } from '../types/HeaderLink.type';
 
 const {
@@ -9,13 +10,22 @@ const {
 
 const { Home, Auth, Dashboard } = AppRoutes;
 
-const createLink = (label: string, path: string) => ({ label, path });
+const createLink = (label: string, path: string, isButton = false, handler?: () => any) => ({
+  label,
+  path,
+  isButton,
+  handler,
+});
 
-export const localizeLinks = (t: TFunction, isLoggedIn: boolean): HeaderLink[] => {
+export const localizeLinks = (
+  t: TFunction,
+  isLoggedIn: boolean,
+  handler?: () => any,
+): HeaderLink[] => {
   const loggedIn = (t: TFunction) => [
     createLink(t(home), Home.path),
     createLink(t(dashboard), Dashboard.path),
-    createLink(t(logout), Home.path),
+    createLink(t(logout), Home.path, true, handler),
   ];
   const anonymous = (t: TFunction) => [
     createLink(t(home), Home.path),
