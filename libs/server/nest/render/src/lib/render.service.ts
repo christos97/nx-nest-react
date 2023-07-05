@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable, NotImplementedException } from '@nestjs/common';
-import { Chart } from 'chart.js/auto';
-import { Canvas } from 'canvas';
 import { ContentType } from '@ntua-saas-10/shared-consts';
 import type { Types } from '@ntua-saas-10/shared-types';
+import { Canvas } from 'canvas';
+import { Chart } from 'chart.js/auto';
 
 @Injectable()
 export class RenderService {
@@ -27,9 +28,9 @@ export class RenderService {
       if (contentType === ContentType.application_pdf) type = 'pdf';
       else if (contentType === ContentType.image_png) type = 'png';
 
-      // @ts-ignore
-      const canvas = new Canvas(width, height, type);
+      const canvas = new Canvas(width, height, type as any);
       const context = canvas.getContext('2d') as unknown as CanvasRenderingContext2D;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const chartRef = new Chart(context, chartConfig);
 
       // Special case if `contentType` is `text/html`
@@ -44,8 +45,7 @@ export class RenderService {
           createdAt: new Date(),
         });
       } else {
-        // @ts-ignore
-        const buffer = canvas.toBuffer(contentType);
+        const buffer = canvas.toBuffer(contentType as any);
         resolve({
           id: params.id,
           buffer,

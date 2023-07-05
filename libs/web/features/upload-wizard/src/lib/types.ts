@@ -41,4 +41,6 @@ export interface UploadWizardFormData {
 export interface UploadWizardRef {
   onSubmit: (e: FormEvent) => void;
   files: readonly File[];
+  fileId: string | null;
+  meta: FormMetadata;
 }

@@ -5,7 +5,12 @@ import Dropzone from 'react-dropzone';
 import { useFormContext } from 'react-hook-form';
 
 import { DropzoneInput, DropzoneSection, FileList, FileListItem } from './styles';
-import type { UploadWizardFormData, UploadWizardProps, UploadWizardRef } from './types';
+import {
+  FormMetadata,
+  type UploadWizardFormData,
+  type UploadWizardProps,
+  type UploadWizardRef,
+} from './types';
 
 export const UploadWizard: React.ForwardRefExoticComponent<
   React.PropsWithoutRef<UploadWizardProps> & React.RefAttributes<UploadWizardRef>
@@ -21,10 +26,13 @@ export const UploadWizard: React.ForwardRefExoticComponent<
     maxFileSize,
   });
 
-  const { setError, setValue, formState, clearErrors } = useFormContext<UploadWizardFormData>();
+  const { formState, setError, setValue, clearErrors } = useFormContext<UploadWizardFormData>();
 
   const [files, setFiles] = useState<File[]>([]);
 
+  const [fileId, setFileId] = useState<string | null>(null);
+
+  const [meta, setMeta] = useState<FormMetadata>({});
   const { errors } = formState;
 
   const onSubmit = async (e: FormEvent) => {
@@ -47,12 +55,14 @@ export const UploadWizard: React.ForwardRefExoticComponent<
         }
       }
     }
+    setMeta(metadata);
     try {
-      const response = await axios.post(path, formData);
-      console.info('File uploaded successfully', response.data);
+      const { data } = await axios.post(path, formData);
+      setFileId(data.file.id as string);
     } catch (error) {
       setError('root', { type: 'manual', message: 'Could not upload file' });
       console.error(error);
+      setFileId(null);
     }
   };
 
@@ -62,6 +72,8 @@ export const UploadWizard: React.ForwardRefExoticComponent<
       if (!parsed.success) {
         const errors = parsed.error.flatten().fieldErrors || {};
         const message = Object.values(errors || {})?.toString();
+        setFiles([]);
+        setValue('files', []);
         setError('files', { type: 'manual', message });
       } else {
         clearErrors('files');
@@ -73,6 +85,8 @@ export const UploadWizard: React.ForwardRefExoticComponent<
   useImperativeHandle(ref, () => ({
     onSubmit,
     files,
+    fileId,
+    meta,
   }));
 
   return (

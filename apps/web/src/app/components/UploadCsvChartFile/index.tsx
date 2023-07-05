@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
+import { Box, FormControlLabel, FormLabel, Radio, RadioGroup, Stack } from '@mui/material';
 import { ChartType } from '@ntua-saas-10/shared-consts';
 import { UploadWizard, type UploadWizardRef } from '@ntua-saas-10/web/features/upload-wizard';
 import { UiSpinnerButton } from '@ntua-saas-10/web/ui/spinner-button';
@@ -18,66 +18,95 @@ const UploadCsvChartFormSchema = z.object({
 
 type UploadWizardFormData = z.infer<typeof UploadCsvChartFormSchema>;
 
-const UploadCsvChartFile: React.FC = () => {
+const ChartTypeLabels = {
+  [ChartType.line]: 'Line',
+  [ChartType.bubble]: 'Bubble',
+  [ChartType.multiAxisLine]: 'Multi-Axis Line ',
+  [ChartType.polarArea]: 'Polar Area',
+  [ChartType.radar]: 'Radar',
+  [ChartType.scatter]: 'Scatter',
+} as const;
+
+interface UploadCsvChartFileProps {
+  setActiveStep: (value: React.SetStateAction<number>) => void;
+  setFileId: (value: React.SetStateAction<string | null>) => void;
+}
+
+export const UploadCsvChartFile: React.FC<UploadCsvChartFileProps> = ({
+  setActiveStep,
+  setFileId,
+}) => {
   const methods = useForm<UploadWizardFormData>({
     resolver: zodResolver(UploadCsvChartFormSchema),
   });
-  const { watch, control, formState } = methods;
+  const { control, formState, watch } = methods;
   const wizardRef = useRef<UploadWizardRef>(null);
   const chartType = watch('chartType');
-  const files = watch('files');
-
   useEffect(() => {
-    if (files?.length > 0) {
-      console.log('Files changed', files);
+    if (wizardRef.current?.fileId) {
+      setActiveStep((prev) => prev + 1);
+      setFileId(wizardRef.current?.fileId);
     }
-  }, [files]);
+  }, [wizardRef.current?.fileId, setActiveStep, setFileId]);
 
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={wizardRef.current?.onSubmit}>
-        <FormLabel component="legend">Chart Type</FormLabel>
-        <Controller
-          name="chartType"
-          control={control}
-          rules={{ required: true }}
-          defaultValue={ChartType.line}
-          render={({ field }) => (
-            <RadioGroup {...field} row>
-              {Object.values(ChartType).map((type) => (
-                <FormControlLabel key={type} value={type} control={<Radio />} label={type} />
-              ))}
-            </RadioGroup>
-          )}
-        />
-        <FormLabel component="legend">Upload a CSV file</FormLabel>
-        <Controller
-          name="files"
-          control={control}
-          rules={{ required: true }}
-          render={({ field }) => (
-            <UploadWizard
-              {...field}
-              ref={wizardRef}
-              path={'datafiles'}
-              mimeType="text/csv"
-              maxFileSize={MAX_FILE_SIZE}
-              formMetadata={{ chartType }}
-            />
-          )}
-        />
-        <UiSpinnerButton
-          //isDone={false}
-          disabled={!formState.isValid}
-          isLoading={false}
-          type="submit"
+    <Box sx={{ p: 8 }}>
+      <FormProvider {...methods}>
+        <form
+          onSubmit={(e) => {
+            if (wizardRef.current?.meta) {
+              wizardRef.current.meta = { chartType };
+              wizardRef.current?.onSubmit(e);
+            }
+          }}
         >
-          Upload File
-        </UiSpinnerButton>
-      </form>
-    </FormProvider>
+          <Stack spacing={6} alignItems="center" justifyContent="center">
+            <FormLabel component="legend">Upload a CSV file</FormLabel>
+            <Controller
+              name="files"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <UploadWizard
+                  {...field}
+                  ref={wizardRef}
+                  path="datafiles"
+                  mimeType="text/csv"
+                  maxFileSize={MAX_FILE_SIZE}
+                  formMetadata={{ chartType }}
+                />
+              )}
+            />
+
+            <FormLabel component="legend">Select Chart Type</FormLabel>
+            <Controller
+              name="chartType"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <RadioGroup {...field} row>
+                  {Object.values(ChartType).map((type) => (
+                    <FormControlLabel
+                      key={type}
+                      value={type}
+                      control={<Radio />}
+                      label={ChartTypeLabels[type]}
+                    />
+                  ))}
+                </RadioGroup>
+              )}
+            />
+            <UiSpinnerButton
+              //isDone={false}
+              disabled={!formState.isValid || wizardRef.current?.files.length === 0}
+              isLoading={false}
+              type="submit"
+            >
+              Upload File
+            </UiSpinnerButton>
+          </Stack>
+        </form>
+      </FormProvider>
+    </Box>
   );
 };
-
-export { UploadCsvChartFile };
-export default UploadCsvChartFile;

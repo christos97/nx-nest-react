@@ -1,7 +1,7 @@
 import { auth } from '@ntua-saas-10/web/firebase';
 import React, { createElement } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { RouteObject } from 'react-router-dom';
+import { RouteObject, redirect } from 'react-router-dom';
 
 interface AppRoutes {
   [key: string]: {
@@ -33,6 +33,8 @@ export const useRoutes = (appRoutes: AppRoutes) => {
       };
     }
     if (FcComponent && isGuarded && !user) {
+      console.log('render');
+      redirect('/', { status: 404 });
       return {
         path,
         element: createElement(FcComponent),
