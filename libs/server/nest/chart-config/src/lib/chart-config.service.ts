@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, InternalServerErrorException } from '@
 import { firestore } from '@ntua-saas-10/server-firebase-admin';
 
 import type { ChartType, ContentType } from '@ntua-saas-10/shared-consts';
-import type { Chart } from '@ntua-saas-10/shared-types';
+import type { Chart, MediaLinks } from '@ntua-saas-10/shared-types';
 import type { ChartConfiguration, ChartData, ChartDataset } from 'chart.js';
 import type { DocumentReference } from 'firebase-admin/firestore';
 
@@ -130,8 +130,10 @@ export class ChartConfigService {
       mediaLinks.push({ contentType, link: mediaLink });
     }
 
-    const mediaLinksRef = firestore.collection(`users/${uid}/mediaLinks`).doc(chartId);
+    const mediaLinksRef = firestore
+      .collection(`users/${uid}/mediaLinks`)
+      .doc(chartId) as DocumentReference<MediaLinks>;
 
-    await mediaLinksRef.set({ ...mediaLinks }, { merge: true });
+    await mediaLinksRef.set({ chartId: chartId, links: mediaLinks }, { merge: true });
   }
 }

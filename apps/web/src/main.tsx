@@ -22,7 +22,7 @@ root.render(
         <ThemeProvider theme={localizeTheme(i18n.language as SupportedLanguages)}>
           <QueryClientProvider client={queryClient}>
             <ToastContainer
-              position="bottom-center"
+              position="bottom-left"
               autoClose={5000}
               hideProgressBar={false}
               newestOnTop

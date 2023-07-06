@@ -94,7 +94,7 @@ const ChartPreview: FC<ChartPreviewProps> = ({
         height: '100%',
       }}
     >
-      <Box sx={{ width: '100%', height: '600px' }}>
+      <Box sx={{ width: '100%', height: '600px', display: 'flex', justifyContent: 'center' }}>
         <Chart
           type={chartConfig.type}
           data={chartConfig.data}

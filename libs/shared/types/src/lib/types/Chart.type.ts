@@ -13,8 +13,14 @@ export type Chart = {
   uploadedDatafilePath: string;
   createdAt: Date;
   claimed: boolean;
-  mediaLinks?: {
-    contentType: ContentType;
-    link: string;
-  }[];
+};
+
+export type MediaLink = {
+  contentType: ContentType;
+  link: string;
+};
+
+export type MediaLinks = {
+  chartId: string;
+  links: MediaLink[];
 };

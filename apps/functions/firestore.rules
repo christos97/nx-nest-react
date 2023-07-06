@@ -3,7 +3,7 @@ service cloud.firestore {
   match /databases/{database}/documents {
     match /users/{userId} {
       allow read: if request.auth.uid != null && request.auth.uid == userId;
-      allow write: if false;
+      allow write: if request.auth.uid != null && request.auth.uid == userId;
 
       match /charts/{document=**} {
         allow read: if request.auth.uid != null && request.auth.uid == userId;
@@ -13,6 +13,11 @@ service cloud.firestore {
       match /notifications/{document=**} {
         allow read: if request.auth.uid == userId && resource != null;
         allow write: if request.auth.uid == userId;
+      }
+
+      match /mediaLinks/{document=**} {
+        allow read: if request.auth.uid != null && request.auth.uid == userId;
+        allow write: if false;
       }
     }
 

@@ -5,6 +5,8 @@ import Stepper from '@mui/material/Stepper';
 import React, { useEffect, useState } from 'react';
 
 import { UploadCsvChartFile } from '../UploadCsvChartFile';
+import ChartPreview from '../ChartPreview';
+import { Box } from '@mui/material';
 
 const steps = ['Upload CSV & Select a Chart Type', 'Preview chart'];
 
@@ -25,15 +27,15 @@ export const CustomStepper: React.FC = () => {
       case 0:
         return <UploadCsvChartFile setActiveStep={setActiveStep} setFileId={setFileId} />;
       case 1:
-        return 'Preview chart';
+        return <ChartPreview chartId={fileId ?? ''} uploadedDatafilePath="test" />;
       default:
         return 'Unknown stepIndex';
     }
   }
 
   return (
-    <div>
-      <Stepper activeStep={activeStep} alternativeLabel>
+    <Box sx={{ width: '100%' }}>
+      <Stepper activeStep={activeStep} alternativeLabel sx={{ width: '100%' }}>
         {steps.map((label) => (
           <Step key={label}>
             <StepLabel>{label}</StepLabel>
@@ -42,8 +44,7 @@ export const CustomStepper: React.FC = () => {
       </Stepper>
       <div>
         <div>{getStepContent(activeStep)}</div>
-        <div>{activeStep === 1 && <Button onClick={handleBack}>Back</Button>}</div>
       </div>
-    </div>
+    </Box>
   );
 };
