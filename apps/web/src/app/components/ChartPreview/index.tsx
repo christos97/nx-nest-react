@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import { auth, firestore } from '@ntua-saas-10/web/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useEffect, useState } from 'react';
-import { doc, onSnapshot } from 'firebase/firestore';
+import { collection, doc, onSnapshot, Query, query, where } from 'firebase/firestore';
 import type { Types } from '@ntua-saas-10/shared-types';
 import { UiProgressSpinner } from '@ntua-saas-10/web/ui/progress-spinner';
 import { useAxios } from '@ntua-saas-10/web/hooks';
@@ -16,6 +16,7 @@ import { UiSpinnerButton } from '@ntua-saas-10/web/ui/spinner-button';
 
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { Typography } from '@mui/material';
 
 export interface ChartPreviewProps {
   chartId: string;
@@ -36,6 +37,7 @@ const ChartPreview: FC<ChartPreviewProps> = ({
   const axios = useAxios({});
   const [loading, setLoading] = useState<boolean>(false);
   const [selection, setSelection] = useState<ChartPreviewActions | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleSelection = async (action: ChartPreviewActions) => {
     setSelection(action);
@@ -47,21 +49,19 @@ const ChartPreview: FC<ChartPreviewProps> = ({
         uploadedDatafilePath,
       });
 
-      toast(<ToastMessage title="Success" message={response?.data?.message ?? ''} />, {
-        type: 'success',
+      toast(<ToastMessage title={response?.data?.message ?? 'OK'} />, {
+        type: action === 'verify' ? 'success' : 'info',
       });
+
+      if (action === 'abort') {
+        setErrorMessage('Your chart has been discarded');
+      }
     } catch (e) {
       const error = e as AxiosError;
 
-      toast(
-        <ToastMessage
-          title="Something went wrong"
-          message={error?.response?.data?.message ?? ''}
-        />,
-        {
-          type: 'error',
-        },
-      );
+      toast(<ToastMessage title={error?.response?.data?.message ?? ''} />, {
+        type: 'error',
+      });
     } finally {
       setLoading(false);
     }
@@ -69,8 +69,14 @@ const ChartPreview: FC<ChartPreviewProps> = ({
 
   useEffect(() => {
     const chartRef = doc(firestore, `users/${user?.uid}/charts/${chartId}`);
+    const notificationsRef = collection(firestore, `users/${user?.uid}/notifications`);
 
-    const unsubscribe = onSnapshot(chartRef, (snapshot) => {
+    const notificationsQuery: Query<Types.Notification> = query(
+      notificationsRef,
+      where('chartId', '==', chartId),
+    );
+
+    const unsubscribeChart = onSnapshot(chartRef, (snapshot) => {
       if (snapshot.exists()) {
         const configData = snapshot.data() as Types.Chart;
         setChartConfig(configData.chartConfig);
@@ -79,10 +85,31 @@ const ChartPreview: FC<ChartPreviewProps> = ({
       }
     });
 
-    return () => unsubscribe();
+    const unsubscribeNotifications = onSnapshot(notificationsQuery, (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        if (change.type === 'added') {
+          const notification = change.doc.data() as Types.Notification;
+          if (notification.type === 'error' || notification.type === 'info') {
+            console.log(notification);
+            setErrorMessage(notification.data.message);
+          }
+        }
+      });
+    });
+
+    return () => {
+      unsubscribeChart();
+      unsubscribeNotifications();
+    };
   }, [user, chartId]);
 
-  if (!chartConfig) return <UiProgressSpinner />;
+  if (errorMessage)
+    return (
+      <Typography sx={{ marginTop: '10px' }} variant="body1">
+        {errorMessage}
+      </Typography>
+    ); // Render the error message
+  if (!chartConfig || loading) return <UiProgressSpinner />;
 
   return (
     <Box

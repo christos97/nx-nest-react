@@ -35,7 +35,7 @@ export class TransactionController {
     const { chartId, uploadedDatafilePath } = body;
 
     await this.chartConfigService.deleteChartConfig(uid, chartId);
-    await this.datafilesService.deleteFile(uploadedDatafilePath, req.user.uid);
+    // await this.datafilesService.deleteFile(uploadedDatafilePath, req.user.uid);
 
     return {
       statusCode: 200,

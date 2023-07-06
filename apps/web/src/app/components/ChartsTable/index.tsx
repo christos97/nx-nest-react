@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
 import { Button, Box } from '@mui/material';
 import { useFsCol } from '@ntua-saas-10/web/hooks';
@@ -21,6 +21,8 @@ const ChartsTable: FC = () => {
 
   const [chartId, setChartId] = useState<string | null>(null);
 
+  if (!user) return <></>;
+
   const rows: GridRowsProp[] =
     charts
       ?.filter((chart) => chart.claimed)
@@ -32,8 +34,6 @@ const ChartsTable: FC = () => {
         createdAt: (chart.createdAt as unknown as Timestamp).toDate().toLocaleString(),
         links: mediaLinks?.filter((link) => link.chartId === chart.chartId)[0]?.links || [],
       })) ?? [];
-
-  useEffect(() => console.log({ rows }), [rows]);
 
   const columns: GridColDef[] = [
     {
@@ -57,19 +57,21 @@ const ChartsTable: FC = () => {
       renderCell: (params) => {
         const mediaLinks = params.value;
         return (
-          <Box sx={{ display: 'flex', gap: '.5rem' }}>
-            {mediaLinks &&
-              mediaLinks?.map((linkItem: MediaLink) => (
-                <Button
-                  key={linkItem.contentType}
-                  variant="contained"
-                  href={linkItem.link}
-                  size="small"
-                >
-                  {ContentTypeMapping[linkItem.contentType] || linkItem.contentType}
-                </Button>
-              ))}
-          </Box>
+          <>
+            <Box sx={{ display: 'flex', gap: '.5rem' }}>
+              {mediaLinks &&
+                mediaLinks?.map((linkItem: MediaLink) => (
+                  <Button
+                    key={linkItem.contentType}
+                    variant="contained"
+                    href={linkItem.link}
+                    size="small"
+                  >
+                    {ContentTypeMapping[linkItem.contentType] || linkItem.contentType}
+                  </Button>
+                ))}
+            </Box>
+          </>
         );
       },
     },
@@ -77,7 +79,8 @@ const ChartsTable: FC = () => {
 
   return (
     <>
-      <div style={{ height: 400, width: '100%' }}>
+      <div style={{ height: 400, width: '100%', marginBottom: '100px' }}>
+        <h2>My Charts</h2>
         <DataGrid
           loading={chartsLoading}
           rows={rows}

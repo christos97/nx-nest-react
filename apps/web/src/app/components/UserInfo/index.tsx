@@ -52,7 +52,7 @@ const UserInfo: FC = () => {
   return (
     <>
       <h1>
-        Welcome back, {user.displayName} <RocketLaunchIcon />
+        Welcome back, {user.displayName || user.email} <RocketLaunchIcon />
       </h1>
 
       <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', gap: '1rem' }}>

@@ -4,7 +4,8 @@
     "login": "Login",
     "logout": "Logout",
     "dashboard": "Dashboard",
-    "or": "or"
+    "or": "or",
+    "user": "User"
   },
   "auth": {
     "or": "or",

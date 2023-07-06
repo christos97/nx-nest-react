@@ -89,6 +89,7 @@ export class DatafilesController {
     this.logger.log(`Uploaded file ${uploadMetadata.name} to ${uploadMetadata.mediaLink}`);
 
     await this.notificationsService.saveNotificationToFirestore(req.user.uid, fileId, {
+      chartId: fileId,
       type: NotificationType.success,
       createdAt: new Date(),
       delivered: false,

@@ -50,6 +50,7 @@ export class ValidationController {
         });
 
         await this.notificationsService.saveNotificationToFirestore(uid, chartId, {
+          chartId: chartId,
           type: NotificationType.success,
           createdAt: new Date(),
           data: {
@@ -62,6 +63,7 @@ export class ValidationController {
         const error = e as Error;
 
         await this.notificationsService.saveNotificationToFirestore(uid, chartId, {
+          chartId: chartId,
           type: NotificationType.error,
           createdAt: new Date(),
           data: {

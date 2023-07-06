@@ -30,9 +30,15 @@ const BuyCreditsForm: React.FC<BuyCreditsFormProps> = ({ uid, setOpenDialog }) =
     if (selectedOption) {
       try {
         const userDocRef = doc(firestore, `users/${uid}`);
-        await setDoc(userDocRef, {
-          'customClaims.quota.current': increment(Number(selectedOption)),
-        });
+        await setDoc(
+          userDocRef,
+          {
+            customClaims: {
+              quota: { current: increment(Number(selectedOption)) },
+            },
+          },
+          { merge: true },
+        );
         toast('Your purchase was successful', { type: 'success' });
         setOpenDialog(false);
       } catch (error) {

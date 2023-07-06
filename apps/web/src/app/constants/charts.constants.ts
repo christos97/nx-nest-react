@@ -88,10 +88,6 @@ export const ExampleCharts: {
       },
       options: {
         plugins: {
-          title: {
-            display: true,
-            text: 'Example Line',
-          },
           legend: {
             display: true,
             fullSize: true,
@@ -140,10 +136,6 @@ export const ExampleCharts: {
       },
       options: {
         plugins: {
-          title: {
-            display: true,
-            text: 'Example Multi Axis Line',
-          },
           legend: {
             display: true,
             fullSize: true,
@@ -390,10 +382,6 @@ export const ExampleCharts: {
       },
       options: {
         plugins: {
-          title: {
-            display: true,
-            text: 'Example Bubble',
-          },
           legend: {
             display: true,
             fullSize: true,
@@ -580,10 +568,6 @@ export const ExampleCharts: {
       },
       options: {
         plugins: {
-          title: {
-            display: true,
-            text: 'Example Scatter',
-          },
           legend: {
             display: true,
             fullSize: true,
@@ -613,10 +597,6 @@ export const ExampleCharts: {
       },
       options: {
         plugins: {
-          title: {
-            display: true,
-            text: 'Example Polar Area',
-          },
           legend: {
             display: true,
             fullSize: true,

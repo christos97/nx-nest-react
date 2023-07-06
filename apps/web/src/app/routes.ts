@@ -25,6 +25,14 @@ const AppRoutes = {
     claims: ['user'],
     FcComponent: Pages.Dashboard,
   },
+  User: {
+    path: '/user',
+    page: 'user',
+    isGuarded: true,
+    isLazy: true,
+    claims: ['user'],
+    FcComponent: Pages.User,
+  },
 } as const;
 
 Object.freeze(AppRoutes);

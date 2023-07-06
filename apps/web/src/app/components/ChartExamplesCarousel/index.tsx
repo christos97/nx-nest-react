@@ -2,18 +2,9 @@ import Carousel from 'react-material-ui-carousel';
 import { Box, Button, Paper, Typography } from '@mui/material';
 import { ExampleCharts } from '../../constants/charts.constants';
 import { Chart } from 'react-chartjs-2';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { UiButton } from '@ntua-saas-10/web/ui/button';
 const ChartExamplesCarousel = () => {
-  const chartRefs = useRef([]);
-
-  // useEffect(() => {
-  //   chartRefs.current.forEach((chartRef) => {
-  //     const paperHeight = chartRef?.offsetHeight || 0;
-  //     chartRef.parentElement.style.height = `${paperHeight}px`;
-  //   });
-  // }, []);
-
   return (
     <Carousel
       autoPlay

@@ -8,6 +8,7 @@ const TranslationKeys = {
     login: 'login',
     logout: 'logout',
     dashboard: 'dashboard',
+    user: 'user',
     or: 'or',
   },
   auth: {

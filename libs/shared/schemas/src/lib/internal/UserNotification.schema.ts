@@ -6,6 +6,10 @@ import { NotificationType } from '@ntua-saas-10/shared-consts';
  */
 const UserNotificationSchema = z.object({
   /**
+   * The ID of the chart.
+   */
+  chartId: z.string(),
+  /**
    * The type of the notification.
    */
   type: z.nativeEnum(NotificationType),
