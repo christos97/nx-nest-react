@@ -56,8 +56,8 @@ export const ChartsTable: React.FC = () => {
         const mediaLinks = params.value;
         return (
           <Box sx={{ display: 'flex', gap: '.5rem' }}>
-            {mediaLinksLoading ? (
-              <CircularProgress size={14} color="primary" />
+            {mediaLinks.length === 0 ? (
+              <CircularProgress size={25} />
             ) : (
               (mediaLinks || []).map((linkItem: Types.MediaLink) => (
                 <Button

@@ -126,7 +126,7 @@ export class ChartConfigService {
     if (!metadata) throw new InternalServerErrorException('No uploads metadata');
 
     const { uid, chartId } = metadata as UploadChartConfig['metadata'];
-    for (const { name, contentType, mediaLink } of uploadsMetadata) {
+    for (const { contentType, mediaLink } of uploadsMetadata) {
       mediaLinks.push({ contentType, link: mediaLink });
     }
 
@@ -134,6 +134,6 @@ export class ChartConfigService {
       .collection(`users/${uid}/mediaLinks`)
       .doc(chartId) as DocumentReference<MediaLinks>;
 
-    await mediaLinksRef.set({ chartId: chartId, links: mediaLinks }, { merge: true });
+    await mediaLinksRef.set({ chartId, links: mediaLinks }, { merge: true });
   }
 }

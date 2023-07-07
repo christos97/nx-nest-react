@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { FilenameService } from '@ntua-saas-10/server/nest/filename';
 
 import { NotificationsService } from '@ntua-saas-10/server/nest/notifications';
@@ -13,4 +13,4 @@ import { DatafilesService } from './datafiles.service';
   controllers: [DatafilesController],
   providers: [DatafilesService, FilenameService, NotificationsService],
 })
-export class DatafilesModule {}
+export class DatafilesModule { }

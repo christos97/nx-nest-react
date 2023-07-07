@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ChartConfigService } from '@ntua-saas-10/server/nest/chart-config';
 import { DatafilesService } from '@ntua-saas-10/server/nest/datafiles';
 
@@ -12,4 +10,4 @@ import { RenderService } from './render.service';
   controllers: [RenderController],
   providers: [RenderService, DatafilesService, ChartConfigService],
 })
-export class RenderModule {}
+export class RenderModule { }
