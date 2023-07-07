@@ -72,6 +72,14 @@
       "options": {
         "buildTarget": "web:build"
       }
+    },
+    "deploy": {
+      "dependsOn": ["^build"],
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["firebase deploy --only hosting"],
+        "parallel": false
+      }
     }
   },
   "tags": []

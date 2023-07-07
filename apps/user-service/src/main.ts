@@ -26,7 +26,7 @@ async function bootstrap() {
   SwaggerModule.setup('docs', app, document);
 
   const port = Number(process.env.PORT);
-  const service = String(process.env.SERVICE_NAME).toLowerCase();
+  const service = 'user-service';
   const logger = new Logger(service);
 
   app.use(json());

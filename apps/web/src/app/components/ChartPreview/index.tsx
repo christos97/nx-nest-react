@@ -20,7 +20,7 @@ import {
   where,
 } from 'firebase/firestore';
 import type { FC } from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Chart } from 'react-chartjs-2';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { toast } from 'react-toastify';
@@ -47,8 +47,8 @@ const ChartPreview: FC<ChartPreviewProps> = ({
   const [chartConfig, setChartConfig] = useState<ChartConfiguration | null>(null);
   const [user] = useAuthState(auth);
   const axios = useAxios({});
-  const [loading, setLoading] = useState<boolean>(false);
   const [selection, setSelection] = useState<ChartPreviewActions | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleSelection = async (action: ChartPreviewActions) => {
@@ -69,8 +69,8 @@ const ChartPreview: FC<ChartPreviewProps> = ({
         setErrorMessage('Your chart has been discarded');
       }
     } catch (e) {
-      const error = e as AxiosError;
-      toast(<ToastMessage title={error?.message || ''} />, {
+      const error = e as AxiosError<{ message: string }>;
+      toast(<ToastMessage title={error?.response?.data?.message ?? ''} />, {
         type: 'error',
       });
     } finally {
@@ -122,7 +122,7 @@ const ChartPreview: FC<ChartPreviewProps> = ({
         {errorMessage}
       </Typography>
     ); // Render the error message
-  if (!chartConfig || loading) return <UiProgressSpinner />;
+  if (!chartConfig) return <UiProgressSpinner />;
 
   return (
     <Box

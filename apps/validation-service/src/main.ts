@@ -9,7 +9,7 @@ import { AppModule } from './app/app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const service = String(process.env.SERVICE_NAME).toLowerCase();
+  const service = 'VALIDATION_SERVICE';
   const port = Number(process.env.PORT);
   const limit = '5mb';
   const logger = new Logger(service);

@@ -12,7 +12,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const globalPrefix = 'api';
   const port = Number(process.env.PORT);
-  const service = String(process.env.SERVICE_NAME).toLowerCase();
+  const service = 'I18N_SERVICE';
   const logger = new Logger(service);
 
   patchNestjsSwagger(); // <--- Add this line

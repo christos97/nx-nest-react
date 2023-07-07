@@ -4,8 +4,8 @@ import type { User } from '@ntua-saas-10/shared-types';
 import type { UserRecord, UserInfo } from 'firebase-admin/auth';
 import type { CloudFunction, EventContext } from 'firebase-functions';
 
-import { HttpsInternal, HttpsOK, api, authFunc, firestore, logger } from '../_';
-import { GCLOUD_PROJECT } from '../config';
+import { HttpsInternal, HttpsOK, api, authFunc, firestore, logger } from '../../_';
+import { GCLOUD_PROJECT } from '../../config';
 
 /**
  * @description This function is triggered when a `UserRecord` is created in firebase auth.

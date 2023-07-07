@@ -146,6 +146,7 @@
     "changeset": "changeset",
     "clean": "nx reset && rm -rf dist/ node_modules/ *-lock.* && pnpm install",
     "concurrently": "concurrently",
+    "deploy:all": "nx run-many --targets=deploy --parallel=$(node -p \"require('os').cpus().length\") --all --skip-nx-cache",
     "download:backup": "gsutil -m cp -r gs://lesi-charts.appspot.com/.emulators.backup ./apps/functions/",
     "format": "concurrently \"nx format --all\" \"syncpack format\"",
     "kill:ports": "node -e 'setTimeout(()=>{}, 2000)' && kill-port --port 9999,9099,5001,8080,9000,5000,8085,9199,9299,4000,4400,4500",

@@ -8,7 +8,7 @@ import { AppModule } from './app/app.module';
 const bootstrap = async (): Promise<void> => {
   const app = await NestFactory.create(AppModule);
   const port = Number(process.env.PORT);
-  const service = String(process.env.SERVICE_NAME).toLowerCase();
+  const service = 'api';
   const logger = new Logger(service);
   const limit = '15mb';
 
