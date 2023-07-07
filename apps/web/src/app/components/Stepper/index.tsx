@@ -1,50 +1,42 @@
-import Button from '@mui/material/Button';
+import { Box } from '@mui/material';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Stepper from '@mui/material/Stepper';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
+import { ChartPreview } from '../ChartPreview';
 import { UploadCsvChartFile } from '../UploadCsvChartFile';
-import ChartPreview from '../ChartPreview';
-import { Box } from '@mui/material';
 
-const steps = ['Upload CSV & Select a Chart Type', 'Preview chart'];
+const StepperActions = {
+  0: 'Upload CSV & Select a Chart Type',
+  1: 'Preview chart',
+} as const;
+
+export type StepperActions = keyof typeof StepperActions;
 
 export const CustomStepper: React.FC = () => {
-  const [activeStep, setActiveStep] = useState(0);
-  const [fileId, setFileId] = useState<string | null>(null);
+  const [activeStep, setActiveStep] = useState<StepperActions>(0);
+  const [fileId, setFileId] = useState<string>('');
 
-  useEffect(() => {
-    console.log({ fileId });
-  }, [fileId]);
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  function getStepContent(stepIndex: number) {
+  const getStepContent = (stepIndex: StepperActions) => {
     switch (stepIndex) {
       case 0:
         return <UploadCsvChartFile setActiveStep={setActiveStep} setFileId={setFileId} />;
       case 1:
-        return <ChartPreview chartId={fileId ?? ''} uploadedDatafilePath="test" />;
-      default:
-        return 'Unknown stepIndex';
+        return <ChartPreview chartId={fileId} uploadedDatafilePath="test" />;
     }
-  }
+  };
 
   return (
     <Box sx={{ width: '100%' }}>
       <Stepper activeStep={activeStep} alternativeLabel sx={{ width: '100%' }}>
-        {steps.map((label) => (
-          <Step key={label}>
+        {Object.values(StepperActions).map((label, i) => (
+          <Step key={i}>
             <StepLabel>{label}</StepLabel>
           </Step>
         ))}
       </Stepper>
-      <div>
-        <div>{getStepContent(activeStep)}</div>
-      </div>
+      <Box>{getStepContent(activeStep)}</Box>
     </Box>
   );
 };

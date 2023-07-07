@@ -10,4 +10,4 @@ import { RenderService } from './render.service';
   controllers: [RenderController],
   providers: [RenderService, DatafilesService, ChartConfigService],
 })
-export class RenderModule { }
+export class RenderModule {}

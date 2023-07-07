@@ -15,8 +15,6 @@ class FirebaseWeb {
     if (Object.keys(this.config).length === 0) {
       throw new Error('VITE_PUBLIC_FIREBASE_CONFIG env var is not set');
     }
-    const location = this.config.locationId;
-    console.log({ location });
     this.app = this.initializeFirebaseWebApp();
     this.auth = getAuth(this.app);
     this.firestore = getFirestore(this.app);

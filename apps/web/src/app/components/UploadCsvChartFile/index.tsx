@@ -9,6 +9,7 @@ import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import { MAX_FILE_SIZE } from '../../constants/app.constants';
+import { StepperActions } from '../Stepper';
 
 const { line, bubble, multiAxisLine, polarArea, radar, scatter } = ChartType;
 const UploadCsvChartFormSchema = z.object({
@@ -29,8 +30,8 @@ const ChartTypeLabels = {
 } as const;
 
 interface UploadCsvChartFileProps {
-  setActiveStep: (value: React.SetStateAction<number>) => void;
-  setFileId: (value: React.SetStateAction<string | null>) => void;
+  setActiveStep: (value: React.SetStateAction<StepperActions>) => void;
+  setFileId: (value: React.SetStateAction<string>) => void;
 }
 
 export const UploadCsvChartFile: React.FC<UploadCsvChartFileProps> = ({
@@ -45,7 +46,7 @@ export const UploadCsvChartFile: React.FC<UploadCsvChartFileProps> = ({
   const chartType = watch('chartType');
   useEffect(() => {
     if (wizardRef.current?.fileId) {
-      setActiveStep((prev) => prev + 1);
+      setActiveStep((prev) => (prev + 1) as StepperActions);
       setFileId(wizardRef.current?.fileId);
     }
   }, [wizardRef.current?.fileId, setActiveStep, setFileId]);

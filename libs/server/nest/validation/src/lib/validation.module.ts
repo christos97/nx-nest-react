@@ -9,11 +9,6 @@ import { ValidationService } from './validation.service';
 
 @Module({
   controllers: [ValidationController],
-  providers: [
-    ValidationService,
-    DatafilesService,
-    ChartConfigService,
-    NotificationsService,
-  ],
+  providers: [ValidationService, DatafilesService, ChartConfigService, NotificationsService],
 })
-export class ValidationModule { }
+export class ValidationModule {}

@@ -13,4 +13,4 @@ import { DatafilesService } from './datafiles.service';
   controllers: [DatafilesController],
   providers: [DatafilesService, FilenameService, NotificationsService],
 })
-export class DatafilesModule { }
+export class DatafilesModule {}

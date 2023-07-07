@@ -20,7 +20,7 @@ import {
   where,
 } from 'firebase/firestore';
 import type { FC } from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Chart } from 'react-chartjs-2';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { toast } from 'react-toastify';
@@ -38,7 +38,7 @@ const ChartPreviewActions = {
 
 type ChartPreviewActions = (typeof ChartPreviewActions)[keyof typeof ChartPreviewActions];
 
-const ChartPreview: FC<ChartPreviewProps> = ({
+export const ChartPreview: FC<ChartPreviewProps> = ({
   chartId,
   uploadedDatafilePath,
   hideActionButtons = false,
@@ -167,5 +167,3 @@ const ChartPreview: FC<ChartPreviewProps> = ({
     </Box>
   );
 };
-
-export default ChartPreview;

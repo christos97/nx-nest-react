@@ -1,5 +1,4 @@
 import { Box, Button, Paper, Typography } from '@mui/material';
-import React from 'react';
 import { Chart } from 'react-chartjs-2';
 import Carousel from 'react-material-ui-carousel';
 

@@ -8,30 +8,26 @@ import React, { useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
 import { ChartIcons, ContentTypeMapping } from '../../constants/charts.constants';
-import ChartPreview from '../ChartPreview';
+import { ChartPreview } from '../ChartPreview';
 
 export const ChartsTable: React.FC = () => {
   const [user] = useAuthState(auth);
   const [charts, chartsLoading] = useFsCol<Types.Chart>(`users/${user?.uid}/charts`);
-  const [mediaLinks, mediaLinksLoading, mediaLinksError] = useFsCol<Types.MediaLinks>(
-    `users/${user?.uid}/mediaLinks`,
-  );
-
+  const [mediaLinks] = useFsCol<Types.MediaLinks>(`users/${user?.uid}/mediaLinks`);
   const [chartId, setChartId] = useState<string | null>(null);
 
-  if (!user) return <></>;
+  if (!(user && charts)) return <Box />;
 
-  const rows =
-    charts
-      ?.filter((chart) => chart.claimed)
-      ?.map((chart) => ({
-        chart: ChartIcons[chart.chartType].icon,
-        chartTitle: chart.chartTitle,
-        id: chart.chartId,
-        chartType: ChartIcons[chart.chartType].label,
-        createdAt: (chart.createdAt as unknown as Timestamp).toDate().toLocaleString(),
-        links: mediaLinks?.filter((link) => link.chartId === chart.chartId)[0]?.links || [],
-      })) ?? [];
+  const rows = charts
+    .filter(({ claimed }) => claimed)
+    .map(({ chartType, chartTitle, chartId, createdAt }) => ({
+      chartTitle,
+      chart: ChartIcons[chartType].icon,
+      id: chartId,
+      chartType: ChartIcons[chartType].label,
+      createdAt: (createdAt as unknown as Timestamp).toDate().toLocaleString(),
+      links: mediaLinks?.filter((link) => link.chartId === chartId)[0]?.links || [],
+    }));
 
   const columns: GridColDef[] = [
     {
@@ -59,14 +55,9 @@ export const ChartsTable: React.FC = () => {
             {mediaLinks.length === 0 ? (
               <CircularProgress size={25} />
             ) : (
-              (mediaLinks || []).map((linkItem: Types.MediaLink) => (
-                <Button
-                  key={linkItem.contentType}
-                  variant="contained"
-                  href={linkItem.link}
-                  size="small"
-                >
-                  {ContentTypeMapping[linkItem.contentType] || linkItem.contentType}
+              mediaLinks.map(({ contentType, link }: Types.MediaLink) => (
+                <Button key={contentType} variant="contained" href={link} size="small">
+                  {ContentTypeMapping[contentType]}
                 </Button>
               ))
             )}

@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import {
   Box,
   Button,
@@ -8,14 +7,17 @@ import {
   Radio,
   RadioGroup,
 } from '@mui/material';
-import { doc, setDoc, increment } from 'firebase/firestore';
 import { firestore } from '@ntua-saas-10/web/firebase';
+import { doc, setDoc, increment } from 'firebase/firestore';
+import { useState } from 'react';
 import { toast } from 'react-toastify';
 
 interface BuyCreditsFormProps {
   uid: string;
   setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
+const credits = [5, 10, 20, 50];
 
 const BuyCreditsForm: React.FC<BuyCreditsFormProps> = ({ uid, setOpenDialog }) => {
   const [selectedOption, setSelectedOption] = useState<string>(''); // State for selected credit option
@@ -53,10 +55,14 @@ const BuyCreditsForm: React.FC<BuyCreditsFormProps> = ({ uid, setOpenDialog }) =
       <FormControl component="fieldset">
         <FormLabel component="legend">Select one of the following options</FormLabel>
         <RadioGroup name="creditOptions" value={selectedOption} onChange={handleOptionChange} row>
-          <FormControlLabel value="5" control={<Radio />} label="5 credits" />
-          <FormControlLabel value="10" control={<Radio />} label="10 credits" />
-          <FormControlLabel value="20" control={<Radio />} label="20 credits" />
-          <FormControlLabel value="50" control={<Radio />} label="50 credits" />
+          {credits.map((value) => (
+            <FormControlLabel
+              key={value}
+              value={value}
+              control={<Radio />}
+              label={value.toString() + ` Credits`}
+            />
+          ))}
         </RadioGroup>
       </FormControl>
       <Box>
