@@ -34,6 +34,24 @@ The project is organized as a monorepo using Nx, which provides a powerful devel
 
 - **Shared**: A shared package that contains shared code and utilities used across different packages within the monorepo.
 
+- **Web Lib**: A shared web library containing smart and dumb UI components, hooks, i18n and other common env configurations to be shared across diffrent React web applications
+
+## Prerquisites
+
+```sh
+pnpm add -g firebase-tools nx
+firebase login --reauth
+```
+
+- You also need `gcloud` and `gsutils` cli's
+- `Firebase Emulators` require Java SDK 8 or higher
+- A `.env` file requested by codeowners
+- A `.env.local` file containing
+
+```sh
+  GOOGLE_APPLICATION_CREDENTIALS=~/.config/firebase/${email}_gmail_com_application_default_credentials.json
+```
+
 ## Development
 
 `pnpm serve`
