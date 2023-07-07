@@ -11,11 +11,11 @@ import { styles } from './styles';
 
 const StyledSelect = styled(Select)(styles);
 
-interface ChangeLanguageProps {
+export interface ChangeLanguageProps {
   langs: Languages[];
 }
 
-const ChangeLanguage: React.FC<ChangeLanguageProps> = ({ langs }) => {
+export const ChangeLanguage: React.FC<ChangeLanguageProps> = ({ langs }) => {
   const { i18n } = useTranslation();
   const [selectedLanguage, setSelectedLanguage] = useState<Languages>(i18n.language as Languages);
 
@@ -31,6 +31,10 @@ const ChangeLanguage: React.FC<ChangeLanguageProps> = ({ langs }) => {
       defaultValue={i18n.language}
       IconComponent={LanguageIcon}
       value={selectedLanguage}
+      variant="standard"
+      sx={{
+        marginLeft: '12px',
+      }}
     >
       {langs.map((key) => (
         <MenuItem key={key} value={key}>
@@ -40,5 +44,3 @@ const ChangeLanguage: React.FC<ChangeLanguageProps> = ({ langs }) => {
     </StyledSelect>
   );
 };
-
-export default ChangeLanguage;

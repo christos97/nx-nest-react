@@ -9,3 +9,4 @@ export type LineChartDataType = ChartDataType<'line'>;
 export type BubbleChartDataType = ChartDataType<'bubble'>;
 export type RadarChartDataType = ChartDataType<'radar'>;
 export type ScatterChartDataType = ChartDataType<'scatter'>;
+export type PolarAreaChartDataType = ChartDataType<'polarArea'>;

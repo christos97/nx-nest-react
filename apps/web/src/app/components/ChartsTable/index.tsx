@@ -1,29 +1,27 @@
-import React, { FC, useEffect, useState } from 'react';
-import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
-import { Button, Box } from '@mui/material';
-import { useFsCol } from '@ntua-saas-10/web/hooks';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import { Button, Box, CircularProgress } from '@mui/material';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import type { Types } from '@ntua-saas-10/shared-types';
 import { auth } from '@ntua-saas-10/web/firebase';
-import type { MediaLink, MediaLinks, Types } from '@ntua-saas-10/shared-types';
+import { useFsCol } from '@ntua-saas-10/web/hooks';
 import { Timestamp } from 'firebase/firestore';
+import React, { useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
-import ChartPreview from '../ChartPreview';
 import { ChartIcons, ContentTypeMapping } from '../../constants/charts.constants';
+import ChartPreview from '../ChartPreview';
 
-const ChartsTable: FC = () => {
-  const [user, userLoading, userError] = useAuthState(auth);
-  const [charts, chartsLoading, chartsError] = useFsCol<Types.Chart>(`users/${user?.uid}/charts`);
+export const ChartsTable: React.FC = () => {
+  const [user] = useAuthState(auth);
+  const [charts, chartsLoading] = useFsCol<Types.Chart>(`users/${user?.uid}/charts`);
   const [mediaLinks, mediaLinksLoading, mediaLinksError] = useFsCol<Types.MediaLinks>(
     `users/${user?.uid}/mediaLinks`,
   );
-
-  useEffect(() => console.log(mediaLinks), [mediaLinks]);
 
   const [chartId, setChartId] = useState<string | null>(null);
 
   if (!user) return <></>;
 
-  const rows: GridRowsProp[] =
+  const rows =
     charts
       ?.filter((chart) => chart.claimed)
       ?.map((chart) => ({
@@ -57,21 +55,22 @@ const ChartsTable: FC = () => {
       renderCell: (params) => {
         const mediaLinks = params.value;
         return (
-          <>
-            <Box sx={{ display: 'flex', gap: '.5rem' }}>
-              {mediaLinks &&
-                mediaLinks?.map((linkItem: MediaLink) => (
-                  <Button
-                    key={linkItem.contentType}
-                    variant="contained"
-                    href={linkItem.link}
-                    size="small"
-                  >
-                    {ContentTypeMapping[linkItem.contentType] || linkItem.contentType}
-                  </Button>
-                ))}
-            </Box>
-          </>
+          <Box sx={{ display: 'flex', gap: '.5rem' }}>
+            {mediaLinksLoading ? (
+              <CircularProgress size={14} color="primary" />
+            ) : (
+              (mediaLinks || []).map((linkItem: Types.MediaLink) => (
+                <Button
+                  key={linkItem.contentType}
+                  variant="contained"
+                  href={linkItem.link}
+                  size="small"
+                >
+                  {ContentTypeMapping[linkItem.contentType] || linkItem.contentType}
+                </Button>
+              ))
+            )}
+          </Box>
         );
       },
     },
@@ -95,5 +94,3 @@ const ChartsTable: FC = () => {
     </>
   );
 };
-
-export default ChartsTable;

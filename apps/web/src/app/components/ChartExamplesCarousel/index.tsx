@@ -1,10 +1,11 @@
-import Carousel from 'react-material-ui-carousel';
 import { Box, Button, Paper, Typography } from '@mui/material';
-import { ExampleCharts } from '../../constants/charts.constants';
+import React from 'react';
 import { Chart } from 'react-chartjs-2';
-import React, { useEffect, useRef, useState } from 'react';
-import { UiButton } from '@ntua-saas-10/web/ui/button';
-const ChartExamplesCarousel = () => {
+import Carousel from 'react-material-ui-carousel';
+
+import { ExampleCharts } from '../../constants/charts.constants';
+
+export const ChartExamplesCarousel: React.FC = () => {
   return (
     <Carousel
       autoPlay
@@ -54,5 +55,3 @@ const ChartExamplesCarousel = () => {
     </Carousel>
   );
 };
-
-export default ChartExamplesCarousel;

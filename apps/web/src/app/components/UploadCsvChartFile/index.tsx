@@ -10,6 +10,7 @@ import { z } from 'zod';
 
 import { MAX_FILE_SIZE } from '../../constants/app.constants';
 
+const { line, bubble, multiAxisLine, polarArea, radar, scatter } = ChartType;
 const UploadCsvChartFormSchema = z.object({
   chartTitle: z.string().default('default chart title'),
   chartType: z.nativeEnum(ChartType),
@@ -19,12 +20,12 @@ const UploadCsvChartFormSchema = z.object({
 type UploadWizardFormData = z.infer<typeof UploadCsvChartFormSchema>;
 
 const ChartTypeLabels = {
-  [ChartType.line]: 'Line',
-  [ChartType.bubble]: 'Bubble',
-  [ChartType.multiAxisLine]: 'Multi-Axis Line ',
-  [ChartType.polarArea]: 'Polar Area',
-  [ChartType.radar]: 'Radar',
-  [ChartType.scatter]: 'Scatter',
+  [line]: 'Line',
+  [bubble]: 'Bubble',
+  [multiAxisLine]: 'Multi-Axis Line ',
+  [polarArea]: 'Polar Area',
+  [radar]: 'Radar',
+  [scatter]: 'Scatter',
 } as const;
 
 interface UploadCsvChartFileProps {
@@ -99,7 +100,7 @@ export const UploadCsvChartFile: React.FC<UploadCsvChartFileProps> = ({
             <UiSpinnerButton
               //isDone={false}
               disabled={!formState.isValid || wizardRef.current?.files.length === 0}
-              isLoading={false}
+              isLoading={formState.isSubmitting}
               type="submit"
             >
               Upload File

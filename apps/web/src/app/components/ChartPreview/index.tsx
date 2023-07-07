@@ -1,22 +1,29 @@
-import type { FC } from 'react';
-import { type ChartConfiguration, Chart as ChartJS } from 'chart.js/auto';
-import { Chart } from 'react-chartjs-2';
-import Box from '@mui/material/Box';
-import { auth, firestore } from '@ntua-saas-10/web/firebase';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { useEffect, useState } from 'react';
-import { collection, doc, onSnapshot, Query, query, where } from 'firebase/firestore';
-import type { Types } from '@ntua-saas-10/shared-types';
-import { UiProgressSpinner } from '@ntua-saas-10/web/ui/progress-spinner';
-import { useAxios } from '@ntua-saas-10/web/hooks';
-import { toast } from 'react-toastify';
-import { AxiosError } from 'axios';
-import { ToastMessage } from '@ntua-saas-10/web/ui/toast';
-import { UiSpinnerButton } from '@ntua-saas-10/web/ui/spinner-button';
-
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Typography } from '@mui/material';
+import Box from '@mui/material/Box';
+import type { Types } from '@ntua-saas-10/shared-types';
+import { auth, firestore } from '@ntua-saas-10/web/firebase';
+import { useAxios } from '@ntua-saas-10/web/hooks';
+import { UiProgressSpinner } from '@ntua-saas-10/web/ui/progress-spinner';
+import { UiSpinnerButton } from '@ntua-saas-10/web/ui/spinner-button';
+import { ToastMessage } from '@ntua-saas-10/web/ui/toast';
+import { AxiosError } from 'axios';
+import { type ChartConfiguration, Chart as ChartJS } from 'chart.js/auto';
+import {
+  collection,
+  CollectionReference,
+  doc,
+  DocumentReference,
+  onSnapshot,
+  query,
+  where,
+} from 'firebase/firestore';
+import type { FC } from 'react';
+import { useEffect, useState } from 'react';
+import { Chart } from 'react-chartjs-2';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { toast } from 'react-toastify';
 
 export interface ChartPreviewProps {
   chartId: string;
@@ -24,7 +31,12 @@ export interface ChartPreviewProps {
   hideActionButtons?: boolean;
 }
 
-export type ChartPreviewActions = 'abort' | 'verify';
+const ChartPreviewActions = {
+  Abort: 'abort',
+  Verify: 'verify',
+} as const;
+
+type ChartPreviewActions = (typeof ChartPreviewActions)[keyof typeof ChartPreviewActions];
 
 const ChartPreview: FC<ChartPreviewProps> = ({
   chartId,
@@ -49,17 +61,16 @@ const ChartPreview: FC<ChartPreviewProps> = ({
         uploadedDatafilePath,
       });
 
-      toast(<ToastMessage title={response?.data?.message ?? 'OK'} />, {
-        type: action === 'verify' ? 'success' : 'info',
+      toast(<ToastMessage title={response?.data?.message || 'OK'} />, {
+        type: action === ChartPreviewActions.Verify ? 'success' : 'info',
       });
 
-      if (action === 'abort') {
+      if (action === ChartPreviewActions.Abort) {
         setErrorMessage('Your chart has been discarded');
       }
     } catch (e) {
       const error = e as AxiosError;
-
-      toast(<ToastMessage title={error?.response?.data?.message ?? ''} />, {
+      toast(<ToastMessage title={error?.message || ''} />, {
         type: 'error',
       });
     } finally {
@@ -68,17 +79,20 @@ const ChartPreview: FC<ChartPreviewProps> = ({
   };
 
   useEffect(() => {
-    const chartRef = doc(firestore, `users/${user?.uid}/charts/${chartId}`);
-    const notificationsRef = collection(firestore, `users/${user?.uid}/notifications`);
+    const chartRef = doc(
+      firestore,
+      `users/${user?.uid}/charts/${chartId}`,
+    ) as DocumentReference<Types.Chart>;
+    const notificationsRef = collection(
+      firestore,
+      `users/${user?.uid}/notifications`,
+    ) as CollectionReference<Types.UserNotification>;
 
-    const notificationsQuery: Query<Types.Notification> = query(
-      notificationsRef,
-      where('chartId', '==', chartId),
-    );
+    const notificationsQuery = query(notificationsRef, where('chartId', '==', chartId));
 
     const unsubscribeChart = onSnapshot(chartRef, (snapshot) => {
       if (snapshot.exists()) {
-        const configData = snapshot.data() as Types.Chart;
+        const configData = snapshot.data();
         setChartConfig(configData.chartConfig);
       } else {
         setChartConfig(null);
@@ -88,9 +102,8 @@ const ChartPreview: FC<ChartPreviewProps> = ({
     const unsubscribeNotifications = onSnapshot(notificationsQuery, (snapshot) => {
       snapshot.docChanges().forEach((change) => {
         if (change.type === 'added') {
-          const notification = change.doc.data() as Types.Notification;
+          const notification = change.doc.data();
           if (notification.type === 'error' || notification.type === 'info') {
-            console.log(notification);
             setErrorMessage(notification.data.message);
           }
         }
@@ -133,8 +146,8 @@ const ChartPreview: FC<ChartPreviewProps> = ({
         <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', gap: '2rem' }}>
           <UiSpinnerButton
             disabled={!!selection}
-            isLoading={selection === 'abort' && loading}
-            onClick={() => handleSelection('abort')}
+            isLoading={selection === ChartPreviewActions.Abort && loading}
+            onClick={() => handleSelection(ChartPreviewActions.Abort)}
             color="secondary"
           >
             Abort
@@ -142,8 +155,8 @@ const ChartPreview: FC<ChartPreviewProps> = ({
           </UiSpinnerButton>
           <UiSpinnerButton
             disabled={!!selection}
-            isLoading={selection === 'verify' && loading}
-            onClick={() => handleSelection('verify')}
+            isLoading={selection === ChartPreviewActions.Verify && loading}
+            onClick={() => handleSelection(ChartPreviewActions.Verify)}
             color="primary"
           >
             Verify

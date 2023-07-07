@@ -1,5 +1,8 @@
+import { ContentType } from '@ntua-saas-10/shared-consts';
 import type { Render } from '@ntua-saas-10/shared-types';
 import type { Canvas } from 'canvas';
+
+const { image_svg_xml, application_pdf, image_png, text_html } = ContentType;
 
 const pdf = 'pdf';
 const svg = 'svg';
@@ -7,10 +10,10 @@ const png = 'png';
 const html = 'html';
 
 const contentTypes = {
-  [svg]: 'image/svg+xml',
-  [pdf]: 'application/pdf',
-  [png]: 'image/png',
-  [html]: 'text/html',
+  [svg]: image_svg_xml,
+  [pdf]: application_pdf,
+  [png]: image_png,
+  [html]: text_html,
 } as const;
 
 export type SupportedContentType = (typeof contentTypes)[keyof typeof contentTypes];

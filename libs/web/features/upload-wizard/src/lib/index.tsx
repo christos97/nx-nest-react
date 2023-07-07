@@ -1,3 +1,4 @@
+import { Typography, TextField } from '@mui/material';
 import { createUploadFileSchema } from '@ntua-saas-10/shared-utils';
 import { useAxios } from '@ntua-saas-10/web/hooks';
 import { type FormEvent, forwardRef, useImperativeHandle, useState } from 'react';
@@ -31,6 +32,7 @@ export const UploadWizard: React.ForwardRefExoticComponent<
   const [files, setFiles] = useState<File[]>([]);
 
   const [fileId, setFileId] = useState<string | null>(null);
+  const [renamedFileNames, setRenamedFileNames] = useState<{ [key: string]: string }>({});
 
   const [meta, setMeta] = useState<FormMetadata>({});
   const { errors } = formState;
@@ -43,8 +45,9 @@ export const UploadWizard: React.ForwardRefExoticComponent<
       return;
     }
     const formData = new FormData();
+    const fileName = renamedFileNames[file.name] || file.name;
     formData.append('datafile', file);
-    formData.append('chartTitle', 'Where do my expenses go');
+    formData.append('chartTitle', String(fileName));
 
     const metadata = Object.assign({}, formMetadata);
     for (const key in metadata) {
@@ -96,14 +99,25 @@ export const UploadWizard: React.ForwardRefExoticComponent<
           <DropzoneSection>
             <DropzoneInput {...getRootProps()}>
               <input {...getInputProps()} />
-              <p>Drag 'n' drop some files here, or click to select files</p>
+              <Typography>Drag 'n' drop some files here, or click to select files</Typography>
             </DropzoneInput>
             <aside>
-              <h4>Files</h4>
               <FileList>
                 {acceptedFiles.map((file) => (
                   <FileListItem key={file.name}>
-                    {file.name} - {file.size} bytes
+                    <Typography>Name your file</Typography>
+                    <TextField
+                      value={renamedFileNames[file.name] || file.name}
+                      onChange={(e) => {
+                        setRenamedFileNames((prevState) => ({
+                          ...prevState,
+                          [file.name]: e.target.value || file.name,
+                        }));
+                      }}
+                    />
+                    <Typography>
+                      {renamedFileNames[file.name]} <br /> {file.size} bytes
+                    </Typography>
                   </FileListItem>
                 ))}
               </FileList>
@@ -111,8 +125,7 @@ export const UploadWizard: React.ForwardRefExoticComponent<
           </DropzoneSection>
         )}
       </Dropzone>
-
-      {errors.files && <p className="error">{errors.files.message}</p>}
+      <Typography>{errors.files && <p className="error">{errors.files.message}</p>}</Typography>
     </>
   );
 });

@@ -39,7 +39,7 @@ export const FileListItem = styled.li`
   margin: 10px 0;
   background-color: #e0e0e0;
   padding: 10px;
-  width: 80%;
+  width: fit-content;
   text-align: center;
   border-radius: 10px;
 `;

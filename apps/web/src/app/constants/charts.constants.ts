@@ -1,10 +1,9 @@
+import BubbleChartIcon from '@mui/icons-material/BubbleChart';
+import PieChartIcon from '@mui/icons-material/PieChart';
+import RadarIcon from '@mui/icons-material/Radar';
+import ScatterPlotIcon from '@mui/icons-material/ScatterPlot';
 import ShowChartIcon from '@mui/icons-material/ShowChart';
 import SsidChartIcon from '@mui/icons-material/SsidChart';
-import BubbleChartIcon from '@mui/icons-material/BubbleChart';
-import ScatterPlotIcon from '@mui/icons-material/ScatterPlot';
-import RadarIcon from '@mui/icons-material/Radar';
-import PieChartIcon from '@mui/icons-material/PieChart';
-import { ChartType } from '@ntua-saas-10/shared-consts';
 import type { ChartConfiguration } from 'chart.js';
 
 export const ChartIcons = {

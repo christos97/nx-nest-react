@@ -1,58 +1,59 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { Injectable, NotImplementedException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
 import { ContentType } from '@ntua-saas-10/shared-consts';
 import type { Types } from '@ntua-saas-10/shared-types';
 import { Canvas } from 'canvas';
 import { Chart } from 'chart.js/auto';
 
+import { ContentTypeMapper } from './render.constants';
+
+const { image_svg_xml, application_pdf, image_png, text_html } = ContentType;
+
 @Injectable()
 export class RenderService {
-  render(params: Types.RenderParams): Promise<Types.Render> {
+  private readonly logger = new Logger(RenderService.name);
+
+  render({ id, chartConfig, options }: Types.RenderParams): Promise<Types.Render> {
     return new Promise((resolve, reject) => {
-      const { chartConfig } = params;
-      const { contentType } = params.options;
-      const { width, height } = params.options.resolution;
+      const {
+        resolution: { width, height },
+        contentType,
+      } = options;
+      const { canvasType, renderType } = ContentTypeMapper[contentType];
+      this.logger.log(`Rendering ${renderType} chart with ${canvasType} canvas`);
 
-      if (
-        contentType !== ContentType.application_pdf &&
-        contentType !== ContentType.image_svg_xml &&
-        contentType !== ContentType.image_png &&
-        contentType !== ContentType.text_html
-      ) {
-        reject(new NotImplementedException('Unsupported content type'));
-        return;
-      }
+      try {
+        const canvas = new Canvas(width, height, canvasType);
+        const context = canvas.getContext('2d') as unknown as CanvasRenderingContext2D;
+        new Chart(context, chartConfig);
 
-      let type: 'svg' | 'pdf' | 'png' = 'svg';
-
-      if (contentType === ContentType.application_pdf) type = 'pdf';
-      else if (contentType === ContentType.image_png) type = 'png';
-
-      const canvas = new Canvas(width, height, type as any);
-      const context = canvas.getContext('2d') as unknown as CanvasRenderingContext2D;
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const chartRef = new Chart(context, chartConfig);
-
-      // Special case if `contentType` is `text/html`
-      if (contentType === ContentType.text_html) {
-        const svgBuffer = canvas.toBuffer();
-        const htmlBuffer = Buffer.from(`<html>${svgBuffer.toString()}</html>`);
-        resolve({
-          id: params.id,
-          buffer: htmlBuffer,
+        const render: Types.Render = {
+          id,
+          buffer: Buffer.from(''),
           contentType,
-          type: 'html',
+          type: renderType,
           createdAt: new Date(),
-        });
-      } else {
-        const buffer = canvas.toBuffer(contentType as any);
-        resolve({
-          id: params.id,
-          buffer,
-          contentType,
-          type,
-          createdAt: new Date(),
-        });
+        };
+
+        switch (contentType) {
+          case text_html:
+            render.buffer = Buffer.from(`<html>${canvas.toBuffer().toString()}</html>`);
+            break;
+          case application_pdf:
+            render.buffer = canvas.toBuffer(application_pdf);
+            break;
+          case image_png:
+            render.buffer = canvas.toBuffer(image_png);
+            break;
+          case image_svg_xml:
+          default:
+            render.buffer = canvas.toBuffer();
+            break;
+        }
+        return resolve(render);
+      } catch (error) {
+        reject(error);
+        this.logger.error(error);
+        throw new InternalServerErrorException("Couldn't render chart");
       }
     });
   }

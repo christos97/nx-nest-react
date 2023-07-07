@@ -17,7 +17,7 @@ export const Dashboard: React.FC = () => {
       </Box>
     );
   if (!user && !loading) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/auth" replace />;
   }
   return (
     <main>

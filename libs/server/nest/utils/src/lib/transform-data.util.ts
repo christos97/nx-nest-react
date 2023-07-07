@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { BadRequestException } from '@nestjs/common';
-import { ParseResult } from 'papaparse';
+import { DatafileValuesRegex, ChartType } from '@ntua-saas-10/shared-consts';
 import type { Types } from '@ntua-saas-10/shared-types';
+import { ParseResult } from 'papaparse';
+
 import { generatePalette } from './generate-palette.util';
-import { DatafileValuesRegex } from '@ntua-saas-10/shared-consts';
 
 export const transformDataToLine = (parsedFile: ParseResult<any>, isMultiAxis = false) => {
   const transformedData: Required<Types.ChartDataType<'line'>> = {
@@ -13,7 +14,7 @@ export const transformDataToLine = (parsedFile: ParseResult<any>, isMultiAxis = 
 
   if (!parsedFile.data[0].labels) throw new BadRequestException('Labels column is missing');
 
-  if (isMultiAxis && Object.keys(parsedFile.data[0]).length !== 3) {
+  if (Object.keys(parsedFile.data[0]).length > 3) {
     throw new BadRequestException(
       'Only three columns (labels, dataset-1, dataset-2) are allowed for multi axis line chart',
     );
@@ -151,12 +152,10 @@ export const transformDataToPolarArea = (parsedFile: ParseResult<any>) => {
         currentDataset = {
           label: key,
           data: [],
-          // backgroundColor: [],
         };
 
         transformedData.datasets.push(currentDataset);
       }
-      // if (!currentDataset.backgroundColor) currentDataset.backgroundColor = [];
 
       const parsedValue = Number.parseFloat(row[key]);
       if (Number.isNaN(parsedValue)) {
@@ -164,9 +163,6 @@ export const transformDataToPolarArea = (parsedFile: ParseResult<any>) => {
       }
 
       currentDataset.data.push(parsedValue);
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      // currentDataset.backgroundColor.push(generatePalette().primaryColor);
     }
   }
 
@@ -218,3 +214,11 @@ export const transformDataToRadar = (parsedFile: ParseResult<any>) => {
 
   return transformedData;
 };
+
+export const TransformMapper = {
+  [ChartType.line]: transformDataToLine,
+  [ChartType.radar]: transformDataToRadar,
+  [ChartType.scatter]: transformDataToScatter,
+  [ChartType.bubble]: transformDataToBubble,
+  [ChartType.polarArea]: transformDataToPolarArea,
+} as const;

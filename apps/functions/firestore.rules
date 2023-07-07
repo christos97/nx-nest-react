@@ -1,22 +1,27 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /users/{userId} {
-      allow read: if request.auth.uid != null && request.auth.uid == userId;
-      allow write: if request.auth.uid != null && request.auth.uid == userId;
 
-      match /charts/{document=**} {
-        allow read: if request.auth.uid != null && request.auth.uid == userId;
-        allow write: if false;
-      }
+    function isOwned(document){
+      return request.auth.uid != null && request.auth.uid == document;
+    }
+
+    match /users/{userId} {
+      allow read: if isOwned(userId);
+      allow write: if isOwned(userId);
 
       match /notifications/{document=**} {
         allow read: if request.auth.uid == userId && resource != null;
         allow write: if request.auth.uid == userId;
       }
 
+      match /charts/{document=**} {
+        allow read: if isOwned(userId);
+        allow write: if false;
+      }
+
       match /mediaLinks/{document=**} {
-        allow read: if request.auth.uid != null && request.auth.uid == userId;
+        allow read: if isOwned(userId);
         allow write: if false;
       }
     }

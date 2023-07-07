@@ -14,7 +14,7 @@ const StyledLink = styled(Link)(styles.link);
 
 const StyledTypography = styled(Typography)(styles.typography);
 
-const LinksContainer = styled('div')(styles.links);
+const LinksContainer = styled.div(styles.links);
 
 const Header: React.FC<UiHeaderProps> = ({ children, brand, links, ...logoProps }) => {
   return (
@@ -34,13 +34,18 @@ const Header: React.FC<UiHeaderProps> = ({ children, brand, links, ...logoProps 
               return (
                 <Button
                   onClick={() => {
-                    if (handler) {
+                    if (handler && typeof handler === 'function') {
                       handler();
+                    } else {
+                      throw new Error('Button handler is not a function');
                     }
                   }}
                   key={label}
-                  variant="contained"
-                  color="secondary"
+                  variant="text"
+                  sx={{
+                    color: 'gray',
+                    backgroundColor: 'inherit',
+                  }}
                 >
                   {label}
                 </Button>

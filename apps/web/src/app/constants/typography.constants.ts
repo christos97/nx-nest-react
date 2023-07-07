@@ -10,6 +10,9 @@ import { FONT_FAMILY as fontFamily } from './app.constants';
 
 export const typography: ThemeOptions['typography'] = {
   fontFamily,
+  button: {
+    textTransform: 'none',
+  },
 } as const;
 
 export default typography;

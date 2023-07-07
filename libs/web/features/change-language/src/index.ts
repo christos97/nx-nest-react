@@ -1,1 +1,1 @@
-export { default as ChangeLanguage } from './lib';
+export * from './lib';
