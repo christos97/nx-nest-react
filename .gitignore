@@ -41,6 +41,7 @@ Thumbs.db
 # google service account
 libs/firebase-admin/**/*-firebase-adminsdk-*.json
 
+.env
 .env.local
 
 
