@@ -1,5 +1,7 @@
 # Ntua SaaS 10 Monorepo
 
+### Issues and PR's are not visible
+
 This project is an event-driven architecture-based application that converts CSV data into interactive charts and to their `png|svg|pdf|html` formats.
 
 It uses [NX](https://nx.dev/) as it's build system and its almost 100% based on TypeScript.
